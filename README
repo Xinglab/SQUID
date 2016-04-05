@@ -1,71 +1,70 @@
 main program <CARIE.py>
 Required Parameters:
 -i/--input:
-    s1_bam/s1_sam[,s2_bam/s2_sam] Mapping results for all of samples in bam/sam format. Different samples sepreated in a comma seperated list
+	-i/--input: s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples sepreated in a comma seperated list
 --GTF:
-    annotated gtf files
-
+	The gtf file
 
 Optional Parameters:
 -o/--output:
-    the output directory, default is current directory.
-
+	-o/--output: The output directory. The default is current directory
 --lib
-     library build methods, the choices are first/second/unstrand. The default is unstrand.
+	The library build method with choices of first/second/unstrand. The default is unstrand.
 --read
-    the reads produced of sequencing strategy, the choices are P/S. The default is P
+	The sequencing strategy of producing reads with choices of P/S. The default is P
 --length
-    the reads length, default =100
+	The reads length in nucleotide. The default length is 100
 --anchor
-    the anchor length. The program will only counts junctions spanned by reads with at least this many bases on each side of the junction. The default is 8
+	The anchor length used in counting the junction reads. The program will only counts junctions spanned by reads with at least this many bases on each side of the junction. The default is 8
 --type
-the types of calculation used. The choices are average/5end/3end/5Send/3Send/introns. The default is average. If type is all, all of the six types of calcuation will be carried out,but the rMATS will not performed
+	The types of RI level calculation used. The choices are Junction/JunctionIntron/5Simple/3Simple/5Complex/3Complex/all. If type is all, all of the six types of calcuation will be carried out,but the rMATS will not performed. The default is Junction
 --comparison
-    a file providing the samples pairs need to be calculating the differential intron level. If absent, only the output file with counts will be generating.
-
-
+	A file providing the samples pairs need to be calculating the differential RI level. Format should be column 1(name of comparions), column 2 (sample 1 order in the input file seperated by comma), column 3 (sample 2 order in the input file seperated by comma). If absent, rMATs step will be skipped
+--analysis
+	Type of rMATS analysis to perform. analysisType is either 'P' or 'U'. 'P' is for paired analysis and 'U' is for unpaired analysis. Default is 'U' 
 
 Examples:
-python CARIE.py --GTF ./test/Mus_musculus.Ensembl.GRCm38.78.gtf -i ./test/total_0.bam,./test/cytosol_0.bam,./test/nucleus_0.bam --anchor 6 --length 50 --lib unstrand --read S --type introns --comparison ./test/comparison -o ./test
+python CARIE.py --GTF ./test/Mus_musculus.Ensembl.GRCm38.78.gtf -i ./test/total_0.bam,./test/cytosol_0.bam,./test/nucleus_0.bam --anchor 6 --length 50 --lib unstrand --read S --type introns --comparison ./test/comparison -o ./test --analysis U
 
 
+Output list:
 result:
-All of result files are in result folder.
-file 1 counts_all_$type.txt: the files store the inclusion and skipping counts for all of the samples
-    column 1:Intron Id representing the chromosome position, start and end.
-    column 2:Gene id
-    column 3:Strand
-    column 4:Chromosome name
-    column 5:Start coordinate
-    column 6:End coordinate
-    column 7:Whether this intron was annotated in the gtf file as intron retention event.
-    column 8:Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon
-    column 9:Inclusion counts for all of the samples seperated by comma
-    column 10:Skipping counts for all of the samples seperated by comma
+All of final result files are in result folder.
+counts_all_$type.txt store the inclusion and skipping counts for all of the samples
+    column 1: Intron Id representing the chromosome position, start and end.
+    column 2: Gene id
+    column 3: Strand
+    column 4: Chromosome name
+    column 5: Start coordinate
+    column 6: End coordinate
+    column 7: Whether this intron was annotated in the gtf file as retained intron event.
+    column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
+    column 9: Inclusion counts for all of the samples seperated by comma
+    column 10: Skipping counts for all of the samples seperated by comma
     column 11: Inclusion length
     column 12: Skipping length
     column 13: Intron inclusion level for all of the samples seperated by comma
 
-file 2 rMATs_Result_$comparison_$type.txt: the files store the differentical intron inclusion level
-    column 1:Intron Id representing the chromosome position, start and end.
-    column 2:Gene id
-    column 3:Strand
-    column 4:Chromosome name
-    column 5:Start coordinate
-    column 6:End coordinate
-    column 7:Whether this intron was annotated in the gtf file as intron retention event.
-    column 8:Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon
-    column 9:Inclusion counts for all replicates  of sample 1 seperated by comma
-    column 10:Skipping counts for all replicates  of sample 1 seperated by comma
-    column 11:Inclusion counts for all replicates  of sample 2 seperated by comma
-    column 12:Skipping counts for all replicates  of sample 2 seperated by comma
+rMATs_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
+    column 1: Intron Id representing the chromosome position, start and end.
+    column 2: Gene id
+    column 3: Strand
+    column 4: Chromosome name
+    column 5: Start coordinate
+    column 6: End coordinate
+    column 7: Whether this intron was annotated in the gtf file as retained intron event.
+    column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
+    column 9: Inclusion counts for all replicates  of sample 1 seperated by comma
+    column 10: Skipping counts for all replicates  of sample 1 seperated by comma
+    column 11: Inclusion counts for all replicates  of sample 2 seperated by comma
+    column 12: Skipping counts for all replicates  of sample 2 seperated by comma
     column 13: Inclusion length
     column 14: Skipping length
-    column 15: p-value for differential intron retention level of the two samples
-    column 16: FDR for differential intron retention level of the two samples
-    column 17: Intron inclusion level for sample1
-    column 18: Intron inclusion level for sample2
-    column 19: The difference of intron inclusion level between sample1 and sample2, which is the result of average intron incluion level of sampel1 minus the average intron incluion level of sampel2.
+    column 15: p-value for differential RI level of the two samples
+    column 16: FDR for differential RI level of the two samples
+    column 17: RI level for sample1, replicates seperated by comma
+    column 18: RI level for sample1, replicates seperated by comma
+    column 19: The difference of RI level between sample1 and sample2, which is the result of average intron incluion level of sampel1 minus the average intron incluion level of sampel2.
 
 test:
 A folder contains test files to run the program
@@ -84,8 +83,6 @@ Exon_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf files contains exons only
 Intron_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf files contains intron only
 Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: gtf files contains the attributes whether the intron was annotated as retended introns in the original gtf files
 Intron_clean_Mus_musculus.Ensembl.GRCm38.78.gtf: gtf files contains the attributes whether the intron/5'Junction/3'Junction was overlapped with Exon in the original gtf files
-files:
-A folder contains the unique sam files
 
 counts:
 A folder contains all of the count files
@@ -106,10 +103,10 @@ count_all.txt: a file contains the counts for all of the introns
     column 13-6*(n+1): more counts for samples 2-n
 
 rMATs_$comparison_$type.txt
-    a input file for running rMATs.
+    The input file for running rMATs.
 
 rMATs_$comparison_$type folder
-    a folder contains the result of rMATs output.
+    The folder contains the result of rMATs output.
 
 
 
@@ -119,19 +116,54 @@ main program <rMATs.py>
 
 Required Parameters:
 -i/--input:
-    an input file to run rMATs.py. the format should be same as the count files of the CARIE.py results.
+	The count files generated by CARIE program
 --comparion
-    a file providing the samples pairs need to be calculating the differential intron level. Format should be column 1(name of comparions), column 2 (sample 1 order in the input file seperated by comma), column 3 (sample 2 order in the input file seperated by comma)
+	A file providing the samples pairs need to be calculating the differential RI level. Format should be column 1(name of comparions), column 2 (sample 1 order in the input file seperated by comma), column 3 (sample 2 order in the input file seperated by comma). If absent, rMATs step will be skipped
 
 Optional Parameters:
 -o/--output:
-    the output directory, default is current directory.
---comparison
-    a file providing the samples pairs need to be calculating the differential intron level. If absent, only the output file with counts will be generating.
+	The output directory. The default is current directory
+--analysis:
+	Type of rMATS analysis to perform. analysisType is either 'P' or 'U'. 'P' is for paired analysis and 'U' is for unpaired analysis. Default is 'U' 
 --p
-    the number of threads used to run rMATS
+	The number of threads used to run rMATS. The default is 1
+--FDR
+	The maximum FDR  used to output the significant differential RI events. The default is 0.05
+--Diff
+	The minimum difference of RI level used to output the significant differential RI events. The default is 0.05
 
 Examples:
-python rMATs.py -i ./test/counts_all_average.txt --comparison ./test/comparison -o rMATs_test --p 4
+python rMATsCI.py --input ./test/result/counts_all_Junction.txt --comparison ./test/comparison --output ./test --p 1 --FDR 0.05 --Diff 0.05 --analysis U
 
+Output list:
+
+rMATs_Result_$comparison.txt store the differential RI level calculated by rMATS
+    column 1: Intron Id representing the chromosome position, start and end.
+    column 2: Gene id
+    column 3: Strand
+    column 4: Chromosome name
+    column 5: Start coordinate
+    column 6: End coordinate
+    column 7: Whether this intron was annotated in the gtf file as retained intron event.
+    column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
+    column 9: Inclusion counts for all replicates  of sample 1 seperated by comma
+    column 10: Skipping counts for all replicates  of sample 1 seperated by comma
+    column 11: Inclusion counts for all replicates  of sample 2 seperated by comma
+    column 12: Skipping counts for all replicates  of sample 2 seperated by comma
+    column 13: Inclusion length
+    column 14: Skipping length
+    column 15: p-value for differential RI level of the two samples
+    column 16: FDR for differential RI level of the two samples
+    column 17: RI level for sample1, replicates seperated by comma
+    column 18: RI level for sample1, replicates seperated by comma
+    column 19: The difference of RI level between sample1 and sample2, which is the result of average intron incluion level of sampel1 minus the average intron incluion level of sampel2
+
+Decrease_rMATs_Result_$comparison.txt store the significantly decreased RI level calculated by rMATS and have the same format as rMATs_Result_$comparison.txt
+
+Increase_rMATs_Result_$comparison.txt store the significantly increased RI level calculated by rMATS and have the same format as rMATs_Result_$comparison.txt
+
+rMATs_$comparison.txt  is the input file for running rMATs.
+
+rMATs_$comparison folder
+    A folder contains the result of rMATs output.
 
