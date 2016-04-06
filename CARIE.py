@@ -96,7 +96,7 @@ os.system(cmd)
 logging.debug("gtf_files\Intron_" + gtf);
 
 ##Get the annotated and clean intron
-cmd = "python %s/Annotated_Intron_new.py --gtf %s --path %s" %(bin_path, gtf,gtf_path)
+cmd = "python %s/Annotated_Intron.py --gtf %s --path %s" %(bin_path, gtf,gtf_path)
 os.system(cmd)
 logging.debug("gtf_files\Intron_Annotated_" + gtf);
 cmd = "python %s/Clean_Intron_strand.py --gtf %s --path %s --length %s --anchor %s --strand %s" %(bin_path, gtf,gtf_path,length, anchor,lib)
