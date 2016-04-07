@@ -96,18 +96,18 @@ if(lib=="unstrand"):
 			if(read =="P"):
 				if((int(a2[1])/2 )%2 ==0):
 					continue
-                                if(re.search("NH:i:1[0-9]$",info2)):
+                                if(re.search("NH\:i\:1[0-9]",info2)):
                                         continue
-				if(re.search("NH:i:[^1]$",info2)):
+                                if(re.search("NH\:i\:[^1]",info2)):
                                         continue
                                 if(re.search("D",a2[5])):
                                         continue
                                 if(re.search("I",a2[5])):
                                         continue
                         if(read =="S"):
-				if(re.search("NH:i:1[0-9]$",info2)):
+                        	if(re.search("NH\:i\:1[0-9]",info2)):
                                         continue
-                                if(re.search("NH:i:[^1]$",info2)):
+                                if(re.search("NH\:i\:[^1]",info2)):
                                         continue
                                 if(re.search("D",a2[5])):
                                         continue
