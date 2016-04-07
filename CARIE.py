@@ -1,4 +1,4 @@
-#!/u/home/s/shaofang/project-yxing/soft/pp/bin/python
+#!/usr/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
 options, args = getopt.getopt(sys.argv[1:], 'i:o:',['input=','GTF=','output=','lib=','read=','length=','type=','anchor=','comparison=','analysis='])
 input='';
