@@ -14,4 +14,10 @@ Usage:
 --------------------------------
 
     $ python CARIE.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --type All --comparison ./comparison -o ./bam --analysis U
+
+Required Parameters:
+-i/--input:
+	-i/--input: s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples  are sepreated by commas
+--GTF:
+	The gtf file
     
