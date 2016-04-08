@@ -2,7 +2,7 @@
 
 Requirements
 ------------
-1. Install Python 2.6.x or Python 2.7.x and corresponding versions of NumPy and
+1. Install Python 2.7.x and corresponding versions of NumPy and
 SciPy.
 2. Add the Python directory to the $PATH environment variable.
 
