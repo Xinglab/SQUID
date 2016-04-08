@@ -1,16 +1,16 @@
-#!/usr/bin/python
+#!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
 options, args = getopt.getopt(sys.argv[1:], 'i:o:',['input=','GTF=','output=','lib=','read=','length=','type=','anchor=','comparison=','analysis='])
-input='';
-GTF='';
-output='.'
-lib='unstrand'
-read='P'
-length =100
-type = 'Junction'
-anchor =8
-comparison=''
-analysis='U'
+input ='';
+GTF ='';
+output ='.'
+lib ='unstrand'
+read ='P'
+length = 100
+type = 'All'
+anchor = 8
+comparison = ''
+analysis = 'U'
 for opt, arg in options:
 	if opt in ('-i','--input'):
 		input = arg
@@ -29,24 +29,24 @@ for opt, arg in options:
 	elif opt in ('--anchor'):
                 anchor = int(arg)
 	elif opt in ('--comparison'):
-               	comparison= arg
+               	comparison = arg
         elif opt in ('--analysis'):
-                analysis= arg
+                analysis = arg
 
 if (not input or not GTF):
-	print "Not enough parameters"
+	print "Not enough parameters!"
 	print "Program : ", sys.argv[0]
-	print "          A python program to calculate the retained intron level and differential retained introns\n"
-	print "Usage :", sys.argv[0], " -i/--input: s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples sepreated in a comma seperated list"
-	print "Usage :", sys.argv[0], " --GTF: The gtf file"
-	print "Usage :", sys.argv[0], " -o/--output: The output directory. The default is current directory"
-	print "Usage :", sys.argv[0], " --lib: The library build method with choices of first/second/unstrand. The default is unstrand."
-	print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of P/S. The default is P"
-	print "Usage :", sys.argv[0], " --length: The reads length in nucleotide. The default length is 100"
-	print "Usage :", sys.argv[0], " --anchor: The anchor length used in counting the junction reads. The program will only counts junctions spanned by reads with at least this many bases on each side of the junction. The default is 8"
-	print "Usage :", sys.argv[0], " --type: The types of RI level calculation used. The choices are Junction/JunctionIntron/5Simple/3Simple/5Complex/3Complex/all. If type is all, all of the six types of calcuation will be carried out,but the rMATS will not performed. The default is Junction."
-	print "Usage :", sys.argv[0], " --comparison: A file providing the samples pairs need to be calculating the differential RI level. If absent, rMATs step will be skipped"
-	print "uasge: ", sys.argv[0], " --analysis: Type of rMATS analysis to perform. analysisType is either 'P' or 'U'. 'P' is for paired analysis and 'U' is for unpaired analysis. Default is 'U' "
+	print "          A python program to calculate the retained intron level and differential retained introns.\n"
+	print "Usage :", sys.argv[0], " -i/--input: s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples are sepreated by commas;"
+	print "Usage :", sys.argv[0], " --GTF: The gtf file;"
+	print "Usage :", sys.argv[0], " -o/--output: The output directory. The default is current directory;"
+	print "Usage :", sys.argv[0], " --lib: The library type with choices of unstrand/first/second. The details are explained at the parameter of library-type in tophat2. The default is unstrand;"
+	print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of P/S. The default is P;"
+	print "Usage :", sys.argv[0], " --length: The read length in nucleotide. The default length is 100;"
+	print "Usage :", sys.argv[0], " --anchor: The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8;"
+	print "Usage :", sys.argv[0], " --type: The types of RI level calculation used. The choices are All/Junction/JunctionIntron/5Simple/3Simple/5Complex/3Complex. The details of each calcuation are explained in the README file. If type is All, all of the six types of calcuation will be carried out,but the rMATS will not performed. The default is All;"
+	print "Usage :", sys.argv[0], " --comparison: A file providing the sample pairs needed to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas). If absent, rMATS step will be skipped;"
+	print "uasge: ", sys.argv[0], " --analysis: Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U."
 	print datetime.datetime.now()
 	print "Author  : Shaofang Li"
 	print "Contact : sfli001@gmail.com"
@@ -85,7 +85,7 @@ os.system(cmd)
 ##get the path  of the python  programs
 bin_path = "%s/bin" % path
 ##use the awk command to generate Exon.gtf file
-logging.debug("################### generating types of gtf files ######################");
+logging.debug("################ Generating  the intron gtf files #######################\n");
 cmd = "less %s/%s | awk '{if($3==\"exon\"){print $_}}'> %s/Exon_%s" %(gtf_path, gtf, gtf_path, gtf)
 os.system(cmd)
 logging.debug("gtf_files\Exon_" + gtf);
@@ -115,7 +115,7 @@ else:
 	cmd = "python %s/Intron_countall_strandSam.py --gtf %s/Intron_%s --length %s --anchor %s --sam %s -o %s/count_all.txt --lib %s --read %s" %(bin_path,gtf_path, gtf, length, anchor, ",".join(samples), count_path, lib, read)
 logging.debug(cmd)
 os.system(cmd)
-logging.debug("finishing getting the count file")
+logging.debug("finishing generating the total count file")
 
 ###generate the attributes of the intron
 intron_anno = dict()
@@ -155,9 +155,8 @@ output_path = "%s/result" % output
 if (not os.path.exists(output_path)):
         os.system("mkdir %s" % output_path)
 
-if(type =="Junction" or type=="all"):
-	logging.debug("get the count file using both 5' and 3'end inclusion counts")
-	print "this is the calculation using  both 5' and 3'end inclusion counts"
+if(type =="Junction" or type=="All"):
+	logging.debug("applying Junction method")
 	fr1 =open("%s/counts/count_all.txt" % output)
 	##generate the counts info for all of the intron
 	fw = open("%s/counts_all_Junction.txt" %output_path, "w")
@@ -180,11 +179,10 @@ if(type =="Junction" or type=="all"):
 		fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[3], a1[4],a1[5],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(inc), ",".join(skp), in_l,sk_l,",".join(in_level)))
 	fw.close()
 	fr1.close()
-	logging.debug("finishing get the count files")	
+	logging.debug("done generating the count file")	
 
-if(type =="5Simple" or type =="all"):
-	print "this is the calculation using 5' splice site inclusion counts"
-        logging.debug("get the count file using both 5' splice site inclusion counts")
+if(type =="5Simple" or type =="All"):
+        logging.debug("applying 5Simple method")
 	fr1 =open("%s/counts/count_all.txt" % output)
         ##generate the counts info for all of the intron
         fw = open("%s/counts_all_5Simple.txt" %output_path, "w")
@@ -207,11 +205,10 @@ if(type =="5Simple" or type =="all"):
 		fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[3], a1[4],a1[5],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(inc), ",".join(skp), in_l,sk_l,",".join(in_level)))
 	fw.close()
         fr1.close()
-	logging.debug("finishing get the count files")
+	logging.debug("done generating the count file") 
 
-if(type =="3Simple"or type=="all"):
-	logging.debug("get the count file using 3' splice site inclusion counts")
-        print "this is the calculation using 3' splice site inclusion counts"
+if(type =="3Simple"or type=="All"):
+	logging.debug("applying 3Simple method")
 	fr1 =open("%s/counts/count_all.txt" % output)
         ##generate the counts info for all of the intron
         fw = open("%s/counts_all_3Simple.txt" %output_path, "w")
@@ -234,13 +231,12 @@ if(type =="3Simple"or type=="all"):
                 fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[3], a1[4],a1[5],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(inc), ",".join(skp), in_l,sk_l,",".join(in_level)))
         fw.close()
         fr1.close()
-        logging.debug("finishing get the count files")
+        logging.debug("done generating the count file")
 
 
-if(type =="5Complex" or type=="all"):
-	logging.debug("get the count file using 5' splice site inclusion counts and 5' single end skipped couts")
-        print "this is the calculation using 5' splice site inclusion counts and 5' single end skipped couts"
-        fr1 =open("%s/counts/count_all.txt" % output)
+if(type =="5Complex" or type=="All"):
+        logging.debug("applying 5Complex method")
+	fr1 =open("%s/counts/count_all.txt" % output)
         ##generate the counts info for all of the intron
         fw = open("%s/counts_all_5Complex.txt" %output_path, "w")
         fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannoated\tclean\tinclusion_counts\tskip_counts\tIncFormLen\tSkipFormLen\tInclusionlevel\n")
@@ -262,11 +258,10 @@ if(type =="5Complex" or type=="all"):
 		fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[3], a1[4],a1[5],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(inc), ",".join(skp), in_l,sk_l,",".join(in_level)))
         fw.close()
         fr1.close()
-        logging.debug("finishing get the count files")
+        logging.debug("done generating the count file")
 
-if(type =="3Complex" or type =="all"):
-	logging.debug("get the count file using 3' splice site inclusion counts and 3' single end skipped couts")
-        print "this is the calculation using 3' splice site inclusion counts and 3' single end skipped couts"
+if(type =="3Complex" or type =="All"):
+	logging.debug("applying 3Complex method")
 	fr1 =open("%s/counts/count_all.txt" % output)
         ##generate the counts info for all of the intron
         fw = open("%s/counts_all_3Complex.txt" %output_path, "w")
@@ -289,11 +284,10 @@ if(type =="3Complex" or type =="all"):
                 fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[3], a1[4],a1[5],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(inc), ",".join(skp), in_l,sk_l,",".join(in_level)))
         fw.close()
         fr1.close()
-        logging.debug("finishing get the count files")
+        logging.debug("done generating the count file")
 
-if(type =="JunctionIntron" or type =="all"):
-	logging.debug("get the count file including counts at introns as inclusion counts ")
-        print "this is the calculation including counts at introns as inclusion counts "
+if(type =="JunctionIntron" or type =="All"):
+	logging.debug("applying JunctionIntron method")
 	fr1 =open("%s/counts/count_all.txt" % output)
         ##generate the counts info for all of the intron
         fw = open("%s/counts_all_JunctionIntron.txt" %output_path, "w")
@@ -318,19 +312,22 @@ if(type =="JunctionIntron" or type =="all"):
 	
         fw.close()
         fr1.close()
-	logging.debug("finishing get the count files")
+	logging.debug("done generating the count file")
 
 
 if (not os.path.exists(comparison) or not comparison):
-	logging.debug("the comparions files doesn't exit")
-	logging.debug(" program finished")
+	logging.debug("The comparion file was not provided")
+	currentTime = time.time();
+        runningTime = currentTime-startTime; ## in seconds
+        logging.debug("Program ran %.2d:%.2d:%.2d" % (runningTime/3600, (runningTime%3600)/60, runningTime%60));
+	logging.debug("Program finished")
 	sys.exit()
-if(type=="all"):
-	logging.debug("the type of count file was not specified")
+if(type=="All"):
+	logging.debug("The type of count file was not specified")
 	currentTime = time.time();
 	runningTime = currentTime-startTime; ## in seconds
 	logging.debug("Program ran %.2d:%.2d:%.2d" % (runningTime/3600, (runningTime%3600)/60, runningTime%60));
-	logging.debug("program finished")
+	logging.debug("Program finished")
 	sys.exit()
 logging.debug("running rMATS ")
 fr =open(comparison)
@@ -338,7 +335,7 @@ for info in fr:
         a = info.strip().split()
 	ss1= a[1].split(",")
         ss2= a[2].split(",")
-	fw = open("%s/counts/rMATs_%s_%s.txt" % (output,a[0],type),"w")	
+	fw = open("%s/counts/rMATS_%s_%s.txt" % (output,a[0],type),"w")	
 	fw.write("ID\tIJC_SAMPLE_1\tSJC_SAMPLE_1\tIJC_SAMPLE_2\tSJC_SAMPLE_2\tIncFormLen\tSkipFormLen\n")
 	fr1 = open("%s/counts_all_%s.txt" % (output_path,type))
 	info1 = fr1.readline()
@@ -360,13 +357,13 @@ for info in fr:
 		fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],",".join(inc1),",".join(skp1), ",".join(inc2),",".join(skp2),a1[10],a1[11]))
 	fr1.close()
 	fw.close()
-	cmd ="%s/MATS/rMATS.sh -d %s/counts/rMATs_%s_%s.txt -o %s/counts/rMATs_%s_%s -p 1  -t %s -c 0.0001" %(bin_path,output,a[0],type,output,a[0],type,analysis)
+	cmd ="%s/MATS/rMATS.sh -d %s/counts/rMATS_%s_%s.txt -o %s/counts/rMATS_%s_%s -p 1  -t %s -c 0.0001" %(bin_path,output,a[0],type,output,a[0],type,analysis)
         os.system(cmd)
-	logging.debug("finsh running the rMATs for" + a[0])
-	logging.debug("output the final result of rMATs" + a[0])
+	logging.debug("done running the rMATS for" + a[0])
+	logging.debug("output the final result of rMATS" + a[0])
 	fr1 = open("%s/counts_all_%s.txt" % (output_path,type))
-	fr2 = open("%s/counts/rMATs_%s_%s/rMATS_Result.txt" %(output,a[0],type))
-	fw = open("%s/result/rMATs_Result_%s_%s.txt" %(output, a[0],type),"w")
+	fr2 = open("%s/counts/rMATS_%s_%s/rMATS_Result.txt" %(output,a[0],type))
+	fw = open("%s/result/rMATS_Result_%s_%s.txt" %(output, a[0],type),"w")
 	fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannoated\tclean\tinclusions_counts_SAMPLE1\tskip_counts_SAMPLE1\tinclusions_counts_SAMPLE2\tskip_counts_SAMPLE2\tInclusion_length\tSkipping_length\tPValue\tFDR\tIncLevel_SAMPLE1\tIncLevel_SAMPLE2\tIncLevelDifference\n")
 	info1 = fr1.readline()
         info2 = fr2.readline()
@@ -375,7 +372,7 @@ for info in fr:
 	while(info1):
                 a1 = info1.strip().split("\t")
                 a2 = info2.strip().split("\t")
-                fw.write("%s\t%s\n" % ("\t".join(a1), "\t".join(a2[7:])))
+                fw.write("%s\t%s\n" % ("\t".join(a1[0:8]), "\t".join(a2[1:])))
                 info1 = fr1.readline()
                 info2 = fr2.readline()
         fr1.close()
