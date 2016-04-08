@@ -67,79 +67,79 @@ Examples:
 Output list:
 ------------
 	result:
-	All of final result files are in result folder.
+		All of final result files are in result folder.
 	counts_all_$type.txt store the inclusion and skipping counts for all of the samples
     		column 1: Intron Id representing the chromosome position, start and end.
     		column 2: Gene id
 		column 3: Strand
 		column 4: Chromosome name
 		column 5: Start coordinate
-    column 6: End coordinate
-    column 7: Whether this intron was annotated in the gtf file as retained intron event.
-    column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
-    column 9: Inclusion counts for all of the samples seperated by commas
-    column 10: Skipping counts for all of the samples seperated by commas
-    column 11: Inclusion length
-    column 12: Skipping length
-    column 13: Intron inclusion level for all of the samples seperated by commas
+		column 6: End coordinate
+		column 7: Whether this intron was annotated in the gtf file as retained intron event.
+		column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
+		column 9: Inclusion counts for all of the samples seperated by commas
+		column 10: Skipping counts for all of the samples seperated by commas
+		column 11: Inclusion length
+		column 12: Skipping length
+		column 13: Intron inclusion level for all of the samples seperated by commas
 
-rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
-    column 1: Intron Id representing the chromosome position, start and end.
-    column 2: Gene id
-    column 3: Strand
-    column 4: Chromosome name
-    column 5: Start coordinate
-    column 6: End coordinate
-    column 7: Whether this intron was annotated in the gtf file as retained intron event.
-    column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
-    column 9: Inclusion counts for all replicates  of sample 1 seperated by commas
-    column 10: Skipping counts for all replicates  of sample 1 seperated by commas
-    column 11: Inclusion counts for all replicates  of sample 2 seperated by commas
-    column 12: Skipping counts for all replicates  of sample 2 seperated by commas
-    column 13: Inclusion length
-    column 14: Skipping length
-    column 15: p-value for differential RI level of the two samples
-    column 16: FDR for differential RI level of the two samples
-    column 17: RI level for sample1, replicates seperated by commas
-    column 18: RI level for sample2, replicates seperated by commas
-    column 19: The difference of RI level between sample1 and sample2, which is the result of average RI level of sample1 minus the average RI level of sampel2.
+	rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
+		column 1: Intron Id representing the chromosome position, start and end.
+		column 2: Gene id
+		column 3: Strand
+		column 4: Chromosome name
+		column 5: Start coordinate
+		column 6: End coordinate
+		column 7: Whether this intron was annotated in the gtf file as retained intron event.
+		column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
+		column 9: Inclusion counts for all replicates  of sample 1 seperated by commas
+		column 10: Skipping counts for all replicates  of sample 1 seperated by commas
+		column 11: Inclusion counts for all replicates  of sample 2 seperated by commas
+		column 12: Skipping counts for all replicates  of sample 2 seperated by commas
+		column 13: Inclusion length
+		column 14: Skipping length
+		column 15: p-value for differential RI level of the two samples
+		column 16: FDR for differential RI level of the two samples
+		column 17: RI level for sample1, replicates seperated by commas
+		column 18: RI level for sample2, replicates seperated by commas
+		column 19: The difference of RI level between sample1 and sample2, which is the result of average RI level of sample1 minus the average RI level of sampel2.
 
-test:
-A folder contains test files to run the program
+	test:
+		A folder contains test files to run the program
 
-log.CARIE: Log file for running CARIE pipeline
+	log.CARIE: Log file for running CARIE pipeline
 
-gtf_files:
-A folder contains different types of gtf files to run the program. Use mouse genome as examples.
-Mus_musculus.Ensembl.GRCm38.78.gtf: the ensemble gtf files. This file should be provided by user. 
-Exon_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains exons only
-Intron_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains intron only
-Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retended introns in the original gtf files
-Intron_clean_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron/5'Junction/3'Junction was overlapped with Exon and whether the intron is a simple intron. 
+	gtf_files:
+		A folder contains different types of gtf files to run the program. Use mouse genome as examples.
+	Mus_musculus.Ensembl.GRCm38.78.gtf: the ensemble gtf files. This file should be provided by user. 
+	Exon_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains exons only
+	Intron_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains intron only
+	Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retended introns in the original gtf files
+	Intron_clean_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron/5'Junction/3'Junction was overlapped with Exon and whether the intron is a simple intron. 
 
-counts:
-A folder contains all of the count files
-n = number of samples
-count_all.txt: a file contains the counts for all of the introns
-    column 1:Intron Id representing the chromosome position, start and end.
-    column 2:Gene id
-    column 3:Strand
-    column 4:Chromosome name
-    column 5:Start coordinate
-    column 6:End coordinate    column 1: Intron Id representing the chromosome position, start and end.
-    column 7: Inclusion counts at 5' splice sites for sample 1
-    column 8: Skipping counts at 5' splice sites for sample 1
-    column 9: Inclusion counts at 3' splice sites for sample 1
-    column 10: Skipping counts at 3' splice sites for sample 1
-    column 11: Skipping counts of the intron for sample 1
-    column 12: counts lying in the intron for sample 1
-    column 13-6*(n+1): more counts for samples 2-n
+	counts:
+		A folder contains all of the count files
+	n = number of samples
+	count_all.txt: a file contains the counts for all of the introns
+		column 1:Intron Id representing the chromosome position, start and end.
+		column 2:Gene id
+		column 3:Strand
+		column 4:Chromosome name
+		column 5:Start coordinate
+		column 6:End coordinate    column 1: Intron Id representing the chromosome position, start and end.
+		column 7: Inclusion counts at 5' splice sites for sample 1
+		column 8: Skipping counts at 5' splice sites for sample 1
+		column 9: Inclusion counts at 3' splice sites for sample 1
+		column 10: Skipping counts at 3' splice sites for sample 1
+		column 11: Skipping counts of the intron for sample 1
+		column 12: counts lying in the intron for sample 1
+		column 13-6*(n+1): more counts for samples 2-n
 
-rMATS_$comparison_$type.txt
-    The input file for running rMATS.
+	rMATS_$comparison_$type.txt
+    		The input file for running rMATS.
 
-rMATS_$comparison_$type folder
-    The folder contains the result of rMATS output.
+	rMATS_$comparison_$type folder
+		The folder contains the result of rMATS output.
 
 
 
