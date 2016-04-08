@@ -67,13 +67,13 @@ Examples:
 Output list:
 ------------
 result:
-All of final result files are in result folder.
-counts_all_$type.txt store the inclusion and skipping counts for all of the samples
-    column 1: Intron Id representing the chromosome position, start and end.
-    column 2: Gene id
-    column 3: Strand
-    column 4: Chromosome name
-    column 5: Start coordinate
+	All of final result files are in result folder.
+	counts_all_$type.txt store the inclusion and skipping counts for all of the samples
+    		column 1: Intron Id representing the chromosome position, start and end.
+    		column 2: Gene id
+		column 3: Strand
+		column 4: Chromosome name
+		column 5: Start coordinate
     column 6: End coordinate
     column 7: Whether this intron was annotated in the gtf file as retained intron event.
     column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
