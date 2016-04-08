@@ -18,7 +18,7 @@ Usage:
 Required Parameters:
 ------------
 -i/--input:
-	-i/--input: s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples  are sepreated by commas
+	s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples  are sepreated by commas
 --GTF:
 	The gtf file
     
