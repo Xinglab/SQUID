@@ -1,4 +1,4 @@
-#!/u/local/apps/python/2.7.3/bin/python
+#!/bin/python
 import copy, getopt,re,os,sys,logging,time,datetime;
 
 options, args = getopt.getopt(sys.argv[1:],'', ['gtf=','path=','length=','anchor=','strand='])
@@ -19,14 +19,14 @@ for opt, arg in options:
 	elif opt in('--strand'):
                 strand = arg
 if (not gtf or not path):
-        print "not enough parameters"
+        print "Not enough parameters!"
         print "Program : ", sys.argv[0]
-        print "a python program to get the clean intron  from given intron gtf file"
-        print "usage :", sys.argv[0], " --gtf: gtf file"
-        print "usage :", sys.argv[0], " --path: the directory to the input and output gtf file"
-	print "usage :", sys.argv[0], " --length: the read length"
-	print "usage :", sys.argv[0], " --anchor: the anchor length"
-        print "usage :", sys.argv[0], " --strand: whether the library contains strand info"
+        print "          A python program to get the clean intron  from given intron gtf file."
+        print "Usage :", sys.argv[0], " --gtf: The gtf file;"
+        print "Usage :", sys.argv[0], " --path: The directory to the input and output gtf file;"
+	print "Usage :", sys.argv[0], " --length: The read length;"
+	print "Usage :", sys.argv[0], " --anchor: The anchor length;"
+        print "Usage :", sys.argv[0], " --strand: The library type."
 	print datetime.datetime.now()
         print "Author  : Shaofang Li"
         print "Contact : sfli001@gmail.com"
@@ -58,18 +58,18 @@ for info1 in fr:
                 	pos.setdefault((a1[0],a1[6],i),[]).append(key)
 		
 fr.close()
-for kk in intron5:
-	intron5[kk] = list(set(intron5[kk]))
-for kk in intron3:
-        intron3[kk] = list(set(intron3[kk]))
+for k in intron5:
+	intron5[k] = list(set(intron5[k]))
+for k in intron3:
+        intron3[k] = list(set(intron3[k]))
 
-for kk in intron:
-	for ee in intron5[intron[kk][4],intron[kk][5]]:
-		if(ee!=intron[kk][6]):
-			intron[kk][3]="false"
-	for ss in intron3[intron[kk][4],intron[kk][6]]:
-		if(ss!=intron[kk][5]):
-			intron[kk][3]="false"
+for k in intron:
+	for ee in intron5[intron[k][4],intron[k][5]]:
+		if(ee!=intron[k][6]):
+			intron[k][3]="false"
+	for ss in intron3[intron[k][4],intron[k][6]]:
+		if(ss!=intron[k][5]):
+			intron[k][3]="false"
 
 fr2 = open ("%s/Exon_%s" % (path,gtf))
 for info2 in fr2:

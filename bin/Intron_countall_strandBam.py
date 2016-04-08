@@ -1,4 +1,4 @@
-#!/u/home/s/shaofang/project-yxing/soft/pp/bin/python
+#!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
 import pysam,os.path
 options, args = getopt.getopt(sys.argv[1:], 'o:',['gtf=','anchor=','lib=','read=','length=','bam=','output=',])
@@ -25,23 +25,21 @@ for opt, arg in options:
 	elif opt in ('--anchor'):
                 anchor= int(arg)
 if (not gtf or not read or not bam or not output or not length or not anchor):
-	print "not enough parameters"
+	print "Not enough parameters!"
 	print "Program : ", sys.argv[0]
-	print "a python program to count the reads for Intron Retention events for varities of junction from a series of bam file"
-	print "usage :", sys.argv[0], " --gtf: the gtf file of the intron annotation"
-	print "usage :", sys.argv[0], " --length:the length of reads"
-	print "usage :", sys.argv[0], " --anchor:the anchor length of the read"
-	print "usage :", sys.argv[0], " --bam: the bam file,multiple bam file seperated through ','"
-	print "usage :", sys.argv[0], " --lib: choice (unstrand, first, second) the library type, indication the strand ','"
-	print "usage :", sys.argv[0], " --read: (P,S) the library type, indication the strand ','"
-	print "usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts'
+	print "          A python program to count the reads for retained intron events for varities of junction from a series of bam file."
+	print "Usage :", sys.argv[0], " --gtf: the intron gtf file;"
+	print "Usage :", sys.argv[0], " --length:the length of reads;"
+	print "Usage :", sys.argv[0], " --anchor:the anchor length of the read;"
+	print "Usage :", sys.argv[0], " --bam: the bam file,multiple bam file seperated by commas;"
+	print "Usage :", sys.argv[0], " --lib: the library type;"
+	print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of P/S;"
+	print "Usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts.'
 	print datetime.datetime.now()
 	print "Author  : Shaofang Li"
 	print "Contact : sfli001@gmail.com"
 	sys.exit()
 if(lib=="unstrand"):
-	print "This is the library without strand information"
-
 	fr1 = open(gtf)
 	count = dict()
 	#the dict to store the intron count,first is the inclusion at left side, second is the skipped count at smaller side, third inclusion at right side, fourth skipping at right side, fifith skipping counts, sixth intron counts"
@@ -126,9 +124,6 @@ if(lib=="unstrand"):
 					if( fr2.getrname(iter.reference_id),p) in ppL:
 						for id in ppL[ fr2.getrname(iter.reference_id),p]:
 							#inclusion count at left side
-							#if(id =="chr1_9881892_9884406"):
-						#		print str(iter)
-						#		print 11
 							count[id][nn*6] +=1
 							continue
 				for p in range(iter.get_reference_positions()[0]+1 + anchor-1, iter.get_reference_positions()[0]+1 + int(aa1[0]) - anchor):
@@ -172,10 +167,6 @@ if(lib=="unstrand"):
 					for p in range( ss + anchor, ss + n1 -anchor+1 ):
 						if( fr2.getrname(iter.reference_id),p) in ppL:
 							for id in ppL[ fr2.getrname(iter.reference_id),p]:
-							#	if(id =="chr1_9881892_9884406"):
-                                                         #       	print str(iter)
-							#		print 22
-								#included count at left side
 								count[id][nn*6] +=1
 					for p in range( ss + anchor-1, ss + n1 -anchor ):
                                                 if( fr2.getrname(iter.reference_id),p) in ppR:

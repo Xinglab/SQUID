@@ -1,20 +1,20 @@
-#!/u/local/apps/python/2.7.3/bin/python
+#!/bin/python
 import copy, getopt,re,os,sys,logging,time,datetime;
 
 options, args = getopt.getopt(sys.argv[1:],'', ['gtf=','path='])
 gtf = ''
-path=''
+path = ''
 for opt, arg in options:
         if opt in('--gtf'):
                 gtf = arg
         elif opt in('--path'):
                 path = arg
 if (not gtf or not path):
-        print "not enough parameters"
+        print "Not enough parameters!"
         print "Program : ", sys.argv[0]
-        print "a python program to get the annotated intron retention event from given intron gtf file"
-        print "usage :", sys.argv[0], " --gtf: gtf file"
-        print "usage :", sys.argv[0], " --path: the directory to the input and output gtf file"
+        print "          A python program to get the annotated intron retention events from the given intron gtf file."
+        print "Usage :", sys.argv[0], " --gtf: The gtf file;"
+        print "Usage :", sys.argv[0], " --path: The directory for the input and output gtf file."
         print datetime.datetime.now()
         print "Author  : Shaofang Li"
         print "Contact : sfli001@gmail.com"

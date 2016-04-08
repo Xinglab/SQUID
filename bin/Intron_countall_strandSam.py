@@ -1,4 +1,4 @@
-#!/u/home/s/shaofang/project-yxing/soft/pp/bin/python
+#!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
 options, args = getopt.getopt(sys.argv[1:], 'o:',['gtf=','anchor=','lib=','read=','length=','sam=','output=',])
 gtf='';
@@ -24,16 +24,16 @@ for opt, arg in options:
 	elif opt in ('--anchor'):
                 anchor= int(arg)
 if (not gtf or not read or not sam or not output or not length or not anchor):
-	print "not enough parameters"
-	print "Program : ", sys.argv[0]
-	print "a python program to count the reads for Intron Retention events for varities of junction from a series of sam file"
-	print "usage :", sys.argv[0], " --gtf: the gtf file of the intron annotation"
-	print "usage :", sys.argv[0], " --length:the length of reads"
-	print "usage :", sys.argv[0], " --anchor:the anchor length of the read"
-	print "usage :", sys.argv[0], " --sam: the sam file,multiple sam file seperated through ','"
-	print "usage :", sys.argv[0], " --lib: choice (unstrand, first, second) the library type, indication the strand ','"
-	print "usage :", sys.argv[0], " --read: (P,S) the library type, indication the strand ','"
-	print "usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts'
+	print "Not enough parameters!"
+        print "Program : ", sys.argv[0]
+        print "          A python program to count the reads for retained intron events for varities of junction from a series of sam file."
+        print "Usage :", sys.argv[0], " --gtf: the intron gtf file;"
+        print "Usage :", sys.argv[0], " --length:the length of reads;"
+        print "Usage :", sys.argv[0], " --anchor:the anchor length of the read;"
+        print "Usage :", sys.argv[0], " --sam: the sam file,multiple sam file seperated by commas;"
+        print "Usage :", sys.argv[0], " --lib: the library type;"
+        print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of P/S;"
+        print "Usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts.'
 	print datetime.datetime.now()
 	print "Author  : Shaofang Li"
 	print "Contact : sfli001@gmail.com"
@@ -98,14 +98,14 @@ if(lib=="unstrand"):
 					continue
                                 if(re.search("NH\:i\:1[0-9]",info2)):
                                         continue
-                                if(re.search("NH\:i\:[^1]",info2)):
+				if(re.search("NH\:i\:[^1]",info2)):
                                         continue
                                 if(re.search("D",a2[5])):
                                         continue
                                 if(re.search("I",a2[5])):
                                         continue
                         if(read =="S"):
-                        	if(re.search("NH\:i\:1[0-9]",info2)):
+				if(re.search("NH\:i\:1[0-9]",info2)):
                                         continue
                                 if(re.search("NH\:i\:[^1]",info2)):
                                         continue
