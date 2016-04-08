@@ -167,7 +167,7 @@ Optional Parameters:
 
 Examples:
 ------------
-	python rMATSCI.py --input ./test/result/counts_all_Junction.txt --comparison ./test/comparison --output ./test --p 1 --FDR 0.05 --Diff 0.05 --analysis U
+	python rMATS.py --input ./bam/result/counts_all_Junction.txt --comparison ./comparison --output ./Junction2 --p 1 --FDR 0.05 --Diff 0.05 --analysis U
 
 Output list:
 ------------
