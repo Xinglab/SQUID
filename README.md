@@ -17,16 +17,16 @@ Usage:
 
 Required Parameters:
 ------------
--i/--input:
-	s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples  are sepreated by commas
---GTF:
-	The gtf file
+	-i/--input:
+		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples  are sepreated by commas
+	--GTF:
+		The gtf file
 	
-	 -r *       reference genome (Fasta)
- -s *       read sequences, either single or paired end
- -o *       output directory 
- -T         number of threads STAR uses, default is 8
- -M         max number of multiple alignments, default is 20
- -N         max number of read mismatches, default is 3
- --gz       flag denoting sequence reads are gzipped
+     -o *            output directory
+     -r *            reference genome
+     -v *            VCF directory
+     --gz            flag denoting VCF files are gzipped 
+     --rnaedit       flag to N-mask rna editing sites
+     -e              file containing RNA editing sites, can be downloaded from RADAR
+                     (http://rnaedit.com/download)
     
