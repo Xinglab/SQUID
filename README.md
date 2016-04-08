@@ -66,7 +66,7 @@ Examples:
 
 Output list:
 ------------
-result:
+	result:
 	All of final result files are in result folder.
 	counts_all_$type.txt store the inclusion and skipping counts for all of the samples
     		column 1: Intron Id representing the chromosome position, start and end.
