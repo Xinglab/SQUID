@@ -40,7 +40,7 @@ Optional Parameters:
 	--analysis
 		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
 
-Type of calculation:
+Type of Calculation:
 ------------	
 	Junction: 
 		The skipping counts are the reads that connect the intron start and end sites. 
@@ -49,16 +49,16 @@ Type of calculation:
 		The skipping counts are the reads that connect the intron start and end sites.
                 The inclusion counts are the reads that either span the intron start or intron end sites and the reads that locate with the intron region.
 	5Simple: 
-                The skipping counts are the reads that connect the intron start and end sites.
-                The inclusion counts are the reads that span the intron start sites.
-        3Simple:
-                The skipping counts are the reads that connect the intron start and end sites.
-                The inclusion counts are the reads that span the intron end sites.
+		The skipping counts are the reads that connect the intron start and end sites.
+		The inclusion counts are the reads that span the intron start sites.
+	3Simple:
+		The skipping counts are the reads that connect the intron start and end sites.
+		The inclusion counts are the reads that span the intron end sites.
 	5Complex: 
-                The skipping counts are the reads spliced at the intron start sites.
-                The inclusion counts are the reads that span the intron start sites.
-        3Complex:
-                The skipping counts are the reads spliced at the intron  end sites.
-                The inclusion counts are the reads that span the intron end sites.
+		The skipping counts are the reads spliced at the intron start sites.
+		The inclusion counts are the reads that span the intron start sites.
+	3Complex:
+		The skipping counts are the reads spliced at the intron  end sites.
+		The inclusion counts are the reads that span the intron end sites.
 
     
