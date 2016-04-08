@@ -21,12 +21,23 @@ Required Parameters:
 		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples  are sepreated by commas
 	--GTF:
 		The gtf file
-	
-     -o *            output directory
-     -r *            reference genome
-     -v *            VCF directory
-     --gz            flag denoting VCF files are gzipped 
-     --rnaedit       flag to N-mask rna editing sites
-     -e              file containing RNA editing sites, can be downloaded from RADAR
-                     (http://rnaedit.com/download)
+Optional Parameters:
+------------	
+	--o/--output:
+		The output directory. The default is current directory
+	--lib
+		The library type with choices of unstrand/first/second. The details are explained at the parameter of library-type in tophat2. The default is unstrand
+	--read
+		The sequencing strategy of producing reads with choices of P/S. The default is P
+	--length
+		The reads length in nucleotide. The default length is 100
+	--anchor
+		The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8
+	--type
+		The types of RI level calculation used. The choices are All/Junction/JunctionIntron/5Simple/3Simple/5Complex/3Complex. The details of each calcuation are explained in the README file. If type is All, all of the six types of calcuation will be carried out,but the rMATS will not performed. The default is All
+	--comparison
+		A file providing the sample pairs needed to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas). If absent, rMATS step will be skipped
+	--analysis
+		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
+
     
