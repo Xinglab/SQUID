@@ -200,10 +200,10 @@ Output list:
 		column 19: The difference of RI level between sample1 and sample2, which is the result of average RI level of sample1 minus the average RI level of sampel2.
 
 	Decrease_rMATS_Result_$comparison.txt 
-		The file stores the significantly decreased RI level calculated by rMATS and have the same format as rMATS_Result_$comparison.txt
+		The file stores the significantly decreased RI level calculated by rMATS and has the same format as rMATS_Result_$comparison.txt
 
 	Increase_rMATS_Result_$comparison.txt 
-		The file stores the significantly increased RI level calculated by rMATS and have the same format as rMATS_Result_$comparison.txt
+		The file stores the significantly increased RI level calculated by rMATS and has the same format as rMATS_Result_$comparison.txt
 
 	rMATS_$comparison.txt  
 		The input file for running rMATS.
