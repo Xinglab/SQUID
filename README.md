@@ -12,10 +12,12 @@ The source code can be directly called from Python.
 
 Usage:
 --------------------------------
-
-    $ python CARIE.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --type All 
+	CARIE.py --main program
+	rMATS.py --a program to use the CARIE output to calculate differential RI events
+    $ python CARIE.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --type All
+    $ python CARIE.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib unstrand --read P --type All
     $ python CARIE.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --type Junction --comparison ./comparison -o ./bam --analysis U
-
+    python rMATS.py --input ./bam/result/counts_all_Junction.txt --comparison ./comparison --output ./Junction2 --p 1 --FDR 0.05 --Diff 0.05 --analysis U --C 0.0001
 Required Parameters:
 ------------
 	-i/--input:
