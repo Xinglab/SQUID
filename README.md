@@ -4,7 +4,8 @@ Requirements
 ------------
 1. Install Python 2.7.x and corresponding versions of NumPy and
 SciPy.
-2. Add the Python directory to the $PATH environment variable.
+2. Install pysam version 0.8.4
+3. Add the Python directory to the $PATH environment variable.
 
 Installation:
 ------------
