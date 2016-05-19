@@ -88,6 +88,8 @@ if(lib=="unstrand"):
 	fr1.close()
 	samfile = sam.split(",")
 	nn = 0
+	junctionL = dict()
+	junctionR = dict()
 	for file in samfile:
 		fr2 = open(file)
 		for info2 in fr2:
@@ -155,11 +157,25 @@ if(lib=="unstrand"):
                                                         in_p = key.split("_")
                                                         if ((int(in_p[1]) < start +n1 )& (int(in_p[2])> start +n1)):
                                                                 count[key][num*6+2] ="false"
+								kj = a2[2]  + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1)
+                                                                if(kj in junctionL):
+                                                                        junctionL[kj][1] +=1
+                                                                        junctionL[kj].append( key)
+                                                                else:
+                                                                        junctionL[kj]= ["true",1]
+                                                                        junctionL[kj].append( key)
                                         if( a2[2], index2) in pos:
                                                 for key in pos[ a2[2],index2]:
                                                         in_p = key.split("_")   
                                                         if ((int(in_p[1]) < start +n1+n2 -1)& (int(in_p[2])> start +n1+n2-1)):
                                                                 count[key][num*6+2] ="false"		
+								kj = a2[2] + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1)
+                                                                if(kj in junctionR):
+                                                                        junctionR[kj][1] +=1
+                                                                        junctionR[kj].append( key)
+                                                                else:
+                                                                        junctionR[kj] =["true",1]
+                                                                        junctionR[kj].append( key)
 
 					if (a2[2], start+n1) in ppL:
 						for id in ppL[a2[2],start +n1]:
@@ -203,7 +219,8 @@ if(lib=="unstrand"):
 		nn += 1
 		fr2.close()
 	fr1 = open(gtf)
-	fw = open(output,"w")
+	outputname = output.split(",")
+        fw = open(outputname[0],"w")
 	for info1 in fr1:
 		a1 = info1.strip().split("\t")
 		key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
@@ -217,7 +234,24 @@ if(lib=="unstrand"):
 				fw.write("\n") 
 			count[key][num*6+3]="false"
 	fw.close()
+	fw = open(outputname[1],"w")
+        for key in junctionL:
+                        if(key in junctionR):
+                                junctionL[key][2:]= list(set( junctionL[key][2:] + junctionR[key][2:]))
+                        else:
+                                junctionL[key][2:]= list(set( junctionL[key][2:]))
+                        fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionL[key][1:])))
+
+        for key in junctionR:
+                        if(key in junctionL):
+                                continue
+                        else:
+                                junctionR[key][2:]= list(set( junctionR[key][2:]))
+                                fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionR[key][1:])))
+        fw.close()
+
 	exit()
+	
 
 print "this is library with strand info"
 fr1 = open(gtf)
@@ -268,6 +302,8 @@ for info1 in fr1:
 
 fr1.close()
 samfile = sam.split(",")
+junctionL = dict()
+junctionR = dict()
 nn = 0
 for file in samfile:
         fr2 = open(file)
@@ -382,12 +418,26 @@ for file in samfile:
 						if ((int(in_p[1]) < start +n1)& (int(in_p[2])>start +n1)):
 							if (re.search(("\%s" %strand),count[key][num*6+1])):
 								count[key][num*6+2] ="false"
+								kj = a2[2] + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1) 
+                                                                if(kj in junctionL):
+                                                                        junctionL[kj][1] +=1
+                                                                        junctionL[kj].append( key)
+                                                                else:
+                                                                        junctionL[kj]= ["true",1]
+                                                                        junctionL[kj].append( key)
 				if( a2[2], index2) in pos:
 					for key in pos[ a2[2],index2]:
 						in_p = key.split("_")
 						if ((int(in_p[1]) < start +n1+n2 -1)& (int(in_p[2])> start +n1+n2-1)):
 							if (re.search(("\%s" %strand),count[key][num*6+1])):
 								count[key][num*6+2] ="false"
+								kj = a2[2] + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1) 
+                                                                if(kj in junctionR):
+                                                                        junctionR[kj][1] +=1
+                                                                        junctionR[kj].append( key)
+                                                                else:
+                                                                        junctionR[kj] =["true",1]
+                                                                        junctionR[kj].append( key)  
 				if (a2[2], start+n1) in ppL:
 					for id in ppL[a2[2],start +n1]:
 						if(re.search(("\%s" %strand),count[id][num*6+1])):
@@ -436,7 +486,8 @@ for file in samfile:
 	fr2.close()
 
 fr1 = open(gtf)
-fw = open(output,"w")
+outputname = output.split(",")
+fw = open(outputname[0],"w")
 for info1 in fr1:
 	a1 = info1.strip().split("\t")
 	key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
@@ -450,4 +501,23 @@ for info1 in fr1:
 			fw.write("\n") 
 		count[key][num*6+3]="false"
 fw.close()
+
+
+fw = open(outputname[1],"w")
+for key in junctionL:
+        if(key in junctionR):
+                junctionL[key][2:]= list(set( junctionL[key][2:] + junctionR[key][2:]))
+        else:
+                junctionL[key][2:]= list(set( junctionL[key][2:]))
+        fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionL[key][1:])))
+
+for key in junctionR:
+        if(key in junctionL):
+                continue
+        else:
+                junctionR[key][2:]= list(set( junctionR[key][2:]))
+                fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionR[key][1:])))
+fw.close()
+
+
 

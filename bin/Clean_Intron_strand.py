@@ -1,6 +1,5 @@
 #!/bin/python
 import copy, getopt,re,os,sys,logging,time,datetime;
-
 options, args = getopt.getopt(sys.argv[1:],'', ['gtf=','path=','length=','anchor=','strand='])
 gtf = ''
 path=''
@@ -89,15 +88,12 @@ for info2 in fr2:
                                                         intron[j][0]="false"
                                                 if( (int(a2[3]) > intron[j][5]) and (int(a2[3]) <= min(intron[j][6],intron[j][5]+ length -anchor +1))):
                                                         intron[j][1]="false"
-                                                        if(intron[j][0]=="true"):
-                                                                print info2, intron[j]
                                                 if(int(a2[3]) <= max(intron[j][5], intron[j][6]-length+ anchor+1)):
                                                         if(int(a2[4]) >= max(intron[j][5], intron[j][6]-length+ anchor+1)):
                                                                 intron[j][2]="false"
-                                                if( (int(a2[3]) > max(intron[j][5],intron[j][6]-length+anchor +1)) and  (int(a2[3]) <= intron[j][6])):                                                        intron[j][2]="false"
+                                                if( (int(a2[3]) > max(intron[j][5],intron[j][6]-length+anchor +1)) and  (int(a2[3]) <= intron[j][6])):                       
+							intron[j][2]="false"
                                                                         
-                                                if(intron[j][0] =="true" and intron[j][2]=="false"):
-                                                        print info2, intron[j]
 	else:	
 		for i in  range(index_s , index_e+1):
 			if (a2[0], a2[6], i) in pos:
@@ -110,16 +106,11 @@ for info2 in fr2:
 							intron[j][0]="false"
 						if( (int(a2[3]) > intron[j][5]) and (int(a2[3]) <= min(intron[j][6],intron[j][5]+ length -anchor +1))):
 							intron[j][1]="false"
-							if(intron[j][0]=="true"):
-								print info2, intron[j]
 						if(int(a2[3]) <= max(intron[j][5], intron[j][6]-length+ anchor+1)):
 							if(int(a2[4]) >= max(intron[j][5], intron[j][6]-length+ anchor+1)):
 								intron[j][2]="false"
 						if( (int(a2[3]) > max(intron[j][5],intron[j][6]-length+anchor +1)) and  (int(a2[3]) <= intron[j][6])):
 							intron[j][2]="false"	
-									
-						if(intron[j][0] =="true" and intron[j][2]=="false"):
-							print info2, intron[j]		
 						
 					
 

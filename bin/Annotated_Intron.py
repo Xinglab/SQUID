@@ -40,7 +40,6 @@ for info1 in fr:
         for i in  range(index_s , index_e+1):
                 pos.setdefault((a1[0],a1[6],i),[]).append(key)
 		
-print "dictionary building completed"
 fr.close()
 
 fr2 = open ("%s/Exon_%s" % (path,gtf))

@@ -44,11 +44,11 @@ if(lib=="unstrand"):
 	count = dict()
 	#the dict to store the intron count,first is the inclusion at left side, second is the skipped count at smaller side, third inclusion at right side, fourth skipping at right side, fifith skipping counts, sixth intron counts, at the end of the three column store gene_id, gene_strand, and clean introns based on bam files
 	ppL = dict()
-	#the dict to store left edge  position of intron
+	# the dict to store left edge  position of intron
 	ppR = dict()
-	#the dict to store right  edge  position of intron
+	# the dict to store right  edge  position of intron
 	pp = dict()
-	#the dict to store the two edge position of intron
+	# the dict to store the two edge position of intron
 	pos = dict()
 	# the dictionary to store the introns in a certain windows
 	bin =1000
@@ -88,6 +88,9 @@ if(lib=="unstrand"):
 	bamfile = bam.split(",")
 	nn = 0
 	print bamfile
+	junctionL = dict()
+	junctionR = dict()
+	##store the junction position, key is the junction ID, value is a list with the first one being the number of reads, the following being the overlapping introns
 	for file in bamfile:
 		print file
 		path = "%s.bai" % file
@@ -151,20 +154,32 @@ if(lib=="unstrand"):
 				n2=int(aa2[i].split("M")[1])
 				n3=int(aa2[i+1].split("M")[0])
 				if (n1 >= anchor and n3 >= anchor):
-					
 					index1 = (start+ n1-1)/ bin
 					index2 = (start+ n1+n2)/bin
 					if( fr2.getrname(iter.reference_id), index1) in pos:
 						for key in pos[ fr2.getrname(iter.reference_id),index1]:
 							in_p = key.split("_")
-                					if ((int(in_p[1]) < start +n1 )& (int(in_p[2])> start +n1)):        
+                                                	if ((int(in_p[1]) < start +n1 )& (int(in_p[2])> start +n1)):
 								count[key][num*6+2] ="false"
+								kj = fr2.getrname(iter.reference_id) + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1)
+								if(kj in junctionL):
+									junctionL[kj][1] +=1
+									junctionL[kj].append( key)
+								else:
+									junctionL[kj]= ["true",1]
+                                                                        junctionL[kj].append( key)
 					if( fr2.getrname(iter.reference_id), index2) in pos:
                                                 for key in pos[ fr2.getrname(iter.reference_id),index2]:
                                                         in_p = key.split("_")   
-                                                        if ((int(in_p[1]) < start +n1+n2 -1 )& (int(in_p[2])> start +n1+n2 -1)):
+                                                        if ((int(in_p[1]) < start +n1+n2-1 )& (int(in_p[2])> start +n1+n2-1)):
                                                                 count[key][num*6+2] ="false"
-
+								kj = fr2.getrname(iter.reference_id) + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1)
+                                                                if(kj in junctionR):
+									junctionR[kj][1] +=1
+                                                                        junctionR[kj].append( key)
+                                                                else:
+									junctionR[kj] =["true",1]
+                                                                        junctionR[kj].append( key)
 					if ( fr2.getrname(iter.reference_id), start+n1) in ppL:
 						for id in ppL[ fr2.getrname(iter.reference_id),start +n1]:
 							#skipped count at left side
@@ -193,11 +208,6 @@ if(lib=="unstrand"):
 					for p in range( ss + anchor, ss + n3 -anchor+1 ):
 						if( fr2.getrname(iter.reference_id),p) in ppL:
 							for id in ppL[ fr2.getrname(iter.reference_id),p]:
-							#	if(id =="chr1_9881892_9884406"):
-                                                         #       	print str(iter)
-							#		print 33
-							#		print iter.get_reference_positions()
-							#		print aa1,aa2, start,ss, n1,n2,n3
 								#included count at left side
 								count[id][nn*6] +=1
 					for p in range( ss + anchor-1, ss + n3 -anchor):
@@ -211,7 +221,8 @@ if(lib=="unstrand"):
 		nn += 1
 		fr2.close()
 	fr1 = open(gtf)
-	fw = open(output,"w")
+	outputname = output.split(",")
+	fw = open(outputname[0],"w")
 	for info1 in fr1:
 		a1 = info1.strip().split("\t")
 		key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
@@ -225,6 +236,23 @@ if(lib=="unstrand"):
 				fw.write("\n") 
 			count[key][num*6+3]="false"
 	fw.close()
+	fw = open(outputname[1],"w")
+	for key in junctionL:
+			if(key in junctionR):
+				junctionL[key][2:]= list(set( junctionL[key][2:] + junctionR[key][2:]))
+			else:
+				junctionL[key][2:]= list(set( junctionL[key][2:]))
+			fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionL[key][1:])))
+
+	for key in junctionR:
+			if(key in junctionL):
+				continue
+			else:
+				junctionR[key][2:]= list(set( junctionR[key][2:]))
+				fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionR[key][1:])))
+	fw.close()
+		
+	
 	exit()
 
 print "this is library with strand info"
@@ -277,6 +305,9 @@ for info1 in fr1:
 fr1.close()
 bamfile = bam.split(",")
 nn = 0
+junctionL = dict()
+junctionR = dict()
+##store the junction position, key is the junction ID, value is a list with the first one being the number of reads, the following being the overlapping introns
 print "library building complete"
 for file in bamfile:
 	path = "%s.bai" % file
@@ -386,15 +417,29 @@ for file in bamfile:
 				if( fr2.getrname(iter.reference_id), index1) in pos:
 					for key in pos[ fr2.getrname(iter.reference_id),index1]:
 						in_p = key.split("_")
-						if ((int(in_p[1]) < start +n1 )& (int(in_p[2]) > start +n1)):
+						if ((int(in_p[1]) < start +n1 )& (int(in_p[2])> start +n1)):
 							if (re.search(("\%s" %strand),count[key][num*6+1])):
 								count[key][num*6+2] ="false"
+								kj = fr2.getrname(iter.reference_id) + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1) 
+                                                                if(kj in junctionL):
+                                                                        junctionL[kj][1] +=1
+                                                                        junctionL[kj].append( key)
+                                                                else:
+                                                                        junctionL[kj]= ["true",1]
+                                                                        junctionL[kj].append( key)
 				if( fr2.getrname(iter.reference_id), index2) in pos:
 					 for key in pos[ fr2.getrname(iter.reference_id),index2]:
 						 in_p = key.split("_")   
-						 if ((int(in_p[1]) < start +n1+n2 -1 )& (int(in_p[2]) > start +n1+n2 -1 )):
+						 if ((int(in_p[1]) < start +n1+n2 -1 )& (int(in_p[2])> start +n1+n2 -1)):
 							if (re.search(("\%s" %strand),count[key][num*6+1])):
-								 count[key][num*6+2] ="false"		
+								count[key][num*6+2] ="false"	
+								kj = fr2.getrname(iter.reference_id) + "_" + str(start +n1) + "_" + str( start + n1 + n2 -1) 
+                                                                if(kj in junctionR):
+                                                                        junctionR[kj][1] +=1
+                                                                        junctionR[kj].append( key)
+                                                                else:
+                                                                        junctionR[kj] =["true",1]
+                                                                        junctionR[kj].append( key)	
 
 				if ( fr2.getrname(iter.reference_id), start+n1) in ppL:
 					for id in ppL[ fr2.getrname(iter.reference_id),start +n1]:
@@ -444,7 +489,8 @@ for file in bamfile:
 	fr2.close()
 
 fr1 = open(gtf)
-fw = open(output,"w")
+outputname = output.split(",")
+fw = open(outputname[0],"w")
 for info1 in fr1:
 	a1 = info1.strip().split("\t")
 	key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
@@ -457,5 +503,21 @@ for info1 in fr1:
 				fw.write("\t%s\t%s\t%s\t%s\t%s\t%s"%(count[key][i*6+2],count[key][i*6+3],count[key][i*6],count[key][i*6+1],count[key][i*6+4],count[key][i*6+5]))
 			fw.write("\n") 
 		count[key][num*6+3]="false"
+fw.close()
+
+fw = open(outputname[1],"w")
+for key in junctionL:
+	if(key in junctionR):
+		junctionL[key][2:]= list(set( junctionL[key][2:] + junctionR[key][2:]))
+	else:
+		junctionL[key][2:]= list(set( junctionL[key][2:]))
+	fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionL[key][1:])))
+
+for key in junctionR:
+	if(key in junctionL):
+		continue
+	else:
+		junctionR[key][2:]= list(set( junctionR[key][2:]))
+		fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionR[key][1:])))
 fw.close()
 
