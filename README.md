@@ -1,4 +1,4 @@
-## CARIE: Computational Analysis of Retained Intron Events
+## SQUID: Stringent Quantitation of Unspliced Intron by Deep-sequencing
 
 Requirements
 ------------
@@ -13,16 +13,9 @@ The source code can be directly called from Python.
 
 Usage:
 --------------------------------
-	CARIE.py --main program
-	rMATS.py --a program to use the CARIE output to calculate differential RI events
-	Using bam files to generate all type of RI level
-		$ python CARIE.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --type All
-	Using sam files to generate all type of RI level
-		$ python CARIE.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib unstrand --read P --type All
-	Using CARIR.py to generate the RI count and calculate differential RI events	
-		$ python CARIE.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --type Junction --comparison ./comparison -o ./bam --analysis U
-	rMATS.py use the output of CARIE.py to calculate differential RI events	
-		$ python rMATS.py --input ./bam/result/counts_all_Junction.txt --comparison ./comparison --output ./Junction2 --p 1 --FDR 0.05 --Diff 0.05 --analysis U --C 0.0001
+	python SQUID.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib first --read P --Cal All --Comparison ./Comparison -o ./bam_first --analysis U --RPKM gene.txt --norm 33324688,31783182,33779359,40647996 --c1 0.0001 --c2 0.1 --p 1 --Clean true --c3 0.0001
+
+	python SQUID.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib first --read P --Cal All --Comparison ./Comparison -o ./sam_first --analysis U --RPKM gene.txt --norm 33324688,31783182,33779359,40647996 --c1 0.0001 --c2 0.1 --p 1 --Clean true --c3 0.0001
 Required Parameters:
 ------------
 	-i/--input:
