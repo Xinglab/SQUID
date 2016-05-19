@@ -74,8 +74,8 @@ Type of PI (Percent of Introns) Calculation:
 
 Output list:
 ------------
-result:
-	All of final result files are in result folder.
+	result:
+		All of final result files are in result folder.
 	counts_all_$type.txt store the inclusion and skipping counts for all of the samples
 		column 1: Intron Id representing the chromosome position, start and end.
 		column 2: Gene id
@@ -90,7 +90,6 @@ result:
 		column 11: Unspliced  length
 		column 12: Transcribed length
 		column 13: PI value for all of the samples seperated by commas
-
 	rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
 		column 1: Intron Id representing the chromosome position, start and end.
 		column 2: Gene id
@@ -142,13 +141,14 @@ result:
 		column 11: Skipping counts of the intron for sample 1
 		column 12: counts lying in the intron for sample 1
 		column 13-6*(n+1): more counts for samples 2-n
-	rMATS_files
+	count_all_Density.txt: a file contains the observed counts and expected counts for all of the
+	
+	rMATS_files:
 		A folder contains all of the rMATS input and output files
-		rMATS_$comparison_$type.txt
-    			The input file for running rMATS.
-
-		rMATS_$comparison_$type folder
-			The folder contains the result of rMATS output.
+	rMATS_$comparison_$type.txt
+    		The input file for running rMATS.
+	rMATS_$comparison_$type folder
+		The folder contains the result of rMATS output.
 
 
 
