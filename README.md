@@ -74,6 +74,7 @@ Type of PI (Percent of Introns) Calculation:
 
 Output list:
 ------------
+	n = number of samples
 	result:
 		All of final result files are in result folder.
 	counts_all_$type.txt store the inclusion and skipping counts for all of the samples
@@ -126,23 +127,46 @@ Output list:
 
 	counts:
 		A folder contains all of the count files
-	n = number of samples
 	count_all.txt: a file contains the counts for all of the introns
 		column 1:Intron Id representing the chromosome position, start and end.
 		column 2:Gene id
 		column 3:Strand
 		column 4:Chromosome name
 		column 5:Start coordinate
-		column 6:End coordinate    column 1: Intron Id representing the chromosome position, start and end.
+		column 6:End coordinate    
 		column 7: Inclusion counts at 5' splice sites for sample 1
 		column 8: Skipping counts at 5' splice sites for sample 1
 		column 9: Inclusion counts at 3' splice sites for sample 1
 		column 10: Skipping counts at 3' splice sites for sample 1
 		column 11: Skipping counts of the intron for sample 1
 		column 12: counts lying in the intron for sample 1
-		column 13-6*(n+1): more counts for samples 2-n
-	count_all_Density.txt: a file contains the observed counts and expected counts for all of the
-	
+		column 13~6*(n+1): more counts for samples 2-n
+	count_all_Density.txt: a file contains the observed counts and expected counts for all of the introns
+		column 1: Intron id representing the chromosome position, start and end.
+		column 2: The length of introns
+		column 3~n+2: The observed counts
+		column n+3~2n+2: The expected counts
+	junction.txt: a file contains the spliced junction reads in the intron region
+		column 1: Spliced junction reads id representing the chromosome position, start and end.
+		column 2: The number of junction reads
+		column 3~: The introns that the spliced junction reads reside
+	Aintron.txt: a file contains the adjusted intron region
+		column 1:Intron id representing the chromosome position, start and end
+		column 2~: Adjusted intron region
+	count_Clean_Density.txt: a file contains the count of adjusted intron
+		column 1: Intron id representing the chromosome position, start and end
+		column 2: Gene id
+		column 3: The length of intron after adjusted intron
+		column 4: Inclusion counts of at 5' splice sites of adjusted intron for sample 1
+		column 5: Inclusion counts of at 3' splice sites of adjusted intron for sample 1
+		column 6: Inclusion containing counts of adjusted intron for sample 1
+		column 7~3(n+1): more counts for samples 2-n
+	count_all_Clean_Density.txt: a file contains the observed counts and expected counts for all of the adjusted introns
+		column 1: Intron id representing the chromosome position, start and end.
+		column 2: The length of adjusted introns
+		column 3~n+2: The observed counts of adjusted introns
+		column n+3~2n+2: The expected counts of adjusted introns
+		
 	rMATS_files:
 		A folder contains all of the rMATS input and output files
 	rMATS_$comparison_$type.txt
