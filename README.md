@@ -61,17 +61,16 @@ Optional Parameters:
 	--p: 
 		The number of threads used to run rMATS. The default is 1;
 
-Type of Calculation:
+Type of PI (Percent of Introns) Calculation:
 ------------	
-	Junction: 
-		The skipping counts are the reads that connect the intron start and end sites. 
-		The inclusion counts are the reads that either span the intron start or intron end sites.
-	Density:
-		The skipping counts are the reads that connect the intron start and end sites.
-                The inclusion counts are the reads that either span the intron start or intron end sites and the reads that locate with the intron region.
-	Density': 
-		The skipping counts are the reads that connect the intron start and end sites.
-		The inclusion counts are the reads that span the intron start sites.
+	PI:
+		Unspliced counts divided by transribed counts
+	PI_Junction: 
+		Inclusion counts divided by the sum of inclusion and  skipping junction counts
+	PI_Density:
+		The observed counts divided by the expected counts of the intron
+	PI_Density': 
+		The observed counts divided by the expected counts of the adjusted intron
 
 Output list:
 ------------
@@ -86,11 +85,11 @@ Output list:
 		column 6: End coordinate
 		column 7: Whether this intron was annotated in the gtf file as retained intron event.
 		column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
-		column 9: Inclusion counts for all of the samples seperated by commas
-		column 10: Skipping counts for all of the samples seperated by commas
-		column 11: Inclusion length
+		column 9: Unspliced counts for all of the samples seperated by commas
+		column 10: Transcribed counts for all of the samples seperated by commas
+		column 11: Unspliced  length
 		column 12: Skipping length
-		column 13: Intron inclusion level for all of the samples seperated by commas
+		column 13: PI value for all of the samples seperated by commas
 
 	rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
 		column 1: Intron Id representing the chromosome position, start and end.
