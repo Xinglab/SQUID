@@ -29,44 +29,49 @@ Optional Parameters:
 ------------	
 	--o/--output:
 		The output directory. The default is current directory
-	--lib
-		The library type with choices of unstrand/first/second. The details are explained at the parameter of library-type in tophat2. The default is unstrand
-	--read
+	--lib:
+		The library type with choices of unstrand/first/second. The details are explained in the parameter of library-type in tophat2. The default is unstrand
+	
+	--read: 
 		The sequencing strategy of producing reads with choices of P/S. The default is P
-	--length
-		The reads length in nucleotide. The default length is 100
-	--anchor
+	--length: 
+		The read length in nucleotide. The default length is 100
+	--anchor: 
 		The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8
-	--type
-		The types of RI level calculation used. The choices are All/Junction/JunctionIntron/5Simple/3Simple/5Complex/3Complex. The details of each calcuation are explained in the README file. If type is All, all of the six types of calcuation will be carried out,but the rMATS will not performed. Please use rMATS.py to calculate p-value and FDR. The default is All
-	--comparison
-		A file providing the sample pairs needed to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas). If absent, rMATS step will be skipped
-	--analysis
+	--Cal: 
+		Which  part of the program user choose to run, the choices are All/count/rMATS. All means run the whole program, count means only run the PI value calculation part, rMATS means only run the differential analysis of retained intron.  The default is All
+	--RPKM: 
+		A file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. It is a required parameters to run the Density calculation
+	--norm: 
+		Total uniquely mapped reads for each library,each sample is seperated by comma, it is required to run the Density calculation
+	--Clean: 
+		true/false, whether to carry out PI_Density' calculation,The default is true
+	--lim: 
+		The minimum average number read per sample of the splice junction to be used in adjusting introns. The default value is 2
+	--Comparison: 
+		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas),column 4(type of PI value use to perform rMATS), column 5 (optional, if present as 'pool', the replicates are combined together). If absent, rMATS step will be skipped
+	--analysis: 
 		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
+	--c1: 
+		The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
+	--c2: 
+		The cutoff of splicing difference using Density method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
+	--c3: 
+		The cutoff of splicing difference using Density' method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
+	--p: 
+		The number of threads used to run rMATS. The default is 1;
 
 Type of Calculation:
 ------------	
 	Junction: 
 		The skipping counts are the reads that connect the intron start and end sites. 
 		The inclusion counts are the reads that either span the intron start or intron end sites.
-	JunctionIntron:
+	Density:
 		The skipping counts are the reads that connect the intron start and end sites.
                 The inclusion counts are the reads that either span the intron start or intron end sites and the reads that locate with the intron region.
-	5Simple: 
+	Density': 
 		The skipping counts are the reads that connect the intron start and end sites.
 		The inclusion counts are the reads that span the intron start sites.
-	3Simple:
-		The skipping counts are the reads that connect the intron start and end sites.
-		The inclusion counts are the reads that span the intron end sites.
-	5Complex: 
-		The skipping counts are the reads spliced at the intron start sites.
-		The inclusion counts are the reads that span the intron start sites.
-	3Complex:
-		The skipping counts are the reads spliced at the intron  end sites.
-		The inclusion counts are the reads that span the intron end sites.
-Examples:
-------------
-	python CARIE.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --type All --comparison ./comparison -o ./bam --analysis U
 
 Output list:
 ------------
