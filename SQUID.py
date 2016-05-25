@@ -158,8 +158,13 @@ if(Cal=="All" or Cal=="count"):
 			logging.debug("Generate the count file")
 			logging.debug(cmd)
 			os.system(cmd)
+		elif (not os.path.exists(RPKM)):
+			logging.debug("gene expression file does not exist")
+			cmd = "python %s/Intron_countall_strandBam.py --gtf %s/Intron_%s --length %s --anchor %s --bam %s -o %s/count_all.txt --lib %s --read %s" %(bin_path,gtf_path, gtf, length, anchor, ",".join(samples), count_path, lib, read)
+                        logging.debug("Generate the count file")
+                        logging.debug(cmd)
+                        os.system(cmd)
 		else:
-				
 			cmd = "python %s/Intron_countall_strandBamclean.py --gtf %s/Intron_%s --length %s --anchor %s --bam %s -o %s/count_all.txt,%s/junction.txt --lib %s --read %s" %(bin_path,gtf_path, gtf, length, anchor, ",".join(samples), count_path,count_path, lib, read)
 			logging.debug("Generate the count file and splice junction file")
 			logging.debug(cmd)
@@ -181,7 +186,13 @@ if(Cal=="All" or Cal=="count"):
 			logging("Generate the count file")
                         logging.debug(cmd)
                         os.system(cmd)
-		else:
+		elif (not os.path.exists(RPKM)):
+                        logging.debug("gene expression file does not exist")
+                        cmd = "python %s/Intron_countall_strandBam.py --gtf %s/Intron_%s --length %s --anchor %s --bam %s -o %s/count_all.txt --lib %s --read %s" %(bin_path,gtf_path, gtf, length, anchor, ",".join(samples), count_path, lib, read)
+                        logging.debug("Generate the count file")
+                        logging.debug(cmd)
+                        os.system(cmd)
+                else:
 			cmd = "python %s/Intron_countall_strandSamclean.py --gtf %s/Intron_%s --length %s --anchor %s --sam %s -o %s/count_all.txt,%s/junction.txt --lib %s --read %s" %(bin_path,gtf_path, gtf, length, anchor, ",".join(samples), count_path,count_path, lib, read)
                         logging.debug("Generate the count file and splice junction file")
                         logging.debug(cmd)
