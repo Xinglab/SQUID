@@ -423,7 +423,7 @@ for file in samfile:
                                                                         junctionL[kj][1] +=1
                                                                         junctionL[kj].append( key)
                                                                 else:
-                                                                        junctionL[kj]= ["true",1]
+                                                                        junctionL[kj]= [strand,1]
                                                                         junctionL[kj].append( key)
 				if( a2[2], index2) in pos:
 					for key in pos[ a2[2],index2]:
@@ -436,7 +436,7 @@ for file in samfile:
                                                                         junctionR[kj][1] +=1
                                                                         junctionR[kj].append( key)
                                                                 else:
-                                                                        junctionR[kj] =["true",1]
+                                                                        junctionR[kj] =[strand,1]
                                                                         junctionR[kj].append( key)  
 				if (a2[2], start+n1) in ppL:
 					for id in ppL[a2[2],start +n1]:
@@ -509,14 +509,14 @@ for key in junctionL:
                 junctionL[key][2:]= list(set( junctionL[key][2:] + junctionR[key][2:]))
         else:
                 junctionL[key][2:]= list(set( junctionL[key][2:]))
-        fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionL[key][1:])))
+        fw.write("%s\t%s\t%s\n" % (key, junctionL[key][0],"\t".join(str(x) for x in junctionL[key][1:])))
 
 for key in junctionR:
         if(key in junctionL):
                 continue
         else:
                 junctionR[key][2:]= list(set( junctionR[key][2:]))
-                fw.write("%s\t%s\n" % (key, "\t".join(str(x) for x in junctionR[key][1:])))
+                fw.write("%s\t%s\t%s\n" % (key,junctionR[key][0], "\t".join(str(x) for x in junctionR[key][1:])))
 fw.close()
 
 
