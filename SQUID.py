@@ -334,12 +334,13 @@ if(Cal=="All" or Cal=="count"):
 				obs[i] =int( a1[i +2])
 				if(int(a1[i+l+2]) < int( a1[i +2])):
 					Exp_obs[i]= 0
+					pi[i] =1
 				else:
 					Exp_obs[i] = int(a1[i+l+2]) - int( a1[i +2])
-				if( int(a1[i+l+2]) >0):
-					pi [i] = float( a1[i +2])/int(a1[i+l+2])
-				else:
-					pi[i] ='NA'
+					if(int(a1[i+l+2]) >0):
+						pi [i] = float(a1[i +2])/int(a1[i+l+2])
+					else:
+						pi[i] ='NA'
 			fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a2[1],a2[2],a2[3], a2[4],a2[5],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(str(x) for x in obs), ",".join(str(x) for x in Exp_obs), a1[1],a1[1],",".join(str(x) for x in pi)))
 			info1 = fr1.readline()
                         info2 = fr2.readline()
@@ -410,12 +411,13 @@ if(Cal=="All" or Cal=="count"):
                                 obs[i] =int( a1[i +2])
                                 if(int(a1[i+l+2]) < int( a1[i +2])):
                                         Exp_obs[i]= 0
+					pi[i] = 1
                                 else:
                                         Exp_obs[i] = int(a1[i+l+2]) - int( a1[i +2])
-                                if( int(a1[i+l+2]) >0):
-                                        pi [i] = float( a1[i +2])/int(a1[i+l+2])
-                                else:
-                                        pi[i] ='NA'
+					if( int(a1[i+l+2]) >0):
+						pi [i] = float( a1[i +2])/int(a1[i+l+2])
+					else:
+						pi[i] ='NA'
                         fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a2[1],a2[2],a2[3], a2[4],a2[5],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(str(x) for x in obs), ",".join(str(x) for x in Exp_obs), a1[1],a1[1],",".join(str(x) for x in pi)))
                         info1 = fr1.readline()
                         info2 = fr2.readline()
