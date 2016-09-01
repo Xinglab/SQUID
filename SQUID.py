@@ -68,7 +68,7 @@ if (not input or not GTF):
 	print "Usage :", sys.argv[0], " --length: The read length in nucleotide. The default length is 100;"
 	print "Usage :", sys.argv[0], " --anchor: The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8;"
 	print "Usage :", sys.argv[0], " --Cal: Which  part of the program user choose to run, the choices are All/count/rMATS. All means run the whole program, count means only run the PI value calculation part, rMATS means only run the differential analysis of retained intron.  The default is All;"
-	print "Usage :", sys.argv[0], " --RPKM: a file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. It is a required parameters to run the Density calculation;"
+	print "Usage :", sys.argv[0], " --RPKM: a file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. If RPKM value is empty, the run of cufflinks will be called to generate RPKM value;"
 	print "Usage :", sys.argv[0], " --norm: total uniquely mapped reads for each library,each sample is seperated by comma, it is required to run the Density calculation;"
 	print "Uasge :", sys.argv[0], " --Clean: true/false, whether to carry out PI_Density' calculation,The default is true;"
 	print "Uasge :", sys.argv[0], " --lim: the minimum average number read per sample of the splice junction to be used in adjusting introns. The default value is 2;"
