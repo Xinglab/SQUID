@@ -174,5 +174,8 @@ Output list:
 	rMATS_$comparison_$type folder
 		The folder contains the result of rMATS output.
 
-
+FAQ
+------------
+1. Is the sample order in the Comparison file 1-based or 0-based?
+A: The sample order in the Comparison file is 1-based.
 
