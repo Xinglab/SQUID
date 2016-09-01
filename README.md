@@ -173,7 +173,15 @@ Output list:
     		The input file for running rMATS.
 	rMATS_$comparison_$type folder
 		The folder contains the result of rMATS output.
-
+		
+	cufflinks:
+		A optional folder contains the result of cufflinks result and gene expression files for the squid run without gene expression file provided
+	cufflinks_$n
+		The cufflinks output folder of each folder
+	gene_exp.txt
+		The file is RPKM file that contains RPKM value for each gene.
+		column 1: Gene ID
+		column 2~n+1: RPKM val 
 FAQ
 ------------
 1. Is the sample order in the Comparison file 1-based or 0-based?
