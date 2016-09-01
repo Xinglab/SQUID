@@ -181,7 +181,7 @@ Output list:
 	gene_exp.txt
 		The file is RPKM file that contains RPKM value for each gene.
 		column 1: Gene ID
-		column 2~n+1: RPKM val 
+		column 2~n+1: RPKM value for samples 
 FAQ
 ------------
 1. Is the sample order in the Comparison file 1-based or 0-based?
