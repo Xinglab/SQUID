@@ -1,6 +1,6 @@
 #!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
-options, args = getopt.getopt(sys.argv[1:], 'o:',['gtf=','anchor=','lib=','read=','length=','sam=','output=',])
+options, args = getopt.getopt(sys.argv[1:], 'o:',['gtf=','anchor=','lib=','read=','length=','sam=','output=','Total='])
 gtf='';
 read='';
 sam='';
@@ -8,6 +8,7 @@ lib='';
 length =0
 anchor =0
 output='';
+Total='';
 for opt, arg in options:
 	if opt in ('-o','--output'):
 		output = arg
@@ -23,7 +24,9 @@ for opt, arg in options:
                 length= int(arg)
 	elif opt in ('--anchor'):
                 anchor= int(arg)
-if (not gtf or not read or not sam or not output or not length or not anchor):
+	elif opt in ('--Total'):
+                Total= arg
+if (not gtf or not read or not sam or not output or not length or not anchor or not Total):
 	print "Not enough parameters!"
         print "Program : ", sys.argv[0]
         print "          A python program to count the reads for retained intron events for varities of junction from a series of sam file."
@@ -33,7 +36,8 @@ if (not gtf or not read or not sam or not output or not length or not anchor):
         print "Usage :", sys.argv[0], " --sam: the sam file,multiple sam file seperated by commas;"
         print "Usage :", sys.argv[0], " --lib: the library type;"
         print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of P/S;"
-        print "Usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts.'
+        print "Usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts;'
+	print "Usage :", sys.argv[0], " --Total: the file store the total uniquely mapped reads."
 	print datetime.datetime.now()
 	print "Author  : Shaofang Li"
 	print "Contact : sfli001@gmail.com"
@@ -88,8 +92,10 @@ if(lib=="unstrand"):
 	fr1.close()
 	samfile = sam.split(",")
 	nn = 0
+	Lib_T = [0] * len(samfile)
 	for file in samfile:
 		fr2 = open(file)
+		T = 0
 		for info2 in fr2:
 			if (info2[0]== "@"):
 				continue
@@ -114,7 +120,8 @@ if(lib=="unstrand"):
                                         continue
                                 if(re.search("I",a2[5])):
                                         continue
-                        aa1 = a2[5].split("M")
+                     	T+=1
+			aa1 = a2[5].split("M")
                         aa2 = a2[5].split("N")
                         l = len(aa2)
 			if(len(aa1)== 2):
@@ -199,7 +206,7 @@ if(lib=="unstrand"):
                                                                 count[id][nn*6+2] +=1
 
 				start += (n1+n2)
-
+		Lib_T[nn] = T
 		nn += 1
 		fr2.close()
 	fr1 = open(gtf)
@@ -217,6 +224,9 @@ if(lib=="unstrand"):
 				fw.write("\n") 
 			count[key][num*6+3]="false"
 	fw.close()
+	fw = open(Total,"w")
+        fw.write("\t".join(str(x) for x in Lib_T))
+        fw.close()
 	exit()
 
 print "this is library with strand info"
@@ -269,8 +279,10 @@ for info1 in fr1:
 fr1.close()
 samfile = sam.split(",")
 nn = 0
+Lib_T = [0] * len(samfile)
 for file in samfile:
         fr2 = open(file)
+	T = 0
         for info2 in fr2:
                 if (info2[0]== "@"):
                         continue
@@ -297,7 +309,8 @@ for file in samfile:
 			if(re.search("I",a2[5])):
 				continue
 
-                flag = str(length) +'M' 
+             	T +=1
+		flag = str(length) +'M' 
 		ss = int(a2[1]) /16 % 2
 			
 		if ((read =="S") & (lib=="first")):
@@ -432,6 +445,7 @@ for file in samfile:
 								count[id][nn*6+2] +=1
 
 			start += (n1+n2)
+	Lib_T[nn] = T
 	nn += 1
 	fr2.close()
 
@@ -449,5 +463,8 @@ for info1 in fr1:
 				fw.write("\t%s\t%s\t%s\t%s\t%s\t%s"%(count[key][i*6+2],count[key][i*6+3],count[key][i*6],count[key][i*6+1],count[key][i*6+4],count[key][i*6+5]))
 			fw.write("\n") 
 		count[key][num*6+3]="false"
+fw.close()
+fw = open(Total,"w")
+fw.write("\t".join(str(x) for x in Lib_T))
 fw.close()
 

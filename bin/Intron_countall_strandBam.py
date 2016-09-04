@@ -1,7 +1,7 @@
 #!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
 import pysam,os.path
-options, args = getopt.getopt(sys.argv[1:], 'o:',['gtf=','anchor=','lib=','read=','length=','bam=','output='])
+options, args = getopt.getopt(sys.argv[1:], 'o:',['gtf=','anchor=','lib=','read=','length=','bam=','output=','Total='])
 gtf='';
 read='';
 bam='';
@@ -9,6 +9,7 @@ lib='';
 length =0
 anchor =0
 output='';
+Total='';
 for opt, arg in options:
 	if opt in ('-o','--output'):
 		output = arg
@@ -24,7 +25,9 @@ for opt, arg in options:
                 length= int(arg)
 	elif opt in ('--anchor'):
                 anchor= int(arg)
-if (not gtf or not read or not bam or not output or not length or not anchor):
+	elif opt in ('--Total'):
+                Total= arg
+if (not gtf or not read or not bam or not output or not length or not anchor or not Total):
 	print "Not enough parameters!"
 	print "Program : ", sys.argv[0]
 	print "          A python program to count the reads for retained intron events for varities of junction from a series of bam file."
@@ -34,7 +37,8 @@ if (not gtf or not read or not bam or not output or not length or not anchor):
 	print "Usage :", sys.argv[0], " --bam: the bam file,multiple bam file seperated by commas;"
 	print "Usage :", sys.argv[0], " --lib: the library type;"
 	print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of P/S;"
-	print "Usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts.'
+	print "Usage :", sys.argv[0], ' --output: intron_id, gene_id,strand,chr,start,end,5SS inclusion counts,5SS skipping counts,3SS includion counts,3SS skipping counts,skipping counts,intron counts;'
+	print "Usage :", sys.argv[0], " --Total: the file store the total uniquely mapped reads."
 	print datetime.datetime.now()
 	print "Author  : Shaofang Li"
 	print "Contact : sfli001@gmail.com"
@@ -88,6 +92,7 @@ if(lib=="unstrand"):
 	bamfile = bam.split(",")
 	nn = 0
 	print bamfile
+	Lib_T = [0] * len(bamfile)
 	for file in bamfile:
 		print file
 		path = "%s.bai" % file
@@ -97,6 +102,7 @@ if(lib=="unstrand"):
 			print cmd
 			os.system(cmd)
 		fr2 = pysam.AlignmentFile(file, "rb")
+		T = 0
 		iter = fr2.fetch()
 		for iter in fr2:
 			if(read =="P"):
@@ -117,7 +123,8 @@ if(lib=="unstrand"):
                                         continue
                                 if(re.search("I",iter.cigarstring)):
                                         continue
-                        aa1 = iter.cigarstring.split("M")
+                	T+=1
+		        aa1 = iter.cigarstring.split("M")
                         aa2 = iter.cigarstring.split("N")
                         l = len(aa2)
 			if(len(aa1)== 2):
@@ -207,7 +214,7 @@ if(lib=="unstrand"):
                                                                 count[id][nn*6+2] +=1
 
 				start += (n1+n2)
-
+		Lib_T[nn] = T	
 		nn += 1
 		fr2.close()
 	fr1 = open(gtf)
@@ -224,6 +231,9 @@ if(lib=="unstrand"):
 					fw.write("\t%s\t%s\t%s\t%s\t%s\t%s"%(count[key][i*6+2],count[key][i*6+3],count[key][i*6],count[key][i*6+1],count[key][i*6+4],count[key][i*6+5]))
 				fw.write("\n") 
 			count[key][num*6+3]="false"
+	fw.close()
+	fw = open(Total,"w")
+	fw.write("\t".join(str(x) for x in Lib_T))
 	fw.close()
 	exit()
 
@@ -244,6 +254,7 @@ bin =1000
 
 bamfile = bam.split(",")
 num = len(bamfile)
+Lib_T = [0] * len(bamfile)
 for info1 in fr1:
 	a1 = info1.strip().split("\t")
 	key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
@@ -286,7 +297,8 @@ for file in bamfile:
 		os.system(cmd)
         fr2 = pysam.AlignmentFile(file, "rb")
 	iter = fr2.fetch()
-        for iter in fr2:
+        T = 0
+	for iter in fr2:
 		if(read =="P"):
 			if((iter.flag /2 )%2 ==0 ):
 				continue
@@ -305,6 +317,7 @@ for file in bamfile:
 				continue
 			if(re.search("I",iter.cigarstring)):
 				continue
+		T+=1
 		strand=''
                 flag = str(length) +'M' 
 		ss = (iter.flag) /16 % 2
@@ -440,6 +453,7 @@ for file in bamfile:
 								count[id][nn*6+2] +=1
 
 			start += (n1+n2)
+	Lib_T[nn] = T
 	nn += 1
 	fr2.close()
 
@@ -458,4 +472,6 @@ for info1 in fr1:
 			fw.write("\n") 
 		count[key][num*6+3]="false"
 fw.close()
-
+fw = open(Total,"w")
+fw.write("\t".join(str(x) for x in Lib_T))
+fw.close()
