@@ -191,7 +191,7 @@ if(Cal=="All" or Cal=="count"):
 	fr1 =open("%s/counts/count_all.txt" % output)
 	##generate the counts info for all of the intron
 	fw = open("%s/counts_all_Junction.txt" %output_path, "w")
-	fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannoated\tclean\tinclusion_counts\tskip_counts\tIncFormLen\tSkipFormLen\tInclusionlevel\n")
+	fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannotated\tclean\tinclusion_counts\tskip_counts\tIncFormLen\tSkipFormLen\tInclusionlevel\n")
 	l = len(samples)	
 	for info1 in fr1:	
 		a1 = info1.strip().split("\t")
@@ -330,7 +330,7 @@ if(Cal=="All" or Cal=="count"):
 		fr2 =open("%s/counts_all_Junction.txt" % output_path)
 		##generate the counts info for all of the intron
 		fw = open("%s/counts_all_Density.txt" %output_path, "w")
-		fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannoated\tclean\tobservation_counts\texp-observation_counts\tIncFormLen\tSkipFormLen\tInclusionlevel\n")
+		fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannotated\tclean\tobservation_counts\texp-observation_counts\tIncFormLen\tSkipFormLen\tInclusionlevel\n")
 		l = len(samples)
 		info1 = fr1.readline()
 		info2 = fr2.readline()
@@ -424,7 +424,7 @@ for info in fr:
 		fr1 = open("%s/counts_all_Junction.txt" % (output_path))
 		fr2 = open("%s/rMATS_files/rMATS_%s_Junction/rMATS_Result.txt" %(output,a[0]))
 		fw = open("%s/result/rMATS_Result_%s_Junction.txt" %(output, a[0]),"w")
-		fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannoated\tclean\tinclusions_counts_SAMPLE1\tskip_counts_SAMPLE1\tinclusions_counts_SAMPLE2\tskip_counts_SAMPLE2\tInclusion_length\tSkipping_length\tPValue\tFDR\tIncLevel_SAMPLE1\tIncLevel_SAMPLE2\tIncLevelDifference\n")
+		fw.write("Intron_id\tgene_id\tstrand\tchr\tstart\tend\tannotated\tclean\tinclusions_counts_SAMPLE1\tskip_counts_SAMPLE1\tinclusions_counts_SAMPLE2\tskip_counts_SAMPLE2\tInclusion_length\tSkipping_length\tPValue\tFDR\tIncLevel_SAMPLE1\tIncLevel_SAMPLE2\tIncLevelDifference\n")
                 info1 = fr1.readline()
                 info2 = fr2.readline()
                 RE = dict()
