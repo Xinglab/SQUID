@@ -4,6 +4,8 @@ Requirements
 ------------
 1. Install Python 2.7.x and corresponding versions of NumPy and
 SciPy.
+2. Install cufflinks
+3. Install kallisto
 2. Install pysam version 0.8.4
 3. Add the Python directory to the $PATH environment variable.
 
@@ -13,9 +15,10 @@ The source code can be directly called from Python.
 
 Usage:
 --------------------------------
-	python SQUID.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib first --read P --Cal All --RPKM gene.txt --norm 33324688,31783182,33779359,40647996 --Clean true --c1 0.05 --c2 0.05 --c3 0.05 --p 1 --Comparison ./Comparison --analysis U -o ./bam_first
+	python ../SQUID.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib first --read P --Cal All --RPKM gene_exp.txt --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./sam_first
 
-	python SQUID.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib first --read P --Cal All --RPKM gene.txt --norm 33324688,31783182,33779359,40647996 --Clean true --c1 0.05 --c2 0.05 --c3 0.05 --p 1 --Comparison ./Comparison --analysis U -o ./sam_first
+
+	python ../SQUID.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --fasta ./test_R1_1.fq:./test_R1_2.fq,./test_R2_1.fq:./test_R2_2.fq,./control_R1_1.fq:./control_R1_2.fq,./control_R2_1.fq:./control_R2_2.fq --index=./kallisto/test --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam
 
 Status API Training Shop Blog About
 
