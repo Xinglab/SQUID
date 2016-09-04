@@ -32,9 +32,12 @@ Optional Parameters:
 ------------	
 	--o/--output:
 		The output directory. The default is current directory
+	--fasta: 
+		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format. Without fastq provided, cufflinks will be called to calculated RPKM value. 
+	--index:
+		the path to the kallisto index that is required to run kallisto from raw reads. Without index provided, cufflinks will be called to calculated RPKM value. 
 	--lib:
 		The library type with choices of unstrand/first/second. The details are explained in the parameter of library-type in tophat2. The default is unstrand
-	
 	--read: 
 		The sequencing strategy of producing reads with choices of P/S. The default is P
 	--length: 
@@ -44,23 +47,13 @@ Optional Parameters:
 	--Cal: 
 		Which  part of the program user choose to run, the choices are All/count/rMATS. All means run the whole program, count means only run the PI value calculation part, rMATS means only run the differential analysis of retained intron.  The default is All
 	--RPKM: 
-		A file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. It is a required parameters to run the Density calculation
-	--norm: 
-		Total uniquely mapped reads for each library,each sample is seperated by comma, it is required to run the Density calculation
-	--Clean: 
-		true/false, whether to carry out PI_Density' calculation,The default is true
-	--lim: 
-		The minimum average number read per sample of the splice junction to be used in adjusting introns. The default value is 2
+		A file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. If it is not provided, kallisto or cufflinks will be called to calculate RPKM value
 	--Comparison: 
 		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas),column 4(type of PI value use to perform rMATS), column 5 (optional, if present as 'pool', the replicates are combined together). If absent, rMATS step will be skipped
 	--analysis: 
 		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
 	--c1: 
 		The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
-	--c2: 
-		The cutoff of splicing difference using Density method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
-	--c3: 
-		The cutoff of splicing difference using Density' method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
 	--p: 
 		The number of threads used to run rMATS. The default is 1;
 
@@ -72,8 +65,6 @@ Type of PI (Percent of Introns) Calculation:
 		Inclusion counts divided by the sum of inclusion and  skipping junction counts
 	PI_Density:
 		The observed counts divided by the expected counts of the intron
-	PI_Density': 
-		The observed counts divided by the expected counts of the adjusted intron
 
 Output list:
 ------------
@@ -126,7 +117,7 @@ Output list:
 	Exon_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains exons only
 	Intron_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains intron only
 	Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retended introns in the original gtf files
-	Intron_clean_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron/5'Junction/3'Junction was overlapped with Exon and whether the intron is a simple intron. 
+	Intron_attri_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was overlapped with Exon and whether the intron is overlapped with other intron. 
 
 	counts:
 		A folder contains all of the count files
@@ -149,26 +140,8 @@ Output list:
 		column 2: The length of introns
 		column 3~n+2: The observed counts
 		column n+3~2n+2: The expected counts
-	junction.txt: a file contains the spliced junction reads in the intron region
-		column 1: Spliced junction reads id representing the chromosome position, start and end.
-		column 2: The number of junction reads
-		column 3~: The introns that the spliced junction reads reside
-	Aintron.txt: a file contains the adjusted intron region
-		column 1:Intron id representing the chromosome position, start and end
-		column 2~: Adjusted intron region
-	count_Clean_Density.txt: a file contains the count of adjusted intron
-		column 1: Intron id representing the chromosome position, start and end
-		column 2: Gene id
-		column 3: The length of intron after adjusted intron
-		column 4: Inclusion counts of at 5' splice sites of adjusted intron for sample 1
-		column 5: Inclusion counts of at 3' splice sites of adjusted intron for sample 1
-		column 6: Inclusion containing counts of adjusted intron for sample 1
-		column 7~3(n+1): more counts for samples 2-n
-	count_all_Clean_Density.txt: a file contains the observed counts and expected counts for all of the adjusted introns
-		column 1: Intron id representing the chromosome position, start and end.
-		column 2: The length of adjusted introns
-		column 3~n+2: The observed counts of adjusted introns
-		column n+3~2n+2: The expected counts of adjusted introns
+	Total.txt: a file contains total number of unique reads in each sample
+		column 1~n: Total number of unique reads in sample 1~n
 		
 	rMATS_files:
 		A folder contains all of the rMATS input and output files
@@ -177,10 +150,12 @@ Output list:
 	rMATS_$comparison_$type folder
 		The folder contains the result of rMATS output.
 		
-	cufflinks:
-		A optional folder contains the result of cufflinks result and gene expression files for the squid run without gene expression file provided
+	RPKM:
+		A optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
+	kallisto_$n
+		The result of kallisto of each sample
 	cufflinks_$n
-		The cufflinks output folder of each folder
+		The result of cufflinks of each sample
 	gene_exp.txt
 		The file is RPKM file that contains RPKM value for each gene.
 		column 1: Gene ID
