@@ -270,10 +270,10 @@ if(Cal=="All" or Cal=="count"):
         				if(a[0] in trans):
                 		#		print a[0],trans[a[0]]
 						if( trans[a[0]] in gene_RPKM):
-							gene_RPKM[trans[a[0]]][ss] += float(a[3])/float(a[2]) * 2000 * 1000000/ normF[ss]
+							gene_RPKM[trans[a[0]]][ss] += float(a[3])/float(a[2]) * 1000 * 1000000/ normF[ss]
 						else:
 							gene_RPKM[trans[a[0]]] = [0] * len(samples)
-							gene_RPKM[trans[a[0]]][ss] = float(a[3])/float(a[2]) * 2000 * 1000000/ normF[ss]
+							gene_RPKM[trans[a[0]]][ss] = float(a[3])/float(a[2]) * 1000 * 1000000/ normF[ss]
 				fr.close()
 			RPKM = "%s/gene_exp.txt" % RPKM_path
 			fw = open(RPKM, "w")
