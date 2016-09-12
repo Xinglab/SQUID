@@ -45,7 +45,7 @@ Optional Parameters:
 	--anchor: 
 		The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8
 	--Cal: 
-		Which  part of the program user choose to run, the choices are All/count/rMATS. All means run the whole program, count means only run the PI value calculation part, rMATS means only run the differential analysis of retained intron.  The default is All
+		Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, rMATS means only run the differential analysis of spliced introns. The default is All
 	--RPKM: 
 		A file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. If it is not provided, kallisto or cufflinks will be called to calculate RPKM value
 	--Comparison: 
@@ -56,6 +56,8 @@ Optional Parameters:
 		The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
 	--p: 
 		The number of threads used to run rMATS. The default is 1;
+	--resume:
+		Whether to resume previous run. The default is false.
 
 Type of PI (Percent of Introns) Calculation:
 ------------	
