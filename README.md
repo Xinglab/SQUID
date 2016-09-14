@@ -57,7 +57,7 @@ Optional Parameters
 	--resume:
 		Whether to resume previous run. The default is false.
 
-Type of PI (Percent of Introns) Calculation
+Types of PI (Percent of Introns) Calculation
 ------------	
 	PI_Junction: 
 		Inclusion counts divided by the sum of inclusion and  skipping junction counts
