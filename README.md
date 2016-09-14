@@ -72,7 +72,7 @@ Notes
 		$type: Types of PI including PI_Junction and PI_Density
 		$comparison: The label of the each comparison provided in the Comparison file
 
-Result
+###Result###
 A folder contains all of final result files
 counts_all_$type.txt store the inclusion and skipping counts for all of the samples
 
