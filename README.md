@@ -77,14 +77,14 @@ A folder contains all of final result files
 
 counts_all_$type.txt store the inclusion and skipping counts for all of the samples
 
-		column 1: Intron Id representing the chromosome position, start and end.
+		column 1: Intron Id representing the chromosome position, start and end
 		column 2: Gene id
 		column 3: Strand
 		column 4: Chromosome name
 		column 5: Start coordinate
 		column 6: End coordinate
-		column 7: Whether this intron was annotated in the gtf file as retained intron event.
-		column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
+		column 7: Whether this intron was annotated in the gtf file as retained intron event
+		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
 		column 9: Unspliced counts for all of the samples seperated by commas
 		column 10: Transcribed counts for all of the samples seperated by commas
 		column 11: Unspliced  length
@@ -93,14 +93,14 @@ counts_all_$type.txt store the inclusion and skipping counts for all of the samp
 
 rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
 
-		column 1: Intron Id representing the chromosome position, start and end.
+		column 1: Intron Id representing the chromosome position, start and end
 		column 2: Gene id
 		column 3: Strand
 		column 4: Chromosome name
 		column 5: Start coordinate
 		column 6: End coordinate
-		column 7: Whether this intron was annotated in the gtf file as retained intron event.
-		column 8: Whether this intron was overlapped with exon, or the 5' splice site was overlapped with exon or the 3' site was overlapped with exon or whether this intron is a simple intron
+		column 7: Whether this intron was annotated in the gtf file as retained intron event
+		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
 		column 9: Unspliced counts for all replicates  of sample 1 seperated by commas
 		column 10: Transcribed  counts for all replicates  of sample 1 seperated by commas
 		column 11: Unspliced counts for all replicates  of sample 2 seperated by commas
@@ -136,16 +136,17 @@ count_all.txt: a file contains the counts for all of the introns
 		column 1:Intron Id representing the chromosome position, start and end.
 		column 2:Gene id
 		column 3:Strand
-		column 4:Chromosome name
-		column 5:Start coordinate
-		column 6:End coordinate    
-		column 7: Inclusion counts at 5' splice sites for sample 1
-		column 8: Skipping counts at 5' splice sites for sample 1
-		column 9: Inclusion counts at 3' splice sites for sample 1
-		column 10: Skipping counts at 3' splice sites for sample 1
-		column 11: Skipping counts of the intron for sample 1
-		column 12: counts lying in the intron for sample 1
-		column 13~6*(n+1): more counts for samples 2-n
+		column 4:Comma seperated logical values to denote Whether this intron was intron (E) or intron (M) based on read info
+		column 5:Chromosome name
+		column 6:Start coordinate
+		column 7:End coordinate    
+		column 8: Inclusion counts at 5' splice sites for sample 1
+		column 9: Skipping counts at 5' splice sites for sample 1
+		column 10: Inclusion counts at 3' splice sites for sample 1
+		column 11: Skipping counts at 3' splice sites for sample 1
+		column 12: Skipping counts of the intron for sample 1
+		column 13: counts lying in the intron for sample 1
+		column 14~6*(n+1)+1: more counts for samples 2-n
 		
 count_all_Density.txt: a file contains the observed counts and expected counts for all of the introns
 
