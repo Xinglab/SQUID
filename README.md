@@ -130,8 +130,9 @@ A folder contains different types of gtf files to run the program. Use mouse gen
 
 ###counts###
 A folder contains all of the count files
-		
-	count_all.txt: a file contains the counts for all of the introns
+
+count_all.txt: a file contains the counts for all of the introns		
+	
 		column 1:Intron Id representing the chromosome position, start and end.
 		column 2:Gene id
 		column 3:Strand
@@ -145,12 +146,16 @@ A folder contains all of the count files
 		column 11: Skipping counts of the intron for sample 1
 		column 12: counts lying in the intron for sample 1
 		column 13~6*(n+1): more counts for samples 2-n
-	count_all_Density.txt: a file contains the observed counts and expected counts for all of the introns
+		
+count_all_Density.txt: a file contains the observed counts and expected counts for all of the introns
+
 		column 1: Intron id representing the chromosome position, start and end.
 		column 2: The length of introns
 		column 3~n+2: The observed counts
 		column n+3~2n+2: The expected counts
-	Total.txt: a file contains total number of unique reads in each sample
+		
+Total.txt: a file contains total number of unique reads in each sample
+
 		column 1~n: Total number of unique reads in sample 1~n
 ###rMATS_files###
 A folder contains all of the rMATS input and output files
@@ -159,7 +164,6 @@ A folder contains all of the rMATS input and output files
     		The input file for running rMATS.
 	rMATS_$comparison_$type folder
 		The folder contains the result of rMATS output.
-		
 ###RPKM###		
 A optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
 
