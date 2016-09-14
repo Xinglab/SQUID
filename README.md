@@ -64,14 +64,15 @@ Type of PI (Percent of Introns) Calculation
 	PI_Density:
 		The observed counts divided by the expected counts of the intron
 
-Output
+Output list
 ------------
 Notes
+
 		n: number of samples
 		$type: Types of PI including PI_Junction and PI_Density
 		$comparison: The label of the each comparison provided in the Comparison file
 
-### Result ###
+Result
 A folder contains all of final result files
 counts_all_$type.txt store the inclusion and skipping counts for all of the samples
 
@@ -111,10 +112,11 @@ rMATS_Result_$comparison_$type.txt store the differential RI level calculated by
 		column 18: PI level for sample2, replicates seperated by commas
 		column 19: The difference of PI level between sample1 and sample2, which is the result of average PI level of sample1 minus the average PI level of sampel2.
 
-	test:
-		A folder contains test files to run the program
+test:
+	A folder contains test files to run the program
 
-	log.SQUID: Log file for running CARIE pipeline
+log.SQUID: 
+	Log file for running SQUID pipeline
 
 	gtf_files:
 		A folder contains different types of gtf files to run the program. Use mouse genome as examples.
