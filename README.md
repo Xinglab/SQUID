@@ -67,13 +67,12 @@ Type of PI (Percent of Introns) Calculation
 Output
 ------------
 Notes
-	n: number of samples
-	$type: Types of PI including PI_Junction and PI_Density
-	$comparison: The label of the each comparison provided in the Comparison file
+		n: number of samples
+		$type: Types of PI including PI_Junction and PI_Density
+		$comparison: The label of the each comparison provided in the Comparison file
 
 ### Result ###
 A folder contains all of final result files
-
 counts_all_$type.txt store the inclusion and skipping counts for all of the samples
 
 		column 1: Intron Id representing the chromosome position, start and end.
@@ -89,7 +88,9 @@ counts_all_$type.txt store the inclusion and skipping counts for all of the samp
 		column 11: Unspliced  length
 		column 12: Transcribed length
 		column 13: PI value for all of the samples seperated by commas
-	rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
+
+rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
+
 		column 1: Intron Id representing the chromosome position, start and end.
 		column 2: Gene id
 		column 3: Strand
