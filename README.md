@@ -15,39 +15,43 @@ The source code can be directly called from Python.
 
 Usage
 --------------------------------
-	python ../SQUID.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib first --read P --Cal All --RPKM gene_exp.txt --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./sam_first
-
-
+Run SQUID with kallisto
+	
 	python ../SQUID.py --GTF ./test.gtf -i ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --fasta ./test_R1_1.fq:./test_R1_2.fq,./test_R2_1.fq:./test_R2_2.fq,./control_R1_1.fq:./control_R1_2.fq,./control_R2_1.fq:./control_R2_2.fq --index=./kallisto/test --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam
+	
+Run SQUID with cufflinks
+
+	python ../SQUID.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib first --read P --Cal All --RPKM gene_exp.txt --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./sam_first
 
 Required Parameters
 ------------
 	-i/--input:
-		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples  are sepreated by commas
+		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples are sepreated by commas
 	--GTF:
 		The gtf file
+		
 Optional Parameters
 ------------	
 	--o/--output:
 		The output directory. The default is current directory
 	--fasta: 
-		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format. Without fastq provided, cufflinks will be called to calculated RPKM value. 
+		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values, otherwise, cufflinks will be called
 	--index:
-		the path to the kallisto index that is required to run kallisto from raw reads. Without index provided, cufflinks will be called to calculated RPKM value. 
+		The path to the kallisto index that is required to run kallisto from raw reads. Without index provided, cufflinks will be called to calculate RPKM value
 	--lib:
 		The library type with choices of unstrand/first/second. The details are explained in the parameter of library-type in tophat2. The default is unstrand
 	--read: 
-		The sequencing strategy of producing reads with choices of P/S. The default is P
+		The sequencing strategy of producing reads with choices of P(paired end) or S (single end). The default is P
 	--length: 
-		The read length in nucleotide. The default length is 100
+		The read length of sequencing reads in nucleotide. The default length is 100
 	--anchor: 
 		The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8
 	--Cal: 
-		Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, rMATS means only run the differential analysis of spliced introns. The default is All
+		Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All
 	--RPKM: 
-		A file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. If it is not provided, kallisto or cufflinks will be called to calculate RPKM value
+		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto or cufflinks will be called to calculate RPKM value
 	--Comparison: 
-		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas),column 4(type of PI value use to perform rMATS), column 5 (optional, if present as 'pool', the replicates are combined together). If absent, rMATS step will be skipped
+		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas),column 4(type of PI value use to perform rMATS), column 5 (optional, if present as 'pool', the replicates are combined together for PI_Junction). If absent, calculation of differential spliced introns will be skipped
 	--analysis: 
 		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
 	--c1: 
@@ -78,35 +82,35 @@ A folder contains all of final result files
 counts_all_$type.txt store the inclusion and skipping counts for all of the samples
 
 		column 1: Intron Id representing the chromosome position, start and end
-		column 2: Gene id
-		column 3: Strand
-		column 4: Chromosome name
-		column 5: Start coordinate
-		column 6: End coordinate
+		column 2: Gene id of intron residing genes
+		column 3: Strand of intron residing genes
+		column 4: Chromosome name of introns
+		column 5: Start coordinate of introns
+		column 6: End coordinate of introns
 		column 7: Whether this intron was annotated in the gtf file as retained intron event
 		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
-		column 9: Unspliced counts for all of the samples seperated by commas
-		column 10: Transcribed counts for all of the samples seperated by commas
-		column 11: Unspliced  length
-		column 12: Transcribed length
+		column 9: Inclusion counts for all of the samples seperated by commas
+		column 10: Skipping counts for all of the samples seperated by commas
+		column 11: Effective inclusion  length
+		column 12: Effective skipping length
 		column 13: PI value for all of the samples seperated by commas
 
-rMATS_Result_$comparison_$type.txt store the differential RI level calculated by rMATS
+rMATS_Result_$comparison_$type.txt store the differential RI level
 
 		column 1: Intron Id representing the chromosome position, start and end
-		column 2: Gene id
-		column 3: Strand
-		column 4: Chromosome name
-		column 5: Start coordinate
-		column 6: End coordinate
+		column 2: Gene id of intron residing genes
+		column 3: Strand of intron residing genes
+		column 4: Chromosome name of introns
+		column 5: Start coordinate of introns
+		column 6: End coordinate of introns
 		column 7: Whether this intron was annotated in the gtf file as retained intron event
 		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
-		column 9: Unspliced counts for all replicates  of sample 1 seperated by commas
-		column 10: Transcribed  counts for all replicates  of sample 1 seperated by commas
-		column 11: Unspliced counts for all replicates  of sample 2 seperated by commas
-		column 12: Transcribed counts for all replicates  of sample 2 seperated by commas
-		column 13: Unspliced length
-		column 14: Transcribed length
+		column 9: Inclusion counts for all replicates  of sample 1 seperated by commas
+		column 10: Skipping  counts for all replicates  of sample 1 seperated by commas
+		column 11: Inclusion counts for all replicates  of sample 2 seperated by commas
+		column 12: Skipping counts for all replicates  of sample 2 seperated by commas
+		column 13: Effective inclusion length
+		column 14: Effective skipping length
 		column 15: p-value for differential PI level of the two samples
 		column 16: FDR for differential RI level of the two samples
 		column 17: PI level for sample1, replicates seperated by commas
