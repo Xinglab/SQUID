@@ -179,7 +179,7 @@ A optional folder contains the result of RPKM result and gene expression files f
 FAQ
 ------------
 
-1. Is the sample order in the Comparison file 1-based or 0-based?
+Q: Is the sample order in the Comparison file 1-based or 0-based?
 
 A: The sample order in the Comparison file is 1-based.
 
