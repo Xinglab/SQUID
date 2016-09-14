@@ -59,8 +59,6 @@ Optional Parameters:
 
 Type of PI (Percent of Introns) Calculation:
 ------------	
-	PI:
-		Unspliced counts divided by transribed counts
 	PI_Junction: 
 		Inclusion counts divided by the sum of inclusion and  skipping junction counts
 	PI_Density:
@@ -69,7 +67,9 @@ Type of PI (Percent of Introns) Calculation:
 Output list:
 ------------
 	n = number of samples
-	result:
+	$type: Types of PI including PI_Junction and PI_Density
+	$comparison: The label of the each comparison provided in the Comparison file
+	### Result ###
 		All of final result files are in result folder.
 	counts_all_$type.txt store the inclusion and skipping counts for all of the samples
 		column 1: Intron Id representing the chromosome position, start and end.
