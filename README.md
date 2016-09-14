@@ -164,7 +164,7 @@ A folder contains all of the rMATS input and output files
     		The input file for running rMATS.
 	rMATS_$comparison_$type folder
 		The folder contains the result of rMATS output.
-###RPKM###		
+###RPKM		
 A optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
 
 	kallisto_$n
