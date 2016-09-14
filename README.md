@@ -69,8 +69,11 @@ Output list:
 	n = number of samples
 	$type: Types of PI including PI_Junction and PI_Density
 	$comparison: The label of the each comparison provided in the Comparison file
+hidden splice junctions.
 
-	###Result ###
+### Personalize Genome ###
+
+Inputs:
 
 	Inputs:
 		All of final result files are in result folder.
