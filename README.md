@@ -75,6 +75,7 @@ Notes
 A folder contains all of final result files
 
 counts_all_$type.txt store the inclusion and skipping counts for all of the samples
+
 		column 1: Intron Id representing the chromosome position, start and end.
 		column 2: Gene id
 		column 3: Strand
