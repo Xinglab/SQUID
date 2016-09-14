@@ -77,9 +77,9 @@ Notes
 		$comparison: The label of the each comparison provided in the Comparison file
 
 ###Result###
-A folder contains all of final result files
+The folder contains all of final result files
 
-counts_all_$type.txt store the inclusion and skipping counts for all of the samples
+counts_all_$type.txt store PI values for all of the samples
 
 		column 1: Intron Id representing the chromosome position, start and end
 		column 2: Gene id of intron residing genes
@@ -91,11 +91,11 @@ counts_all_$type.txt store the inclusion and skipping counts for all of the samp
 		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
 		column 9: Inclusion counts for all of the samples seperated by commas
 		column 10: Skipping counts for all of the samples seperated by commas
-		column 11: Effective inclusion  length
+		column 11: Effective inclusion length
 		column 12: Effective skipping length
 		column 13: PI value for all of the samples seperated by commas
 
-rMATS_Result_$comparison_$type.txt store the differential RI level
+rMATS_Result_$comparison_$type.txt store the result of differential PI for two samples
 
 		column 1: Intron Id representing the chromosome position, start and end
 		column 2: Gene id of intron residing genes
@@ -124,7 +124,7 @@ A folder contains test files to run the program
  Log file for running SQUID pipeline
 
 ###gtf_files###
-A folder contains different types of gtf files to run the program. Use mouse genome as examples.
+An intermediate folder contains different types of gtf files to run the program. Use mouse genome as examples.
 
 	Mus_musculus.Ensembl.GRCm38.78.gtf: the ensemble gtf files. This file should be provided by user. 
 	Exon_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains exons only
@@ -133,7 +133,7 @@ A folder contains different types of gtf files to run the program. Use mouse gen
 	Intron_attri_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was overlapped with Exon and whether the intron is overlapped with other intron. 
 
 ###counts###
-A folder contains all of the count files
+An intermediate folder contains all of the count files
 
 count_all.txt: a file contains the counts for all of the introns		
 	
@@ -163,14 +163,14 @@ Total.txt: a file contains total number of unique reads in each sample
 
 		column 1~n: Total number of unique reads in sample 1~n
 ###rMATS_files###
-A folder contains all of the rMATS input and output files
+An intermediate folder contains all of the rMATS input and output files
 
 	rMATS_$comparison_$type.txt
     		The input file for running rMATS.
 	rMATS_$comparison_$type folder
 		The folder contains the result of rMATS output.
 ###RPKM		
-A optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
+An intermediate optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
 
 	kallisto_$n
 		The result of kallisto of each sample
