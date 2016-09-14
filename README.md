@@ -113,22 +113,24 @@ rMATS_Result_$comparison_$type.txt store the differential RI level calculated by
 		column 18: PI level for sample2, replicates seperated by commas
 		column 19: The difference of PI level between sample1 and sample2, which is the result of average PI level of sample1 minus the average PI level of sampel2.
 
-test:
-	A folder contains test files to run the program
+###test###
+A folder contains test files to run the program
 
-log.SQUID: 
-	Log file for running SQUID pipeline
+###log.SQUID###
+ Log file for running SQUID pipeline
 
-	gtf_files:
-		A folder contains different types of gtf files to run the program. Use mouse genome as examples.
+###gtf_files###
+A folder contains different types of gtf files to run the program. Use mouse genome as examples.
+
 	Mus_musculus.Ensembl.GRCm38.78.gtf: the ensemble gtf files. This file should be provided by user. 
 	Exon_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains exons only
 	Intron_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains intron only
 	Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retended introns in the original gtf files
 	Intron_attri_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was overlapped with Exon and whether the intron is overlapped with other intron. 
 
-	counts:
-		A folder contains all of the count files
+###counts###
+A folder contains all of the count files
+		
 	count_all.txt: a file contains the counts for all of the introns
 		column 1:Intron Id representing the chromosome position, start and end.
 		column 2:Gene id
@@ -150,21 +152,22 @@ log.SQUID:
 		column n+3~2n+2: The expected counts
 	Total.txt: a file contains total number of unique reads in each sample
 		column 1~n: Total number of unique reads in sample 1~n
-		
-	rMATS_files:
-		A folder contains all of the rMATS input and output files
+###rMATS_files###
+A folder contains all of the rMATS input and output files
+
 	rMATS_$comparison_$type.txt
     		The input file for running rMATS.
 	rMATS_$comparison_$type folder
 		The folder contains the result of rMATS output.
 		
-	RPKM:
-		A optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
+###RPKM###		
+A optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
+
 	kallisto_$n
 		The result of kallisto of each sample
 	cufflinks_$n
 		The result of cufflinks of each sample
-	gene_exp.txt
+	transcript_exp.txt
 		The file is RPKM file that contains RPKM value for each gene.
 		column 1: Gene ID
 		column 2~n+1: RPKM value for samples 
