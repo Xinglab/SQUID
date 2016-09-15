@@ -21,7 +21,7 @@ Run SQUID with kallisto
 	
 Run SQUID with cufflinks
 
-	python ../SQUID.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib first --read P --Cal All --RPKM gene_exp.txt --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./sam_first
+	python ../SQUID.py --GTF ./test.gtf -i ./test_R1.sam,./test_R2.sam,./control_R1.sam,./control_R2.sam --anchor 8 --length 100 --lib first --read P --Cal All --RPKM transcript_exp.txt --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./sam_first
 
 Required Parameters
 ------------
