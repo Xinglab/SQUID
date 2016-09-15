@@ -162,13 +162,7 @@ count_all_Density.txt: a file contains the observed counts and expected counts f
 Total.txt: a file contains total number of unique reads in each sample
 
 		column 1~n: Total number of unique reads in sample 1~n
-###rMATS_files###
-An intermediate folder contains all of the rMATS input and output files
 
-	rMATS_$comparison_$type.txt
-    		The input file for running rMATS.
-	rMATS_$comparison_$type folder
-		The folder contains the result of rMATS output.
 ###RPKM		
 An intermediate optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
 
@@ -180,6 +174,22 @@ An intermediate optional folder contains the result of RPKM result and gene expr
 		The file is RPKM file that contains RPKM value for each gene.
 		column 1: Gene ID
 		column 2~n+1: RPKM value for samples 
+		
+###rMATS_files###
+An intermediate folder contains all of the rMATS input and output files
+
+	rMATS_$comparison_$type.txt
+    		The input file for running rMATS.
+	rMATS_$comparison_$type folder
+		The folder contains the result of rMATS output.
+		
+###DEXSeq###
+An intermediate folder contains all of the rMATS input and output files
+
+	rMATS_$comparison_$type.txt
+    		The input file for running rMATS.
+	rMATS_$comparison_$type folder
+		The folder contains the result of rMATS output.
 
 
 Contacts and bug reports
