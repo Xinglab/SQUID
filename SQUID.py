@@ -492,7 +492,7 @@ for info in fr:
 		if(len(ss1) + len(ss2) ==2):
 			print "DEXSeq does not work on comparison without replicates"
 		else:	
-			output_S =  "%s/DEXSeq_files/DEXSeq_%s" % (output,a[0])
+			output_S =  "%s/DEXSeq_%s" % (output,a[0])
 			if (not os.path.exists(output_S)):
 				os.system("mkdir %s" % output_S)
 			cmd = "python %s/dexseq_prepare_annotation.py -r no %s/%s %s/DEXSeq.gff" % (bin_path, gtf_path, gtf, gtf_path)
