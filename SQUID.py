@@ -257,7 +257,6 @@ if(Cal=="All" or Cal=="count"):
 					else:
 						break
 					
-				print start
 				if(start ==-1 or resume == "false"):
 					start = 0
 				for ss in range(start, len(samples)):
