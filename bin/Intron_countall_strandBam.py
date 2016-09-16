@@ -79,7 +79,11 @@ if(lib=="unstrand"):
 			count[key]= [0]*num*6
 			count[key].append(gene_id)
 			count[key].append(a1[6])
+			##store whether the intron is intron (E) or not
 			count[key].append("true")
+			##store whether the intron has been output or not
+			count[key].append("true")
+			##store whether the intron is intron (M) or not
 			count[key].append("true")
 			ppL.setdefault((a1[0],int(a1[3])),[]).append(key)
                 	ppR.setdefault((a1[0],int(a1[4])),[]).append(key)
@@ -166,11 +170,13 @@ if(lib=="unstrand"):
 							in_p = key.split("_")
                 					if ((int(in_p[1]) < start +n1 )& (int(in_p[2])> start +n1)):        
 								count[key][num*6+2] ="false"
+								count[key][num*6+4] ="false"
 					if( fr2.getrname(iter.reference_id), index2) in pos:
                                                 for key in pos[ fr2.getrname(iter.reference_id),index2]:
                                                         in_p = key.split("_")   
                                                         if ((int(in_p[1]) < start +n1+n2 -1 )& (int(in_p[2])> start +n1+n2 -1)):
                                                                 count[key][num*6+2] ="false"
+								count[key][num*6+4] ="false"
 
 					if ( fr2.getrname(iter.reference_id), start+n1) in ppL:
 						for id in ppL[ fr2.getrname(iter.reference_id),start +n1]:
@@ -200,11 +206,6 @@ if(lib=="unstrand"):
 					for p in range( ss + anchor, ss + n3 -anchor+1 ):
 						if( fr2.getrname(iter.reference_id),p) in ppL:
 							for id in ppL[ fr2.getrname(iter.reference_id),p]:
-							#	if(id =="chr1_9881892_9884406"):
-                                                         #       	print str(iter)
-							#		print 33
-							#		print iter.get_reference_positions()
-							#		print aa1,aa2, start,ss, n1,n2,n3
 								#included count at left side
 								count[id][nn*6] +=1
 					for p in range( ss + anchor-1, ss + n3 -anchor):
@@ -224,9 +225,9 @@ if(lib=="unstrand"):
 		key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
 		if(count[key][num*6+3]=="true"):
 			if(re.search('\+',count[key][num*6+1])):
-				fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],a1[0],a1[3],a1[4],"\t".join(str(x) for x in count[key][0:num*6])))
+				fw.write("%s\t%s\t%s\t%s,%s\t%s\t%s\t%s\t%s\n" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],count[key][num*6+4],a1[0],a1[3],a1[4],"\t".join(str(x) for x in count[key][0:num*6])))
 			else:
-				fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],a1[0],a1[3],a1[4]))
+				fw.write("%s\t%s\t%s\t%s,%s\t%s\t%s\t%s" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],count[key][num*6+4],a1[0],a1[3],a1[4]))
 				for i in range(0, num):
 					fw.write("\t%s\t%s\t%s\t%s\t%s\t%s"%(count[key][i*6+2],count[key][i*6+3],count[key][i*6],count[key][i*6+1],count[key][i*6+4],count[key][i*6+5]))
 				fw.write("\n") 
@@ -275,6 +276,7 @@ for info1 in fr1:
 		count[key]= [0]*num*6
 		count[key].append(gene_id)
 		count[key].append(a1[6])
+		count[key].append("true")
 		count[key].append("true")
 		count[key].append("true")
 		ppL.setdefault((a1[0],int(a1[3])),[]).append(key)
@@ -402,12 +404,14 @@ for file in bamfile:
 						if ((int(in_p[1]) < start +n1 )& (int(in_p[2]) > start +n1)):
 							if (re.search(("\%s" %strand),count[key][num*6+1])):
 								count[key][num*6+2] ="false"
+								count[key][num*6+4] ="false"
 				if( fr2.getrname(iter.reference_id), index2) in pos:
 					 for key in pos[ fr2.getrname(iter.reference_id),index2]:
 						 in_p = key.split("_")   
 						 if ((int(in_p[1]) < start +n1+n2 -1 )& (int(in_p[2]) > start +n1+n2 -1 )):
 							if (re.search(("\%s" %strand),count[key][num*6+1])):
-								 count[key][num*6+2] ="false"		
+								 count[key][num*6+2] ="false"
+								 count[key][num*6+4] ="false"		
 
 				if ( fr2.getrname(iter.reference_id), start+n1) in ppL:
 					for id in ppL[ fr2.getrname(iter.reference_id),start +n1]:
@@ -464,9 +468,9 @@ for info1 in fr1:
 	key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
 	if(count[key][num*6+3]=="true"):
 		if(re.search('\+',count[key][num*6+1])):
-			fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],a1[0],a1[3],a1[4],"\t".join(str(x) for x in count[key][0:num*6])))
+			fw.write("%s\t%s\t%s\t%s,%s\t%s\t%s\t%s\t%s\n" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],count[key][num*6+4],a1[0],a1[3],a1[4],"\t".join(str(x) for x in count[key][0:num*6])))
 		else:
-			fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],a1[0],a1[3],a1[4]))
+			fw.write("%s\t%s\t%s\t%s,%s\t%s\t%s\t%s" % (key, count[key][num*6],count[key][num*6+1],count[key][num*6+2],count[key][num*6+4],a1[0],a1[3],a1[4]))
 			for i in range(0, num):
 				fw.write("\t%s\t%s\t%s\t%s\t%s\t%s"%(count[key][i*6+2],count[key][i*6+3],count[key][i*6],count[key][i*6+1],count[key][i*6+4],count[key][i*6+5]))
 			fw.write("\n") 

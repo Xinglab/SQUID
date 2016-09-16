@@ -54,9 +54,8 @@ for info2 in fr2:
 	for i in  range(index_s , index_e+1):
 		if (a2[0], exon_strand, i) in pos:
 				for j in pos[a2[0],exon_strand, i]:
-					if(int(a2[3]) <= intron[j][3]):
-						if(int(a2[4]) >= intron[j][3]):
-							intron[j][0]="false"
+					if(int(a2[3]) <= intron[j][3] and int(a2[4]) >= intron[j][3]):
+						intron[j][0]="false"
 					if( (int(a2[3]) > intron[j][3]) and  (int(a2[3]) <= intron[j][4])):
 						intron[j][0]="false"
 					
@@ -77,15 +76,13 @@ for info2 in fr2:
                                 for j in pos[a2[0],intron_strand, i]: 
 					if(int(a2[3]) == intron[j][3] and int(a2[4])== intron[j][4]):
 						continue
-                                        if(int(a2[3]) < intron[j][3]):
-                                                if(int(a2[4]) > intron[j][3]):
-                                                        intron[j][1]="false"
-                                        if(int(a2[3]) == intron[j][3]):
-						intron[j][1]="false"
-					if( (int(a2[3]) > intron[j][3]) and  (int(a2[3]) < intron[j][4])):
+					if(int(a2[3]) == intron[j][3] or int(a2[4])==intron[j][4]):
+                                               intron[j][1]="false"
+					if(int(a2[3]) < intron[j][3] and int(a2[4]) > intron[j][3]):
                                                 intron[j][1]="false"
-
-
+                                        if( (int(a2[3]) > intron[j][3]) and  (int(a2[3]) < intron[j][4])):
+                                                intron[j][1]="false"        
+					
 fr2.close()
 
 
@@ -98,4 +95,18 @@ for info1 in fr:
 	fw.write('%s clean "%s"; clean_simple "%s";\n' %(info1.strip(),intron[key][0],intron[key][1]))
 fr.close()
 fw.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
