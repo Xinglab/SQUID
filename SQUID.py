@@ -450,7 +450,7 @@ for info in fr:
 				skp2[i] = sk_level[int(ss2[i])-1]	
 				SUM+= int(inc2[i])+ int(skp2[i])
 			if(SUM > 0):
-				if(len(a) > 3 and a[4] =="pool"):
+				if(len(a) > 4 and a[4] =="pool"):
 					fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],sum(map(lambda x:int(x),inc1)),sum(map(lambda x:int(x),skp1)),sum(map(lambda x:int(x),inc2)),sum(map(lambda x:int(x),skp2)),a1[10],a1[11]))
 				else:
 					fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],",".join(inc1),",".join(skp1), ",".join(inc2),",".join(skp2),a1[10],a1[11]))
