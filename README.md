@@ -178,18 +178,8 @@ An intermediate optional folder contains the result of RPKM result and gene expr
 ###rMATS_files###
 An intermediate folder contains all of the rMATS input and output files
 
-	rMATS_$comparison_$type.txt
-    		The input file for running rMATS.
-	rMATS_$comparison_$type folder
-		The folder contains the result of rMATS output.
-		
-###DEXSeq###
-An intermediate folder contains all of the rMATS input and output files
-
-	rMATS_$comparison_$type.txt
-    		The input file for running rMATS.
-	rMATS_$comparison_$type folder
-		The folder contains the result of rMATS output.
+###DEXSeq_files###
+An intermediate folder contains all of the DEXSeq input and output files
 
 
 Contacts and bug reports
