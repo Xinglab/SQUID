@@ -4,10 +4,11 @@ Requirements
 ------------
 1. Install Python 2.7.x and corresponding versions of NumPy and
 SciPy.
-2. Install cufflinks
-3. Install kallisto
 2. Install pysam version 0.8.4
-3. Add the Python directory to the $PATH environment variable.
+3. Install kallisto for the run with fastq files provided
+4. Install cufflinks for the run without fastq files provided
+5. Install DEXseq to run differential spliced intron analysis
+6. Add the Python directory to the $PATH environment variable.
 
 Installation
 ------------
