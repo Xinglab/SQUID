@@ -23,8 +23,7 @@ def vec2psi(inc,skp,effective_inclusion_length,effective_skipping_length):
 	inclusion_length=effective_inclusion_length;
 	skipping_length=effective_skipping_length;
 	for i in range(len(inc)):
-		#if ((float(inc[i])==0 )|(float(skp[i])==0)|(skipping_length==0)|(inclusion_length==0)):
-		if (((float(inc[i])+float(skp[i]))==0)| (skipping_length==0)|(inclusion_length==0)):
+		if (float(inc[i])+float(skp[i]))==0:
 			psi.append("NA");
 		else:
 			psi.append(str(round(float(inc[i])/inclusion_length/(float(inc[i])/inclusion_length+float(skp[i])/skipping_length),3)));
@@ -59,7 +58,7 @@ for i in ilines:
 		if j!="NA":
 			sum2+=float(j);
 			count2+=1;
-	if ((count1==0) |(count2==0)):
+	if (count1+count2)==0:
 		diff="NA";
 	else:
 		diff=str(round(sum1/count1-sum2/count2,3));

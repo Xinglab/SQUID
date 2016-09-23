@@ -6,7 +6,7 @@ from multiprocessing import Pool;
 from scipy.optimize import fmin_cobyla
 from scipy.optimize import fmin_l_bfgs_b
 from math import log;
-#print "old rmats"
+
 numpy.random.seed(1231);
 warnings.filterwarnings('ignore');
 
@@ -114,7 +114,7 @@ def myfunc_marginal_2der(x, args):
 	inclusion_length=args[4];
 	skipping_length=args[5]
 	#print('test x');print(x);print(var);
-	temp1=1/pow(x,2)/pow(1-x,2)*(((2*x-1)*(logit(beta)-logit(x))-1)/var+1);#temp1=(2*x-1)/pow(x,2)/pow(1-x,2)*((logit(beta)-logit(x)-1/(2*x-1))/var+1);
+	temp1=1/pow(x,2)/pow(1-x,2)*(((2*x-1)*(logit(beta)-logit(x))-1)/var-1);#temp1=(2*x-1)/pow(x,2)/pow(1-x,2)*((logit(beta)-logit(x)-1/(2*x-1))/var+1);
 	temp2=I*skipping_length*((2*inclusion_length+skipping_length)*x+skipping_length*(1-x))/pow(x,2)/pow(inclusion_length*x+skipping_length*(1-x),2);
 	temp3=S*inclusion_length*((inclusion_length+2*skipping_length)*(1-x)+inclusion_length*x)/pow(1-x,2)/pow(inclusion_length*x+skipping_length*(1-x),2);
 	#print('test');print(beta);print(x);print(var);print(temp1);print(temp2);print(temp3);
@@ -127,7 +127,7 @@ def myfunc_marginal(x, *args):
 	sum=0;
 	for i in range(len(psi)):
 		new_psi=inclusion_length*psi[i]/(inclusion_length*psi[i]+skipping_length*(1-psi[i]));
-		f1=I[i]*log(new_psi)+S[i]*log(1-new_psi)-pow(logit(psi[i])-logit(beta),2)/2/var+log(psi[i])+log(1-psi[i]);
+		f1=I[i]*log(new_psi)+S[i]*log(1-new_psi)-pow(logit(psi[i])-logit(beta),2)/2/var-log(psi[i])-log(1-psi[i]);
 		f1_2der=abs(myfunc_marginal_2der(psi[i],[I[i],S[i],beta,var,inclusion_length,skipping_length]));
 		sum+=(0.5*log(abs(f1_2der)+0.00001)-f1);
 	return(sum);
@@ -180,7 +180,7 @@ def myfunc_individual(x,*args):
 	inclusion_length=args[4];
 	skipping_length=args[5]
 	new_psi=inclusion_length*x/(inclusion_length*x+skipping_length*(1-x));
-	return(-1*(I*log(new_psi)+S*log(1-new_psi)-(logit(x)-logit(beta))*(logit(x)-logit(beta))/2/var+log(x)+log(1-x)));
+	return(-1*(I*log(new_psi)+S*log(1-new_psi)-(logit(x)-logit(beta))*(logit(x)-logit(beta))/2/var-log(x)-log(1-x)));
 
 def myfunc_individual_der(x,*args):
 	I=args[0];S=args[1];beta=args[2];var=args[3];
@@ -188,7 +188,7 @@ def myfunc_individual_der(x,*args):
 	skipping_length=args[5];
 	new_psi=inclusion_length*x/(inclusion_length*x+skipping_length*(1-x));
 	new_psi_der=inclusion_length*skipping_length/pow(inclusion_length*x+skipping_length*(1-x),2);
-	return(-1*(I/new_psi*new_psi_der-S/(1-new_psi)*new_psi_der-(logit(x)-logit(beta))/var/x/(1-x)+1/x-1/(1-x) ));
+	return(-1*(I/new_psi*new_psi_der-S/(1-new_psi)*new_psi_der-(logit(x)-logit(beta))/var/x/(1-x)-1/x+1/(1-x) ));
 
 def myfunc_likelihood(x, args):
 	I=args[0];S=args[1];beta=args[2];var=args[3];sum=0;N=I+S;
@@ -209,13 +209,13 @@ def MLE_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effective_ski
 		var1=0.01;
 	if var2<=0.01:
 		var2=0.01;
-#	print('var1');print(var1);print('var2');print(var2);
+	print('var1');print(var1);print('var2');print(var2);
 	while((iter_cutoff>0.01)&(count<=iter_maxrun)):
 		count+=1;
 		#iteration of beta
 		beta_0=sum(psi1)/len(psi1);
 		beta_1=sum(psi2)/len(psi2);
-#		print('var1');print(var1);print('var2');print(var2);
+		print('var1');print(var1);print('var2');print(var2);
 		#if abs(sum(psi1)/len(psi1)-sum(psi2)/len(psi2))>cutoff:
 		if (sum(psi1)/len(psi1))>(sum(psi2)/len(psi2)):#minize psi2 if this is the case
 			xopt = fmin_l_bfgs_b(myfunc_1,[sum(psi2)/len(psi2)],myfunc_der_1,args=[psi1,psi2,var1,var2],bounds=[[0.001,0.999-cutoff]],iprint=-1)
@@ -223,13 +223,13 @@ def MLE_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effective_ski
 		else:#minize psi1 if this is the case
 			xopt = fmin_l_bfgs_b(myfunc_2,[sum(psi1)/len(psi1)],myfunc_der_2,args=[psi1,psi2,var1,var2],bounds=[[0.001,0.999-cutoff]],iprint=-1)
 			theta1 = max(min(float(xopt[0]),1-cutoff),0);theta2=theta1+cutoff;
-#		print('constrain_1xopt');print('theta');print(theta1);print(theta2);print(xopt);
+		print('constrain_1xopt');print('theta');print(theta1);print(theta2);print(xopt);
 		#else:
 		#	theta1=sum(psi1)/len(psi1);theta2=sum(psi2)/len(psi2);
 		beta_0=theta1;beta_1=theta2;
 		#iteration of psi
 		new_psi1=[];new_psi2=[];current_sum=0;likelihood_sum=0;
-#		print('constrain_2xopt');
+		print('constrain_2xopt');
 		for i in range(len(psi1)):
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi1[i]],myfunc_individual_der,args=[i1[i],s1[i],beta_0,var1,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 			new_psi1.append(float(xopt[0]));current_sum+=float(xopt[1]);print(xopt);
@@ -238,9 +238,9 @@ def MLE_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effective_ski
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi2[i]],myfunc_individual_der,args=[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 			new_psi2.append(float(xopt[0]));current_sum+=float(xopt[1]);print(xopt);
 			#likelihood_sum+=myfunc_marginal(new_psi2[i],[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length]);
-#		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
+		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
 		psi1=new_psi1;psi2=new_psi2;
-#		print('count');print(count);print('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
+		print('count');print(count);print('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
 		if count>1:
 			iter_cutoff=abs(previous_sum-current_sum);
 		previous_sum=current_sum;
@@ -260,7 +260,7 @@ def MLE_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skipping_leng
 		var1=0.01;
 	if var2<=0.01:
 		var2=0.01;
-#	print('var1');print(var1);print('var2');print(var2);
+	print('var1');print(var1);print('var2');print(var2);
 	while((iter_cutoff>0.01)&(count<=iter_maxrun)):
 		count+=1;
 		#iteration of beta
@@ -269,8 +269,8 @@ def MLE_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skipping_leng
 		xopt=fmin_l_bfgs_b(myfunc_multivar,[beta_0,beta_1],myfunc_multivar_der,args=[psi1,psi2,var1,var2],bounds=[[0.01,0.99],[0.01,0.99]],iprint=-1);
 		beta_0=float(xopt[0][0]);
 		beta_1=float(xopt[0][1]);
-#		print('unconstrain_1xopt');print(xopt);
-#		print('theta');print(beta_0);print(beta_1);print('theta_end');
+		print('unconstrain_1xopt');print(xopt);
+		print('theta');print(beta_0);print(beta_1);print('theta_end');
 		#iteration of psi
 		new_psi1=[];new_psi2=[];current_sum=0;likelihood_sum=0;
 		for i in range(len(psi1)):
@@ -281,9 +281,9 @@ def MLE_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skipping_leng
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi2[i]],myfunc_individual_der,args=[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 			new_psi2.append(float(xopt[0]));current_sum+=float(xopt[1]);print(xopt);
 			#likelihood_sum+=myfunc_marginal(new_psi2[i],[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length]);
-#		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
+		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
 		psi1=new_psi1;psi2=new_psi2;print
-#		print('count');print(count);('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
+		print('count');print(count);('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
 		if count>1:
 			iter_cutoff=abs(previous_sum-current_sum);
 		previous_sum=current_sum;
@@ -306,7 +306,7 @@ def MLE_marginal_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skip
 		var1=0.01;
 	if var2<=0.01:
 		var2=0.01;
-#	print('var1');print(var1);print('var2');print(var2);
+	print('var1');print(var1);print('var2');print(var2);
 	
 	#MLE of the full likelihood
 	while((iter_cutoff>0.01)&(count<=iter_maxrun)):
@@ -317,8 +317,8 @@ def MLE_marginal_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skip
 		xopt=fmin_l_bfgs_b(myfunc_multivar,[beta_0,beta_1],myfunc_multivar_der,args=[psi1,psi2,var1,var2],bounds=[[0.01,0.99],[0.01,0.99]],iprint=-1);
 		beta_0=float(xopt[0][0]);
 		beta_1=float(xopt[0][1]);
-#		print('unconstrain_MLE_xopt');print(xopt);
-#		print('theta');print(beta_0);print(beta_1);print('theta_end');
+		print('unconstrain_MLE_xopt');print(xopt);
+		print('theta');print(beta_0);print(beta_1);print('theta_end');
 		#iteration of psi
 		new_psi1=[];new_psi2=[];current_sum=0;likelihood_sum=0;
 		for i in range(len(psi1)):
@@ -329,15 +329,15 @@ def MLE_marginal_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skip
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi2[i]],myfunc_individual_der,args=[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 			new_psi2.append(float(xopt[0]));current_sum+=float(xopt[1]);
 			#likelihood_sum+=myfunc_marginal(new_psi2[i],[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length]);
-#		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
+		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
 		psi1=new_psi1;psi2=new_psi2;
-#		print('count');print(count);print('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
+		print('count');print(count);print('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
 		if count>1:
 			iter_cutoff=abs(previous_sum-current_sum);
 		previous_sum=current_sum;
 	#print('unconstrain');print(beta_0);print(beta_0+beta_1);print(psi1);print(psi2);print(current_sum);print(likelihood_sum);
-#	print('unconstrain_psi_MLE');print(psi1);print(psi2);
-#	print('unconstrain_beta_MLE');print(beta_0);print(beta_1);
+	print('unconstrain_psi_MLE');print(psi1);print(psi2);
+	print('unconstrain_beta_MLE');print(beta_0);print(beta_1);
 	if count>iter_maxrun:
 		return([current_sum,[psi1,psi2,0,0,var1,var2]]);
 	
@@ -345,14 +345,14 @@ def MLE_marginal_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skip
 	iter_cutoff=1;iter_maxrun=100;count=0;previous_sum=0;
 	while((iter_cutoff>0.01)&(count<=iter_maxrun)):
 		count+=1;
-#		print('unconstrain_MLE_marginal_value_1_der');print(myfunc_marginal_der(beta_0,i1,s1,psi1,var1,effective_inclusion_length,effective_skipping_length));
-#		print('unconstrain_MLE_marginal_value_2_der');print(myfunc_marginal_der(beta_1,i2,s2,psi2,var2,effective_inclusion_length,effective_skipping_length))
+		print('unconstrain_MLE_marginal_value_1_der');print(myfunc_marginal_der(beta_0,i1,s1,psi1,var1,effective_inclusion_length,effective_skipping_length));
+		print('unconstrain_MLE_marginal_value_2_der');print(myfunc_marginal_der(beta_1,i2,s2,psi2,var2,effective_inclusion_length,effective_skipping_length))
 		xopt1=fmin_l_bfgs_b(myfunc_marginal,[beta_0],myfunc_marginal_der,args=[i1,s1,psi1,var1,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 		xopt2=fmin_l_bfgs_b(myfunc_marginal,[beta_1],myfunc_marginal_der,args=[i2,s2,psi2,var2,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 		beta_0=float(xopt1[0][0]);
 		beta_1=float(xopt2[0][0]);
-#		print('unconstrain_1xopt');print(xopt1);
-#		print('unconstrain_2xopt');print(xopt2);
+		print('unconstrain_1xopt');print(xopt1);
+		print('unconstrain_2xopt');print(xopt2);
 		new_psi1=[];new_psi2=[];current_sum=0;likelihood_sum=0;
 		for i in range(len(psi1)):
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi1[i]],myfunc_individual_der,args=[i1[i],s1[i],beta_0,var1,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
@@ -380,7 +380,7 @@ def MLE_marginal_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effe
 		var1=0.01;
 	if var2<=0.01:
 		var2=0.01;
-#	print('var1');print(var1);print('var2');print(var2);
+	print('var1');print(var1);print('var2');print(var2);
 	
 	#MLE of the full likelihood
 	while((iter_cutoff>0.01)&(count<=iter_maxrun)):
@@ -388,7 +388,7 @@ def MLE_marginal_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effe
 		#iteration of beta
 		beta_0=sum(psi1)/len(psi1);
 		beta_1=sum(psi2)/len(psi2);
-#		print('var1');print(var1);print('var2');print(var2);
+		print('var1');print(var1);print('var2');print(var2);
 		#if abs(sum(psi1)/len(psi1)-sum(psi2)/len(psi2))>cutoff:
 		if (sum(psi1)/len(psi1))>(sum(psi2)/len(psi2)):#minize psi2 if this is the case
 			xopt = fmin_l_bfgs_b(myfunc_1,[sum(psi2)/len(psi2)],myfunc_der_1,args=[psi1,psi2,var1,var2],bounds=[[0.001,0.999-cutoff]],iprint=-1)
@@ -396,13 +396,13 @@ def MLE_marginal_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effe
 		else:#minize psi1 if this is the case
 			xopt = fmin_l_bfgs_b(myfunc_2,[sum(psi1)/len(psi1)],myfunc_der_2,args=[psi1,psi2,var1,var2],bounds=[[0.001,0.999-cutoff]],iprint=-1)
 			theta1 = max(min(float(xopt[0]),1-cutoff),0);theta2=theta1+cutoff;
-#		print('constrain_1xopt');print('theta');print(theta1);print(theta2);print(xopt);
+		print('constrain_1xopt');print('theta');print(theta1);print(theta2);print(xopt);
 		#else:
 		#	theta1=sum(psi1)/len(psi1);theta2=sum(psi2)/len(psi2);
 		beta_0=theta1;beta_1=theta2;
 		#iteration of psi
 		new_psi1=[];new_psi2=[];current_sum=0;likelihood_sum=0;
-#		print('constrain_2xopt');
+		print('constrain_2xopt');
 		for i in range(len(psi1)):
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi1[i]],myfunc_individual_der,args=[i1[i],s1[i],beta_0,var1,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 			new_psi1.append(float(xopt[0]));current_sum+=float(xopt[1]);print(xopt);
@@ -411,9 +411,9 @@ def MLE_marginal_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effe
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi2[i]],myfunc_individual_der,args=[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
 			new_psi2.append(float(xopt[0]));current_sum+=float(xopt[1]);print(xopt);
 			#likelihood_sum+=myfunc_marginal(new_psi2[i],[i2[i],s2[i],beta_1,var2,effective_inclusion_length,effective_skipping_length]);
-#		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
+		print('new_psi[0]');print(new_psi1[0]);print(new_psi2[0]);
 		psi1=new_psi1;psi2=new_psi2;
-#		print('count');print(count);print('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
+		print('count');print(count);print('previous_sum');print(previous_sum);print('current_sum');print(current_sum);
 		if count>1:
 			iter_cutoff=abs(previous_sum-current_sum);
 		previous_sum=current_sum;
@@ -432,7 +432,7 @@ def MLE_marginal_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effe
 		else:#minize psi1 if this is the case
 			xopt = fmin_l_bfgs_b(myfunc_marginal_2,[beta_0],myfunc_marginal_2_der,args=[i1,s1,psi1,var1,i2,s2,psi2,var2,effective_inclusion_length,effective_skipping_length],bounds=[[0.001,0.999-cutoff]],iprint=-1)
 			beta_0 = max(min(float(xopt[0]),1-cutoff),0);beta_1=beta_0+cutoff;
-#		print('constrain_xopt');print(xopt);
+		print('constrain_xopt');print(xopt);
 		new_psi1=[];new_psi2=[];current_sum=0;likelihood_sum=0;
 		for i in range(len(psi1)):
 			xopt = fmin_l_bfgs_b(myfunc_individual,[psi1[i]],myfunc_individual_der,args=[i1[i],s1[i],beta_0,var1,effective_inclusion_length,effective_skipping_length],bounds=[[0.01,0.99]],iprint=-1);
@@ -453,18 +453,18 @@ def MLE_marginal_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effe
 	
 #Random Sampling Function
 def likelihood_test(i1,i2,s1,s2,effective_inclusion_length,effective_skipping_length,flag,id):
-#	print('testing'+str(id));
+	print('testing'+str(id));
 	if flag==0:
 		return([1,1]);
 	else:
 		res=MLE_marginal_iteration(i1,i2,s1,s2,effective_inclusion_length,effective_skipping_length);
 		if abs(res[1][2]-res[1][3])<=cutoff:
-#			print('1<=cutoff');print(res);print((res[1][2]-res[1][3]));
+			print('1<=cutoff');print(res);print((res[1][2]-res[1][3]));
 			return([1,res[0]]);
 		else:
 			res_constrain=MLE_marginal_iteration_constrain(i1,i2,s1,s2,effective_inclusion_length,effective_skipping_length);
-#			print('2>cutoff');print(res);print(res_constrain);
-#			print(abs(res_constrain[0]-res[0]));print('2end');
+			print('2>cutoff');print(res);print(res_constrain);
+			print(abs(res_constrain[0]-res[0]));print('2end');
 			#print(abs(res_constrain[2]-res[2]));print('2end_marginal');			
 			if len(i1)<=3:
 				return([1-scipy.stats.chi2.cdf(2*(abs(res_constrain[0]-res[0])),1)]);
@@ -558,7 +558,7 @@ for i in range(len(ilines)):
 	effective_inclusion_length=int(element[5]);
 	effective_skipping_length=int(element[6]);
 	inc1=vec2float(inc1);skp1=vec2float(skp1);inc2=vec2float(inc2);skp2=vec2float(skp2);
-	if (vecprod(vecadd(inc1,skp1))==0) | (vecprod(vecadd(inc2,skp2))==0)|(effective_inclusion_length==0)|(effective_skipping_length==0):
+	if (vecprod(vecadd(inc1,skp1))==0) | (vecprod(vecadd(inc2,skp2))==0):
 		list_n_original_diff.append([inc1,inc2,skp1,skp2,effective_inclusion_length,effective_skipping_length,0,element[0]]);
 	else:
 		inc1=vecAddOne(inc1);skp1=vecAddOne(skp1);inc2=vecAddOne(inc2);skp2=vecAddOne(skp2);
@@ -575,7 +575,7 @@ rho=stats.pearsonr(numpy.array(psi_list_1),numpy.array(psi_list_2));rho=rho[0];
 if rho>0.9:
 	rho=0.9;
 rho=0.9
-#print('rho');print(rho);
+print('rho');print(rho);
 
 if MultiProcessor>1:
 	pool=Pool(processes=MultiProcessor);

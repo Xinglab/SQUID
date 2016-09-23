@@ -6,7 +6,7 @@ from multiprocessing import Pool;
 from scipy.optimize import fmin_cobyla
 from scipy.optimize import fmin_l_bfgs_b
 from math import log;
-print "paired"
+
 numpy.random.seed(1231);
 warnings.filterwarnings('ignore');
 
@@ -374,7 +374,7 @@ def myfunc_marginal_2der(x, args):
 	I=args[0];S=args[1];beta=args[2];var=args[3];
 	inclusion_length=args[4];
 	skipping_length=args[5]
-	temp1=1/pow(x,2)/pow(1-x,2)*(((2*x-1)*(logit(beta)-logit(x))-1)/var+1);#temp1=(2*x-1)/pow(x,2)/pow(1-x,2)*((logit(beta)-logit(x)-1/(2*x-1))/var+1);
+	temp1=1/pow(x,2)/pow(1-x,2)*(((2*x-1)*(logit(beta)-logit(x))-1)/var-1);#temp1=(2*x-1)/pow(x,2)/pow(1-x,2)*((logit(beta)-logit(x)-1/(2*x-1))/var+1);
 	temp2=I*skipping_length*((2*inclusion_length+skipping_length)*x+skipping_length*(1-x))/pow(x,2)/pow(inclusion_length*x+skipping_length*(1-x),2);
 	temp3=S*inclusion_length*((inclusion_length+2*skipping_length)*(1-x)+inclusion_length*x)/pow(1-x,2)/pow(inclusion_length*x+skipping_length*(1-x),2);
 	#print('test');print(beta);print(x);print(var);print(temp1);print(temp2);print(temp3);
@@ -387,7 +387,7 @@ def myfunc_marginal(x, *args):
 	sum=0;temp1=0;temp2=0;
 	for i in range(len(psi)):
 		new_psi=inclusion_length*psi[i]/(inclusion_length*psi[i]+skipping_length*(1-psi[i]));
-		f1=I[i]*log(new_psi)+S[i]*log(1-new_psi)-pow(logit(psi[i])-logit(beta),2)/2/var+log(psi[i])+log(1-psi[i]);
+		f1=I[i]*log(new_psi)+S[i]*log(1-new_psi)-pow(logit(psi[i])-logit(beta),2)/2/var-log(psi[i])-log(1-psi[i]);
 		temp2+=-1*f1;
 		f1_2der=abs(myfunc_marginal_2der(psi[i],[I[i],S[i],beta,var,inclusion_length,skipping_length]));
 		temp1+=0.5*log(abs(f1_2der));
@@ -443,7 +443,7 @@ def myfunc_individual(x,*args):
 	inclusion_length=args[4];
 	skipping_length=args[5]
 	new_psi=inclusion_length*x/(inclusion_length*x+skipping_length*(1-x));
-	return(-1*(I*log(new_psi)+S*log(1-new_psi)-(logit(x)-logit(beta))*(logit(x)-logit(beta))/2/var+log(x)+log(1-x)));
+	return(-1*(I*log(new_psi)+S*log(1-new_psi)-(logit(x)-logit(beta))*(logit(x)-logit(beta))/2/var-log(x)-log(1-x)));
 
 def myfunc_individual_der(x,*args):
 	I=args[0];S=args[1];beta=args[2];var=args[3];
@@ -451,7 +451,7 @@ def myfunc_individual_der(x,*args):
 	skipping_length=args[5];
 	new_psi=inclusion_length*x/(inclusion_length*x+skipping_length*(1-x));
 	new_psi_der=inclusion_length*skipping_length/pow(inclusion_length*x+skipping_length*(1-x),2);
-	return(-1*(I/new_psi*new_psi_der-S/(1-new_psi)*new_psi_der-(logit(x)-logit(beta))/var/x/(1-x)+1/x-1/(1-x) ));
+	return(-1*(I/new_psi*new_psi_der-S/(1-new_psi)*new_psi_der-(logit(x)-logit(beta))/var/x/(1-x)-1/x+1/(1-x) ));
 
 def myfunc_likelihood(x, args):
 	I=args[0];S=args[1];beta=args[2];var=args[3];sum=0;N=I+S;
