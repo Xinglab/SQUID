@@ -75,18 +75,19 @@ Output list
 Notes: $n denotes the number of samples provided in SQUID run
 
 ###Result###
-The folder contains the final output of two types of files: intron_PI.tx and Diff_$comparison_intron_PI.txt
+The folder contains the final output of two types of files: intron_PI.tx and Diff_$comparison_intron_PI.txt.
+
 $comparison denotes the label of comparison performed
 
 Common columns in both files:
 
-		column 1: Intron Id representing the chromosome position, start and end
-		column 2: Gene id of intron residing genes
-		column 3: Strand of intron residing genes
-		column 4: Chromosome name of introns
-		column 5: Start coordinate of introns
-		column 6: End coordinate of introns
-		column 7: Whether this intron was annotated in the gtf file as retained intron event
+		Intron_id: Intron Id representing the chromosome position, start and end
+		Gene_id :  Gene id of intron residing genes
+		Strand  :  Strand of intron residing genes
+		Chr     :  Chromosome name of introns
+		Start: Start coordinate of introns
+		End: End coordinate of introns
+		: Whether this intron was annotated in the gtf file as retained intron event
 		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
 		column 9: Inclusion counts for all of the samples seperated by commas
 		column 10: Skipping counts for all of the samples seperated by commas
