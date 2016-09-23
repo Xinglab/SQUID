@@ -126,38 +126,38 @@ An intermediate folder contains all of the count files
 
 count_intron.txt: a file contains the counts for all of the introns		
 	
-		column 1:Intron Id representing the chromosome position, start and end.
-		column 2:Gene id
-		column 3:Strand
-		column 4:Comma seperated logical values to denote Whether this intron was intron (E) or intron (M) based on read info
-		column 5:Chromosome name
-		column 6:Start coordinate
-		column 7:End coordinate    
-		column 8: Inclusion counts at 5' splice sites for sample 1
-		column 9: Skipping counts at 5' splice sites for sample 1
-		column 10: Inclusion counts at 3' splice sites for sample 1
-		column 11: Skipping counts at 3' splice sites for sample 1
-		column 12: Skipping counts of the intron for sample 1
-		column 13: counts lying in the intron for sample 1
+		column 1:            Intron Id representing the chromosome position, start and end.
+		column 2:            Gene id
+		column 3:            Strand
+		column 4:            Comma seperated logical values to denote Whether this intron was intron (Ex) or intron (Mu) based on read info
+		column 5:            Chromosome name
+		column 6:            Start coordinate
+		column 7:            End coordinate    
+		column 8:            Inclusion counts at 5' splice sites for sample 1
+		column 9:            Skipping counts at 5' splice sites for sample 1
+		column 10:           Inclusion counts at 3' splice sites for sample 1
+		column 11:           Skipping counts at 3' splice sites for sample 1
+		column 12:           Skipping counts of the intron for sample 1
+		column 13:           counts lying in the intron for sample 1
 		column 14~6*(n+1)+1: more counts for samples 2-n
 		
 count_exon.txt: a file contains the counts for all of the exon in each gene
 		
-		column 1: Gene id
-		column 2~ n+1: Gene counts in all of the sample
-		column n+2: Gene strand
-		column n+3: The chromosome of the gene residing 
+		column 1:            Gene id
+		column 2~ n+1:       Gene counts in all of the sample
+		column n+2:          Gene strand
+		column n+3:          The chromosome of the gene residing 
 		
 count_all_Density.txt: a file contains the observed counts and expected counts for all of the introns
 
-		column 1: Intron id representing the chromosome position, start and end.
-		column 2: The length of introns
-		column 3~n+2: The observed counts
-		column n+3~2n+2: The expected counts
+		column 1:           Intron id representing the chromosome position, start and end.
+		column 2:           The length of introns
+		column 3~n+2:       The observed counts
+		column n+3~2n+2:    The expected counts
 		
 Total.txt: a file contains total number of unique reads in each sample
 
-		column 1~n: Total number of unique reads in sample 1~n
+		column 1~n:        Total number of unique reads in sample 1~n
 
 ###RPKM		
 An intermediate optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
@@ -168,8 +168,8 @@ An intermediate optional folder contains the result of RPKM result and gene expr
 		The result of cufflinks of each sample
 	transcript_exp.txt
 		The file is RPKM file that contains RPKM value for each gene.
-		column 1: Gene ID
-		column 2~n+1: RPKM value for samples 
+		column 1:        Gene ID
+		column 2~n+1:    RPKM value for samples 
 		
 ###rMATS_files###
 An intermediate folder contains all of the rMATS input and output files
