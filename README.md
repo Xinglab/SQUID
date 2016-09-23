@@ -139,12 +139,12 @@ count_intron.txt: a file contains the counts for all of the introns
 		column 11:           Skipping counts at 3' splice sites for sample 1
 		column 12:           Skipping counts of the intron for sample 1
 		column 13:           counts lying in the intron for sample 1
-		column 14~6*(n+1)+1: more counts for samples 2-n
+		column 14~6*(n+1)+1: more counts for samples 2~n
 		
 count_exon.txt: a file contains the counts for all of the exon in each gene
 		
 		column 1:            Gene id
-		column 2~ n+1:       Gene counts in all of the sample
+		column 2~ n+1:       Gene counts in samples 2~n
 		column n+2:          Gene strand
 		column n+3:          The chromosome of the gene residing 
 		
@@ -157,7 +157,7 @@ count_all_Density.txt: a file contains the observed counts and expected counts f
 		
 Total.txt: a file contains total number of unique reads in each sample
 
-		column 1~n:        Total number of unique reads in sample 1~n
+		column 1~n:        Total number of unique reads in samples 1~n
 
 ###RPKM		
 An intermediate optional folder contains the result of RPKM result and gene expression files for the squid run without gene expression file provided. 
