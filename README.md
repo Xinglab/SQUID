@@ -71,17 +71,10 @@ Types of PI (Percent of Introns) Calculation
 
 Output list
 ------------
-Notes
-
-		n: number of samples
-		$type: Types of PI including PI_Junction and PI_Density
-		$comparison: The label of the each comparison provided in the Comparison file
-
 ###Result###
 The folder contains all of final result files
 
-counts_all_$type.txt store PI values for all of the samples
-
+intron_PI.txt store PI values for all of the samples
 		column 1: Intron Id representing the chromosome position, start and end
 		column 2: Gene id of intron residing genes
 		column 3: Strand of intron residing genes
