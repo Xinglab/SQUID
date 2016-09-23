@@ -124,7 +124,7 @@ An intermediate folder contains different types of gtf files to run the program.
 ###counts###
 An intermediate folder contains all of the count files
 
-count_all.txt: a file contains the counts for all of the introns		
+count_intron.txt: a file contains the counts for all of the introns		
 	
 		column 1:Intron Id representing the chromosome position, start and end.
 		column 2:Gene id
@@ -140,6 +140,13 @@ count_all.txt: a file contains the counts for all of the introns
 		column 12: Skipping counts of the intron for sample 1
 		column 13: counts lying in the intron for sample 1
 		column 14~6*(n+1)+1: more counts for samples 2-n
+		
+count_exon.txt: a file contains the counts for all of the exon in each gene
+		
+		column 1: Gene id
+		column 2~ n+1: Gene counts in all of the sample
+		column n+2: Gene strand
+		column n+3: The chromosome of the gene residing 
 		
 count_all_Density.txt: a file contains the observed counts and expected counts for all of the introns
 
