@@ -81,41 +81,30 @@ $comparison denotes the label of comparison performed
 
 Common columns in both files:
 
-		Intron_id: Intron Id representing the chromosome position, start and end
-		Gene_id :  Gene id of intron residing genes
-		Strand  :  Strand of intron residing genes
-		Chr     :  Chromosome name of introns
-		Start: Start coordinate of introns
-		End: End coordinate of introns
-		: Whether this intron was annotated in the gtf file as retained intron event
-		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
-		column 9: Inclusion counts for all of the samples seperated by commas
-		column 10: Skipping counts for all of the samples seperated by commas
-		column 11: Effective inclusion length
-		column 12: Effective skipping length
-		column 13: PI value for all of the samples seperated by commas
+		Intron_id:         Intron Id representing the chromosome position, start and end
+		Gene_id:           Gene id of intron residing genes
+		Strand:            Strand of intron residing genes
+		Chr:               Chromosome name of introns
+		Start:             Start coordinate of introns
+		End:               End coordinate of introns
+		Annotated:         Whether this intron was annotated in the gtf file as retained intron event
+		Attributes:        Comma seperated logical values to denote Whether this intron was intron (Ex) or intron (Mu)
+		Inclusion_counts:  Inclusion counts seperated by commas
+		Skipping_counts:   Skipping counts seperated by commas
+		Inclusion_length:  Effective inclusion length
+		Skipping_length:   Effective skipping length
+		PI_Junction:       PI_Junction value seperated by commas
+		Observed_counts:   Observed counts seperated by commas
+		Expected_counts:   Expected counts seperated by commas
+		PI_Density:        PI_Density seperated by commas
 
-rMATS_Result_$comparison_$type.txt store the result of differential PI for two samples
 
-		column 1: Intron Id representing the chromosome position, start and end
-		column 2: Gene id of intron residing genes
-		column 3: Strand of intron residing genes
-		column 4: Chromosome name of introns
-		column 5: Start coordinate of introns
-		column 6: End coordinate of introns
-		column 7: Whether this intron was annotated in the gtf file as retained intron event
-		column 8: Comma seperated logical values to denote Whether this intron was intron (E) or intron (M)
-		column 9: Inclusion counts for all replicates  of sample 1 seperated by commas
-		column 10: Skipping  counts for all replicates  of sample 1 seperated by commas
-		column 11: Inclusion counts for all replicates  of sample 2 seperated by commas
-		column 12: Skipping counts for all replicates  of sample 2 seperated by commas
-		column 13: Effective inclusion length
-		column 14: Effective skipping length
-		column 15: p-value for differential PI level of the two samples
-		column 16: FDR for differential RI level of the two samples
-		column 17: PI level for sample1, replicates seperated by commas
-		column 18: PI level for sample2, replicates seperated by commas
-		column 19: The difference of PI level between sample1 and sample2, which is the result of average PI level of sample1 minus the average PI level of sampel2.
+Extra olumns in Diff_$comparison_intron_PI.txt
+		
+		PValue_rMATS:      p-value from rMATS
+		FDR_rMATS:         FDR from rMATS
+		PValue_DEXSeq:     p-value from DEXSeq
+		FDR_DEXSeq:        FDR from DEXSeq
 
 ###test###
 A folder contains test files to run the program
