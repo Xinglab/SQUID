@@ -71,10 +71,15 @@ Types of PI (Percent of Introns) Calculation
 
 Output list
 ------------
-###Result###
-The folder contains all of final result files
 
-intron_PI.txt store PI values for all of the samples
+Notes: $n denotes the number of samples provided in SQUID run
+
+###Result###
+The folder contains the final output of two types of files: intron_PI.tx and Diff_$comparison_intron_PI.txt
+$comparison denotes the label of comparison performed
+
+Common columns in both files:
+
 		column 1: Intron Id representing the chromosome position, start and end
 		column 2: Gene id of intron residing genes
 		column 3: Strand of intron residing genes
