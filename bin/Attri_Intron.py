@@ -54,11 +54,13 @@ for info2 in fr2:
 	for i in  range(index_s , index_e+1):
 		if (a2[0], exon_strand, i) in pos:
 				for j in pos[a2[0],exon_strand, i]:
-					if(int(a2[3]) <= intron[j][3] and int(a2[4]) >= intron[j][3]):
+					#if(int(a2[3]) <= intron[j][3] and int(a2[4]) >= intron[j][3]):
+					if(int(a2[3]) >= intron[j][3] and int(a2[3]) < intron[j][4]):
 						intron[j][0]="false"
-					if( (int(a2[3]) > intron[j][3]) and  (int(a2[3]) <= intron[j][4])):
+					if( (int(a2[4]) > intron[j][3]) and  (int(a2[4]) <= intron[j][4])):
+					#if( (int(a2[3]) > intron[j][3]) and  (int(a2[3]) <= intron[j][4])):
 						intron[j][0]="false"
-					
+                                                
 
 fr2.close()
 
