@@ -19,10 +19,7 @@ awk '{print $2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7}' "$1" > "$2/Data.txt"
 python "$MATSfolder"inclusion_level.py "$2/Data.txt" "$2/Inc.txt"
 
 #Main
-/u/home/s/shiehshi/UCLA-Code-Transplantation-master/rMATSexe -t $4 -o $2/rMATS_Result_P.txt -i $1 -c $3 > /dev/null 2>&1
-#python "$MATSfolder"GLM_MS_unpaired.py "$1" "$2/" 50 84 "$4" "$3" > /dev/null 2>&1
-#python "$MATSfolder"GLM_MS_unpaired.py "$1" "$2/" 50 84 "$4" "$3" 
-python "$MATSfolder"FDR.py "$2/rMATS_Result_P.txt" "$2/rMATS_Result_FDR.txt"
-#python "$MATSfolder"FDR.py "$2/rMATS_Result_P.txt" "$2/rMATS_Result_FDR.txt" > /dev/null 2>&1
+python "$MATSfolder"GLM_MS_unpaired.py "$1" "$2/" 50 84 "$4" "$3" > /dev/null 2>&1
+python "$MATSfolder"FDR.py "$2/rMATS_Result_P.txt" "$2/rMATS_Result_FDR.txt" > /dev/null 2>&1
 paste "$2/rMATS_Result_FDR.txt" "$2/Inc.txt" > "$2/rMATS_Result.txt"
 #awk '{print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$10"\t"$11"\t"$8"\t"$9}' "$2/rMATS_Result.tmp" > "$2/rMATS_Result.txt"
