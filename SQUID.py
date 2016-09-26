@@ -589,7 +589,13 @@ for info in fr:
                 skp2 = ['0'] * len(ss2)
 		PI1=["NA"] * len(ss1)
 		PI2= ["NA"] * len(ss1)
-		
+		if(len(a) > 3 and a[3] =="pool"):
+			inc1 = ['0']
+			skp1 = ['0']
+			inc2 = ['0']
+                        skp2 = ['0']
+			PI1 =['NA']
+			PI2 =['NA']
 		while(info4):
 			a1 = info1.strip().split("\t")
 			a2 = info2.strip().split("\t")
