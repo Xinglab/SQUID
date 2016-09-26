@@ -433,10 +433,11 @@ for info in fr:
 			inc2[i] = in_level[int(ss2[i])-1]
 			skp2[i] = sk_level[int(ss2[i])-1]	
 			SUM+= int(inc2[i])+ int(skp2[i])
-		if(len(a) > 3 and a[3] =="pool"):
-			fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],sum(map(lambda x:int(x),inc1)),sum(map(lambda x:int(x),skp1)),sum(map(lambda x:int(x),inc2)),sum(map(lambda x:int(x),skp2)),a1[10],a1[11]))
-		else:
-			fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],",".join(inc1),",".join(skp1), ",".join(inc2),",".join(skp2),a1[10],a1[11]))
+		if(SUM > 0):
+			if(len(a) > 3 and a[3] =="pool"):
+				fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],sum(map(lambda x:int(x),inc1)),sum(map(lambda x:int(x),skp1)),sum(map(lambda x:int(x),inc2)),sum(map(lambda x:int(x),skp2)),a1[10],a1[11]))
+			else:
+				fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],",".join(inc1),",".join(skp1), ",".join(inc2),",".join(skp2),a1[10],a1[11]))
 	fr1.close()
 	fw.close()
 	cmd ="%s/MATS/rMATS.sh -d %s/rMATS_files/rMATS_%s_Junction.txt -o %s/rMATS_files/rMATS_%s_Junction -p %s  -t %s -c %s" %(bin_path,output,a[0],output,a[0],p,analysis, c1)
@@ -460,6 +461,7 @@ for info in fr:
 		for s2 in ss2:
 			s2 = int(s2)-1
 			in2.append(str(int(s2+1)+2))
+		
 		cmd = "cut -f 1,2 %s/count_intron.txt > %s/intron_id.txt" % (count_path, output_S)	
 		os.system(cmd)
                 logging.debug(cmd)
@@ -519,7 +521,8 @@ for info in fr:
 		fw = open("%s/DEXSeq_counts.txt" % output_S,"w")
 		fw.write("ID\tIJC_SAMPLE_1\tSJC_SAMPLE_1\tIJC_SAMPLE_2\tSJC_SAMPLE_2\tIncFormLen\tSkipFormLen\tPI_SAMPLE1\tPI_SAMPLE2\tPI_Diff\n")
 		for info1 in fr1:
-			a1 = info1.split("\t")
+			a1 = info1.strip().split("\t")
+			#print a1
 			exp1 = [0] * len(ss1)
 			obs1 = [0] * len(ss1)
 			exp2 = [0] * len(ss2)
@@ -531,22 +534,23 @@ for info in fr:
 			for i in range(0,len(ss1)):
 				obs1[i] = a1[int(ss1[i])+1]
 				exp1[i] = a1[int(ss1[i])+1+num]
-				if(int(exp1[i])==0):
-					pi1[i] = "NA"
-				elif(int(exp1[i]) < int(obs1[i])):
+				if(int(exp1[i]) < int(obs1[i])):
 					pi1[i] = "1"
+				elif(int(exp1[i])==0):
+                                        pi1[i] = "NA"
 				else:		
-					pi1[i] = str(float(obs1[i]) / (float(exp1[i])))       
+					pi1[i] = str(float(obs1[i]) / (float(exp1[i])))  
 			for i in range(0,len(ss2)):
 				obs2[i] = a1[int(ss2[i])+1]
                                 exp2[i] = a1[int(ss2[i])+1+num]
-                                if(int(exp2[i])==0):
-                                        pi2[i] = "NA"
-                                elif(int(exp2[i]) < int(obs2[i])):
+                                if(int(exp2[i]) < int(obs2[i])):
                                         pi2[i] = "1" 
-                                else:    
+                                elif(int(exp2[i])==0):
+                                        pi2[i] = "NA"
+				else:    
                                         pi2[i] = str(float(obs2[i]) / (float(exp2[i]))) 	
 				
+			#print obs1, exp1,obs2, exp2
 			diff = "NA"
 
 			s1 = []
@@ -559,7 +563,7 @@ for info in fr:
 					s2.append(float(pi2[i]))
 			if(len(s1) > 0 and len(s2) > 0):
 				diff = sum(s1)/len(s1) - sum(s2)/len(s2)        
-			fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],",".join(inc1),",".join(skp1), ",".join(inc2),",".join(skp2),a1[1],a1[1],",".join(pi1),",".join(pi2),diff))
+			fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],",".join(obs1),",".join(exp1), ",".join(obs2),",".join(exp2),a1[1],a1[1],",".join(pi1),",".join(pi2),diff))
 		fr1.close()
 		fw.close()
 	##generate final output
@@ -579,16 +583,29 @@ for info in fr:
                 info2 = fr2.readline()
                 info3 = fr3.readline()
                 info4 = fr4.readline()
+		inc1 = ['0'] * len(ss1)
+		skp1 = ['0'] * len(ss1)
+		inc2 = ['0'] * len(ss2)
+                skp2 = ['0'] * len(ss2)
+		PI1=["NA"] * len(ss1)
+		PI2= ["NA"] * len(ss1)
+		
 		while(info4):
 			a1 = info1.strip().split("\t")
 			a2 = info2.strip().split("\t")
 			a3 = info3.strip().split("\t")
 			a4 = info4.strip().split("\t")
-			fw.write("%s\t%s\t%s\t%s\t%s\n" %("\t".join(a3[0:8]), "\t".join(a4[1:]),"\t".join(a2[1:5]), "\t".join(a1[6:8]),"\t".join(a2[7:10])))
-			info1 = fr1.readline()
-                	info2 = fr2.readline()
-                	info3 = fr3.readline()
-                	info4 = fr4.readline()
+			if(a3[0]!= a4[0]):
+				fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\tNA\tNA\t%s\t%s\tNA\t%s\t%s\t%s\n" %("\t".join(a3[0:8]), ",".join(inc1),",".join(skp1),",".join(inc2),",".join(skp2),a4[5],a4[6], ",".join(PI1),",".join(PI2),"\t".join(a2[1:5]), "\t".join(a1[6:8]),"\t".join(a2[7:10])))
+				info1 = fr1.readline()
+                                info2 = fr2.readline()
+                                info3 = fr3.readline()
+			if(a3[0]== a4[0]):
+                        	fw.write("%s\t%s\t%s\t%s\t%s\n" %("\t".join(a3[0:8]), "\t".join(a4[1:]),"\t".join(a2[1:5]), "\t".join(a1[6:8]),"\t".join(a2[7:10])))
+				info1 = fr1.readline()
+                		info2 = fr2.readline()
+                		info3 = fr3.readline()
+                		info4 = fr4.readline()
                 fr1.close()
                 fr2.close()
 		fr3.close()
