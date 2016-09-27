@@ -30,7 +30,18 @@ intron = dict()
 for info1 in fr1:
 	a1 = info1.strip().split("\t")
 	key = "%s_%s_%s" % (a1[0],a1[3],a1[4])
-	intron[key]=["true","true",a1[0],int(a1[3]),int(a1[4])]
+	gene_id = re.sub('.*gene_id "|\".*','',a1[8])
+	if(intron.has_key(key)):
+                gg = intron[key][5].split(",")
+                gg_l = "true"
+                for g_id in gg:
+                        if(gene_id == g_id):
+                                gg_l = "false"
+                if(gg_l =="true"):
+                        intron[key][5] += ","
+                        intron[key][5] += gene_id
+        else:
+		intron[key]=["true","true",a1[0],int(a1[3]),int(a1[4]),gene_id]
 	index_s =  int(a1[3])/ bin
         index_e =  int(a1[4])/ bin
 	if(strand=="unstrand"):

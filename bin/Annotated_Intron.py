@@ -52,7 +52,7 @@ for info2 in fr2:
                 if (a2[0], a2[6], i) in pos:
                                 for j in pos[a2[0],a2[6], i]:
 					if(intron[j][4]== gene_id):
-						if (int(a2[3]) < int(intron[j][2]) and int(a2[4]) > int(intron[j][3])):
+						if (int(a2[3]) <= int(intron[j][2]) and int(a2[4]) >= int(intron[j][3])):
                                                 	intron[j][0] = "true"
 fr2.close()
 
