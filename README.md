@@ -33,17 +33,16 @@ Required Parameters
 	--GTF:
 		The gtf file
 	--RPKM: 
-		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value. 
+		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value
+	--fasta: 
+		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM value
+	--index:
+		The path to the kallisto index that is required to run kallisto from raw reads
+	 
 Optional Parameters
 ------------	
 	--o/--output:
 		The output directory. The default is current directory
-	--RPKM: 
-		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value
-	--fasta: 
-		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values, otherwise, cufflinks will be called
-	--index:
-		The path to the kallisto index that is required to run kallisto from raw reads. Without index provided, cufflinks will be called to calculate RPKM value
 	--l:
 		Estimated average fragment length. The parameter to run kallisto with default value of 200
 	--s:
