@@ -1,10 +1,12 @@
 #!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
-options, args = getopt.getopt(sys.argv[1:], 'i:o:',['input=','GTF=','fasta=','index=','output=','lib=','read=','length=','anchor=','Cal=','RPKM=','Comparison=','analysis=','c1=','p=','resume='])
+options, args = getopt.getopt(sys.argv[1:], 'i:o:',['input=','GTF=','fasta=','index=','l=','s=','output=','lib=','read=','length=','anchor=','Cal=','RPKM=','Comparison=','analysis=','c1=','p=','resume='])
 input ='';
 GTF ='';
 fasta='';
 index=''
+l = 200
+s = 100
 output ='.'
 lib ='unstrand'
 read ='P'
@@ -26,6 +28,10 @@ for opt, arg in options:
                 fasta = arg
 	elif opt in ('--index'):
                 index = arg
+	elif opt in ('--l'):
+                l = int(arg)
+	elif opt in ('--s'):
+                s = int(arg)
 	elif opt in ('-o','--output'):
 		output = arg
 	elif opt in ('--lib'):
@@ -58,6 +64,8 @@ if (not input or not GTF):
 	print "Usage :", sys.argv[0], " --GTF: The gtf file;"
 	print "Usage :", sys.argv[0], " fasta: s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values, otherwise, cufflinks will be called;"
 	print "Usage :", sys.argv[0], " index: The path to the kallisto index that is required to run kallisto from raw reads. Without index provided, cufflinks will be called to calculate RPKM value;"
+	print "Usage :", sys.argv[0], " l: Estimated average fragment length. The parameter to run kallisto with default value of 200;"
+	print "Usage :", sys.argv[0], " s: Estimated standard deviation of fragment length. The parameter to run kallisto with default value of 100;"
 	print "Usage :", sys.argv[0], " -o/--output: The output directory. The default is current directory;"
 	print "Usage :", sys.argv[0], " --lib: The library type with choices of unstrand/first/second. The details are explained in the parameter of library-type in tophat2. The default is unstrand;"
 	print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of (paired end) or S (single end). The default is P;"
@@ -149,7 +157,7 @@ if(Cal=="All" or Cal=="count"):
 		logging.debug("gtf_files\Intron_Annotated_" + gtf);
 		cmd = "python %s/Attri_Intron.py --gtf %s --path %s --strand %s" %(bin_path, gtf,gtf_path,lib)
 		os.system(cmd)
-		logging.debug("gtf_files\Intron_clean_" + gtf);
+		logging.debug("gtf_files\Intron_attri_" + gtf);
 		logging.debug("#########################################################################\n");
 
 	##generate the counts files
@@ -176,7 +184,6 @@ if(Cal=="All" or Cal=="count"):
 	info = fr.readline()
 	fr.close()
 	normF = map(int,info.strip().split("\t"))
-	
 	##generate the PI_Density counts
 	if(not os.path.exists(RPKM) or RPKM ==''):
 		RPKM_path = "%s/RPKM" % output
@@ -185,42 +192,8 @@ if(Cal=="All" or Cal=="count"):
 		if (not os.path.exists(RPKM_path)):
         		os.system("mkdir %s" % RPKM_path)
 		if(resume =="false" or not os.path.exists(RPKM)):
-			if (not os.path.exists(index) or fasta ==''):
-				l_type = "fr-unstranded"
-				if(lib =="first"):
-					l_type = "fr-firststrand"
-				if(lib =="second"):
-					l_type = "fr-secondstrand"
-				start = -1
-				for ss in range(0, len(samples)):
-					cufflinks_file = "%s/cufflinks_%s" % (RPKM_path,ss)
-					if( os.path.exists(cufflinks_file)):
-						start +=1
-					else:
-						break
-					
-				if(start ==-1 or resume == "false"):
-					start = 0
-				for ss in range(start, len(samples)):
-					cmd = "cufflinks --GTF %s/%s -p 1 --library-type %s --multi-read-correct -o %s/cufflinks_%s %s" %(gtf_path, gtf, l_type, RPKM_path, ss, samples[ss])
-					logging.debug(cmd)
-					os.system(cmd)
-				for ss in range(0, len(samples)):
-					fr = open("%s/cufflinks_%s/isoforms.fpkm_tracking" % (RPKM_path, ss))
-					info = fr.readline()
-					for info in fr:
-						a = info.strip().split("\t")
-						if(trans_RPKM.has_key(a[0])):
-							trans_RPKM[a[0]][ss]=a[9]
-						else:
-							trans_RPKM[a[0]] =[0] * len(samples)
-							trans_RPKM[a[0]][ss]=a[9]
-					fr.close()
-
-				fw = open(RPKM, "w")
-				for rp in trans_RPKM:
-					fw.write("%s\t%s\n" % (rp, "\t".join(str(x) for x in trans_RPKM[rp])))
-				fw.close()
+			if(fasta == '' or index ==''):
+				print "please provide fastq file and index for kallisto to generate RPKM file or provide RPKM file"
 			else:
 				fq = fasta.split(",")
                                 start = -1
@@ -234,7 +207,10 @@ if(Cal=="All" or Cal=="count"):
                                 if(start ==-1 or resume =="false"):
                                         start = 0	
 				for ss in range(start, len(samples)):
-					cmd = "kallisto quant --index=%s --output-dir=%s/kallisto_%s --threads=4 --plaintext %s" % (index, RPKM_path, ss, re.sub(":"," ",fq[ss]))
+					if(read =="P"):
+						cmd = "kallisto quant --index=%s --output-dir=%s/kallisto_%s --threads=%s --plaintext %s" % (index, RPKM_path, ss, p,re.sub(":"," ",fq[ss]))
+					else:
+						cmd = "kallisto quant --index=%s --output-dir=%s/kallisto_%s --single -l %s -s %s --threads=%s --plaintext %s" % (index, RPKM_path, ss,l,s,p, re.sub(":"," ",fq[ss]))
 					logging.debug(cmd)
 					os.system(cmd)
 				for ss in range(0, len(samples)):	
@@ -348,6 +324,13 @@ if(Cal=="All" or Cal=="count"):
 			intron_clean[a1[0]][0]= "false"
 		if(attri[1]=="false"):
                         intron_clean[a1[0]][1]= "false"
+		ATTRI = "U"
+		if(intron_clean[a1[0]][0] =="false" and intron_clean[a1[0]][1] =="false"):
+			ATTRI = "EI"
+		if(intron_clean[a1[0]][0] =="false" and intron_clean[a1[0]][1] =="true"):
+                        ATTRI = "E"
+		if(intron_clean[a1[0]][0] =="true" and intron_clean[a1[0]][1] =="false"):
+                        ATTRI = "I"
 		skp = [0] * num
 		inc = [0] * num
 		PI_J=[0] *num
@@ -379,7 +362,8 @@ if(Cal=="All" or Cal=="count"):
 		info1 = fr1.readline()
 		info2 = fr2.readline()
 		
-		fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[4], a1[5],a1[6],intron_anno[a1[0]],",".join(intron_clean[a1[0]]), ",".join(inc), ",".join(skp), in_l,sk_l,",".join(PI_J), ",".join(obs),",".join(exp),",".join(PI_D)))
+			
+		fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[4], a1[5],a1[6],intron_anno[a1[0]],ATTRI, ",".join(inc), ",".join(skp), in_l,sk_l,",".join(PI_J), ",".join(obs),",".join(exp),",".join(PI_D)))
 	fw.close()
 	fr1.close()
 	fr2.close()
