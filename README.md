@@ -5,8 +5,8 @@ Requirements
 1. Install Python 2.7.x and corresponding versions of NumPy and
 SciPy.
 2. Install pysam version 0.8.4
-3. Install kallisto for the run with fastq files provided
-4. Install DEXseq to run differential spliced intron analysis
+3. Install kallisto 0.43.0 for the run with fastq files provided
+4. Install DEXseq 1.16.10 to run differential spliced intron analysis
 5. Add the Python directory to the $PATH environment variable.
 
 Installation
@@ -29,11 +29,14 @@ Required Parameters
 		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples are sepreated by commas
 	--GTF:
 		The gtf file
-		
+	--RPKM: 
+		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value. 
 Optional Parameters
 ------------	
 	--o/--output:
 		The output directory. The default is current directory
+	--RPKM: 
+		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value
 	--fasta: 
 		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values, otherwise, cufflinks will be called
 	--index:
@@ -52,8 +55,6 @@ Optional Parameters
 		The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8
 	--Cal: 
 		Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All
-	--RPKM: 
-		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto or cufflinks will be called to calculate RPKM value
 	--Comparison: 
 		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped
 	--analysis: 
