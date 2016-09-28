@@ -38,6 +38,10 @@ Optional Parameters
 		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values, otherwise, cufflinks will be called
 	--index:
 		The path to the kallisto index that is required to run kallisto from raw reads. Without index provided, cufflinks will be called to calculate RPKM value
+	--l:
+		Estimated average fragment length. The parameter to run kallisto with default value of 200
+	--s:
+		Estimated standard deviation of fragment length. The parameter to run kallisto with default value of 100
 	--lib:
 		The library type with choices of unstrand/first/second. The details are explained in the parameter of library-type in tophat2. The default is unstrand
 	--read: 
