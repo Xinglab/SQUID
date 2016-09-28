@@ -6,9 +6,8 @@ Requirements
 SciPy.
 2. Install pysam version 0.8.4
 3. Install kallisto for the run with fastq files provided
-4. Install cufflinks for the run without fastq files provided
-5. Install DEXseq to run differential spliced intron analysis
-6. Add the Python directory to the $PATH environment variable.
+4. Install DEXseq to run differential spliced intron analysis
+5. Add the Python directory to the $PATH environment variable.
 
 Installation
 ------------
@@ -88,7 +87,7 @@ Common columns in both files:
 		Start:             Start coordinate of introns
 		End:               End coordinate of introns
 		Annotated:         Whether this intron was annotated in the gtf file as retained intron event
-		Attributes:        Comma seperated logical values to denote Whether this intron was intron (Ex) or intron (Mu)
+		Attributes:        One of the four intron types, U/E/I/EI
 		Inclusion_counts:  Inclusion counts seperated by commas
 		Skipping_counts:   Skipping counts seperated by commas
 		Inclusion_length:  Effective inclusion length
@@ -129,7 +128,7 @@ count_intron.txt: a file contains the counts for all of the introns
 		column 1:            Intron Id representing the chromosome position, start and end.
 		column 2:            Gene id
 		column 3:            Strand
-		column 4:            Comma seperated logical values to denote Whether this intron was intron (Ex) or intron (Mu) based on read info
+		column 4:            Comma seperated logical values to denote Whether this intron was intron (E) or intron (I) based on read info
 		column 5:            Chromosome name
 		column 6:            Start coordinate
 		column 7:            End coordinate    
