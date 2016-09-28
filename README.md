@@ -60,7 +60,7 @@ Optional Parameters
 	--analysis: 
 		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
 	--c1: 
-		The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
+		The cutoff of splicing difference of rMATS run using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
 	--p: 
 		The number of threads used to run rMATS. The default is 1;
 	--resume:
