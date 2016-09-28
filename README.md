@@ -5,7 +5,10 @@ Requirements
 1. Install Python 2.7.x and corresponding versions of NumPy and
 SciPy.
 2. Install pysam version 0.8.4
-3. Install kallisto 0.43.0 for the run with fastq files provided
+3. Install kallisto 0.43.0 for the run with fastq files provided. The kallisto index of human and mouse can be download throught the following link
+http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble74 
+http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/mm10_Ensemble78
+
 4. Install DEXseq 1.16.10 to run differential spliced intron analysis
 5. Add the Python directory to the $PATH environment variable.
 
