@@ -62,8 +62,8 @@ if (not input or not GTF):
 	print "          A python program to calculate the retained intron level and differential retained introns.\n"
 	print "Usage :", sys.argv[0], " -i/--input: s1.bam/s1.sam[,s2.bam/s2.sam,...]. Mapping results for all of samples in bam/sam format. Different samples are sepreated by commas;"
 	print "Usage :", sys.argv[0], " --GTF: The gtf file;"
-	print "Usage :", sys.argv[0], " fasta: s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values, otherwise, cufflinks will be called;"
-	print "Usage :", sys.argv[0], " index: The path to the kallisto index that is required to run kallisto from raw reads. Without index provided, cufflinks will be called to calculate RPKM value;"
+	print "Usage :", sys.argv[0], " fasta: s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values;"
+	print "Usage :", sys.argv[0], " index: The path to the kallisto index that is required to run kallisto from raw reads;"
 	print "Usage :", sys.argv[0], " l: Estimated average fragment length. The parameter to run kallisto with default value of 200;"
 	print "Usage :", sys.argv[0], " s: Estimated standard deviation of fragment length. The parameter to run kallisto with default value of 100;"
 	print "Usage :", sys.argv[0], " -o/--output: The output directory. The default is current directory;"
@@ -72,7 +72,7 @@ if (not input or not GTF):
 	print "Usage :", sys.argv[0], " --length: The read length of sequencing reads. The default length is 100;"
 	print "Usage :", sys.argv[0], " --anchor: The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8;"
 	print "Usage :", sys.argv[0], " --Cal: Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All;"
-	print "Usage :", sys.argv[0], " --RPKM: a file providing the RPKM value for each sample, the first column is gene ID with the following column being the RPKM value for each sample. If RPKM value is empty, the run of cufflinks will be called to generate RPKM value;"
+	print "Usage :", sys.argv[0], " --RPKM: A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value;"
 	print "Usage :", sys.argv[0], " --Comparison: A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped;"
 	print "uasge: ", sys.argv[0], " --analysis: Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U;"
 	print "Usage :", sys.argv[0], "--c1: The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001;"
@@ -425,8 +425,8 @@ for info in fr:
 	fr1.close()
 	fw.close()
 	cmd ="%s/MATS/rMATS.sh -d %s/rMATS_files/rMATS_%s_Junction.txt -o %s/rMATS_files/rMATS_%s_Junction -p %s  -t %s -c %s" %(bin_path,output,a[0],output,a[0],p,analysis, c1)
-	os.system(cmd)
 	logging.debug(cmd)
+	os.system(cmd)
 	logging.debug("Done running the rMATS for " + a[0]+ " using Junction methods")
 	
 	##run DEXSeq	
