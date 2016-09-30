@@ -10,7 +10,6 @@ http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble7
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/mm10_Ensemble78
 
 4. Install DEXseq 1.16.10 to run differential spliced intron analysis
-5. Add the Python directory to the $PATH environment variable.
 
 Installation
 ------------
