@@ -13,7 +13,7 @@ if (not gtf or not path):
         print "Not enough parameters!"
         print "Program : ", sys.argv[0]
         print "          A python program to get the annotated intron retention events from the given intron gtf file."
-        print "Usage :", sys.argv[0], " --gtf: The gtf file;"
+        print "Usage :", sys.argv[0], " --gtf: The gtf file, intron and exon gtf file will be located according to the name;"
         print "Usage :", sys.argv[0], " --path: The directory for the input and output gtf file."
         print datetime.datetime.now()
         print "Author  : Shaofang Li"

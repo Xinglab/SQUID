@@ -105,7 +105,11 @@ Exon = dict()
 fr = open(GTF[1])
 for info in fr:
         a = info.strip().split("\t")
-        gene_id = re.sub('.*gene_id "|\".*','',a[8])
+        if(len(a) < 9):
+                continue
+        if(a[2]!="exon"):
+                continue
+	gene_id = re.sub('.*gene_id "|\".*','',a[8])
         exon = "%s_%s" %(a[3],a[4])
         Exon.setdefault(gene_id,[]).append(exon )
 	Gene[gene_id] =[0] * num

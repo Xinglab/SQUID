@@ -27,6 +27,10 @@ trans = dict()
 fr = open("%s/%s" % (path,gtf))
 for info in fr:
 	a = info.strip().split("\t")
+	if(len(a) < 9):
+                continue 
+	if(a[2]!="exon"):
+                continue
 	transcript_id = re.sub('.*transcript_id "|\".*','',a[8])
 	t_strand = a[6]
 	if(strand == "unstrand"):
