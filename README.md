@@ -169,8 +169,6 @@ An intermediate optional folder contains the result of RPKM result and gene expr
 
 	kallisto_$n
 		The result of kallisto of each sample
-	cufflinks_$n
-		The result of cufflinks of each sample
 	transcript_exp.txt
 		The file is RPKM file that contains RPKM value for each gene.
 		column 1:        Gene ID
