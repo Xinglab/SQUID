@@ -28,7 +28,7 @@ Run SQUID with provided RPKM file
 Required Parameters
 ------------
 	-i/--input:
-		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples are sepreated by commas
+		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples are separated by commas
 	--GTF:
 		The gtf file
 	--RPKM: 
@@ -57,7 +57,7 @@ Optional Parameters
 	--Cal: 
 		Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All
 	--Comparison: 
-		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates seperated by commas), column 3 (sample 2 order in the input file,replicates seperated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped
+		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates separated by commas), column 3 (sample 2 order in the input file,replicates separated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped
 	--analysis: 
 		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
 	--c1: 
@@ -94,14 +94,14 @@ Common columns in both files:
 		End:               End coordinate of introns
 		Annotated:         Whether this intron was annotated in the gtf file as retained intron event
 		Attributes:        One of the four intron types, U/E/I/EI
-		Inclusion_counts:  Inclusion counts seperated by commas
-		Skipping_counts:   Skipping counts seperated by commas
+		Inclusion_counts:  Inclusion counts separated by commas
+		Skipping_counts:   Skipping counts separated by commas
 		Inclusion_length:  Effective inclusion length
 		Skipping_length:   Effective skipping length
-		PI_Junction:       PI_Junction value seperated by commas
-		Observed_counts:   Observed counts seperated by commas
-		Expected_counts:   Expected counts seperated by commas
-		PI_Density:        PI_Density seperated by commas
+		PI_Junction:       PI_Junction value separated by commas
+		Observed_counts:   Observed counts separated by commas
+		Expected_counts:   Expected counts separated by commas
+		PI_Density:        PI_Density separated by commas
 
 
 Extra olumns in Diff_$comparison_intron_PI.txt
@@ -134,7 +134,7 @@ count_intron.txt: a file contains the counts for all of the introns
 		column 1:            Intron Id representing the chromosome position, start and end.
 		column 2:            Gene id
 		column 3:            Strand
-		column 4:            Comma seperated logical values to denote Whether this intron was intron (E) or intron (I) based on read info
+		column 4:            Comma separated logical values to denote Whether this intron was intron (E) or intron (I) based on read info
 		column 5:            Chromosome name
 		column 6:            Start coordinate
 		column 7:            End coordinate    
