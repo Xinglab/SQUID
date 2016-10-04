@@ -123,7 +123,7 @@ An intermediate folder contains different types of gtf files to run the program.
 	Mus_musculus.Ensembl.GRCm38.78.gtf: the ensemble gtf files. This file should be provided by user. 
 	Exon_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains exons only
 	Intron_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains intron only
-	Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retended introns in the original gtf files
+	Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retained introns in the original gtf files
 	Intron_attri_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was overlapped with Exon and whether the intron is overlapped with other intron. 
 
 ###counts###
