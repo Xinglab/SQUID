@@ -81,7 +81,7 @@ if (run =="false"):
 	print "Usage :", sys.argv[0], " --align: s1.bam/s1.sam[,s2.bam/s2.sam,...]. Mapping results for all of samples in bam/sam format. Different samples are sepreated by commas;"
 	print "Usage :", sys.argv[0], " --GTF: The gtf file;"
 	print "Usage :", sys.argv[0], " fastq: s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values;"
-	print "Usage :", sys.argv[0], " check_len: whether to generate new fastq file to with equal read length. The default value is false;"
+	print "Usage :", sys.argv[0], " check_len: Whether to generate new fastq files to with equal read length. The default value is false;"
 	print "Usage :", sys.argv[0], " index_star: The path to the star index that is required to do the alignment using STAR;"
 	print "Usage :", sys.argv[0], " index_kallisto: The path to the kallisto index that is required to run kallisto from raw reads;"
 	print "Usage :", sys.argv[0], " l: Estimated average fragment length. The parameter to run kallisto with default value of 200;"
@@ -93,7 +93,7 @@ if (run =="false"):
 	print "Usage :", sys.argv[0], " --anchor: The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8;"
 	print "Usage :", sys.argv[0], " --Cal: Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All;"
 	print "Usage :", sys.argv[0], " --RPKM: A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value;"
-	print "Usage :", sys.argv[0], " --Comparison: A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the align file,replicates seperated by commas), column 3 (sample 2 order in the align file,replicates seperated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped;"
+	print "Usage :", sys.argv[0], " --Comparison: A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the align files replicates seperated by commas), column 3 (sample 2 order in the align files replicates seperated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped;"
 	print "uasge: ", sys.argv[0], " --analysis: Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U;"
 	print "Usage :", sys.argv[0], "--c1: The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001;"
         print "Usage :", sys.argv[0], " --p: The number of threads used to run rMATS. The default is 1;"
@@ -188,13 +188,15 @@ if(Cal=="All" or Cal=="count"):
 		fq_path = "%s/fq" % output
                 if (not os.path.exists(fq_path)):
                         os.system("mkdir %s" % fq_path)
-		check_file = "%s/check.txt" % fq_path
-		if (not os.path.exists(check_file)):
-			os.mknod(check_file)
-		if(resume =="false"): 
-			start = 0
-		else:
-			start = sum(1 for line in open(check_file))
+		start = 0
+		if(resume =="true"):
+			for ss in range(0, num):
+                        	fq1 = "%s/sample_%s.fq" % (fq_path,ss)
+				fq2 = "%s/sample_%s_2.fq" % (fq_path,ss)
+                        	if( os.path.exists(fq1) or os.path.exists(fq2)):
+                                	start +=1
+                        	else:
+                                	break
 		for ss in range(start, num):
 			format = "cat "
 			if(re.sub(".*\\.","",fq[ss]) =="gz"):
@@ -213,9 +215,6 @@ if(Cal=="All" or Cal=="count"):
                                 logging.debug(cmd)
                                 os.system(cmd)
                                 fq[ss] = "%s/sample_%s_1.fq:%s/sample_%s_2.fq:" % (fq_path,ss,fq_path,ss)	
-			cmd = 'echo "one" >> %s' % check_file
-			logging.debug(cmd)
-			os.system(cmd)	
 	###check whether the alignment file exist:
 	if(not align):
 		align_path = "%s/align" % output
