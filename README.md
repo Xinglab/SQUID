@@ -36,13 +36,17 @@ Required Parameters
 		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value
 	--fastq: 
 		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fastq or fastq format that is required to call kallisto to calculate RPKM value
-	--index:
+	--index_star:
+		The path to the star index that is required to do the alignment using STAR
+	--index_kallisto:
 		The path to the kallisto index that is required to run kallisto from raw reads
 	 
 Optional Parameters
 ------------	
 	--o/--output:
 		The output directory. The default is current directory
+	--check_len: 
+		Whether to generate new fastq files to with equal read length. The default value is false
 	--l:
 		Estimated average fragment length. The parameter to run kallisto with default value of 200
 	--s:
@@ -58,7 +62,7 @@ Optional Parameters
 	--Cal: 
 		Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All
 	--Comparison: 
-		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the input file,replicates separated by commas), column 3 (sample 2 order in the input file,replicates separated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped
+		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the align files,replicates separated by commas), column 3 (sample 2 order in the align files,replicates separated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped
 	--analysis: 
 		Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U
 	--c1: 
