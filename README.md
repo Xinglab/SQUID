@@ -109,7 +109,7 @@ Common columns in both files:
 		PI_Density:        PI_Density separated by commas
 
 
-Extra olumns in Diff_$comparison_intron_PI.txt
+Extra columns in Diff_$comparison_intron_PI.txt
 		
 		PValue_rMATS:      p-value from rMATS
 		FDR_rMATS:         FDR from rMATS
@@ -130,6 +130,12 @@ An intermediate folder contains different types of gtf files to run the program.
 	Intron_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains intron only
 	Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retained introns in the original gtf files
 	Intron_attri_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was overlapped with Exon and whether the intron is overlapped with other intron. 
+
+###fq###
+An intermediate folder contains all of the fastq with equal read length files
+
+###align###
+An intermediate folder contains all of the alignment files
 
 ###counts###
 An intermediate folder contains all of the count files
