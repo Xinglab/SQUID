@@ -759,7 +759,7 @@ for info in fr:
                         skp2 = ['0']
 			PI1 =['NA']
 			PI2 =['NA']
-		while(info4):
+		while(info3):
 			a1 = info1.strip().split("\t")
 			a2 = info2.strip().split("\t")
 			a3 = info3.strip().split("\t")
