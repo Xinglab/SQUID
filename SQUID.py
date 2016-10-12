@@ -95,7 +95,7 @@ if (run =="false"):
 	print "Usage :", sys.argv[0], " --RPKM: A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value;"
 	print "Usage :", sys.argv[0], " --Comparison: A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the align files replicates seperated by commas), column 3 (sample 2 order in the align files replicates seperated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped;"
 	print "uasge: ", sys.argv[0], " --analysis: Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U;"
-	print "Usage :", sys.argv[0], "--c1: The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001;"
+	print "Usage :", sys.argv[0], " --c1: The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001;"
         print "Usage :", sys.argv[0], " --p: The number of threads used to run rMATS. The default is 1;"
 	print "Usage :", sys.argv[0], " --resume: Whether to resume previous run. The default is false;"
 	print datetime.datetime.now()
