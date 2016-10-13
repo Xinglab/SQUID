@@ -261,6 +261,6 @@ A: The index in the comparison file is 1-based.
 
 Q: Can SQUID resume previous run?
 
-A: Yes, SQUID will resume previous run by setting parameter resume as true. Please delete the intermediate files if you’d like to regenerate. 
+A: Yes, SQUID will resume previous run by setting parameter resume as true. Please delete the intermediate files that you’d like to regenerate. 
 
  
