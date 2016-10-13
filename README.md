@@ -10,7 +10,8 @@ http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARmm10
 4. Install kallisto 0.43.0 for the run without RPKM files provided. The kallisto index of human and mouse can be downloaded throught the following link
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble74 
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/mm10_Ensemble78
-5. Install DEXseq 1.16.10 to run differential spliced intron analysis
+5. Install cufflinks 2.2.1 for the fun without RPKM and fastq files provided.  
+6. Install DEXseq 1.16.10 to run differential spliced intron analysis
 
 Installation
 ------------
@@ -20,13 +21,21 @@ Usage
 --------------------------------
 Run SQUID with provided fastq files
 	
-	python ../SQUID.py --GTF ./test.gtf  --fastq ./test_R1_1.fq:./test_R1_2.fq,./test_R2_1.fq:./test_R2_2.fq,./control_R1_1.fq:./control_R1_2.fq,./control_R2_1.fq:./control_R2_2.fq --check_len true --index_kallisto ./kallisto/test --index_star ./star --anchor 8 --length 100 --lib first --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam_first --resume true
+	python ../SQUID.py --GTF ./test.gtf  --fastq ./test_R1_1.fq:./test_R1_2.fq,./test_R2_1.fq:./test_R2_2.fq,./control_R1_1.fq:./control_R1_2.fq,./control_R2_1.fq:./control_R2_2.fq --check_len true --index_kallisto ./kallisto/test --index_star ./star --anchor 8 --length 100 --lib first --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam1 --resume true
 
 Please note that this run require high RAM due to STAR alignment	
 
+Run SQUID with provided alignment files and fastq  files
+
+	python ../SQUID.py --GTF ./test.gtf  --fastq ./test_R1_1.fq:./test_R1_2.fq,./test_R2_1.fq:./test_R2_2.fq,./control_R1_1.fq:./control_R1_2.fq,./control_R2_1.fq:./control_R2_2.fq --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --check_len true --index_kallisto ./kallisto/test  --anchor 8 --length 100 --lib first --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam2
+
 Run SQUID with provided alignment files and RPKM files
 
-	python ../SQUID.py --GTF ./test.gtf --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --RPKM transcript_exp.txt --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam
+	python ../SQUID.py --GTF ./test.gtf --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --RPKM transcript_exp.txt --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam3
+
+Run SQUID with provided alignment files
+
+	python ../SQUID.py --GTF ./test.gtf --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam4
 
 Required Parameters
 ------------
@@ -34,17 +43,17 @@ Required Parameters
 		s1.bam/s1.sam[,s2.bam/s2.sam]. Mapping results for all of samples in bam/sam format. Different samples are separated by commas
 	--GTF:
 		The gtf file
-	--RPKM: 
-		A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value
 	--fastq: 
 		s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fastq or fastq format that is required to call kallisto to calculate RPKM value
 	--index_star:
 		The path to the star index that is required to do the alignment using STAR
-	--index_kallisto:
-		The path to the kallisto index that is required to run kallisto from raw reads
 	 
 Optional Parameters
 ------------	
+	--RPKM:
+                A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value
+	--index_kallisto:
+                The path to the kallisto index that is required to run kallisto from raw reads
 	--o/--output:
 		The output directory. The default is current directory
 	--check_len: 
@@ -53,6 +62,8 @@ Optional Parameters
 		Estimated average fragment length. The parameter to run kallisto with default value of 200
 	--s:
 		Estimated standard deviation of fragment length. The parameter to run kallisto with default value of 100
+	--update:
+		Whether to update the attributes of introns using spliced reads. The default is false
 	--lib:
 		The library type with choices of unstrand/first/second. The details are explained in the parameter of library-type in tophat2. The default is unstrand
 	--read: 

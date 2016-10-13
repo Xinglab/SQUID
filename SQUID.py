@@ -1,6 +1,6 @@
 #!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
-options, args = getopt.getopt(sys.argv[1:], 'o:',['align=','GTF=','fastq=','check_len=','index_star=','index_kallisto=','l=','s=','output=','lib=','read=','length=','anchor=','Cal=','RPKM=','Comparison=','analysis=','c1=','p=','resume='])
+options, args = getopt.getopt(sys.argv[1:], 'o:',['align=','GTF=','fastq=','check_len=','index_star=','index_kallisto=','l=','s=','output=','update=','lib=','read=','length=','anchor=','Cal=','RPKM=','Comparison=','analysis=','c1=','p=','resume='])
 align ='';
 GTF ='';
 fastq='';
@@ -10,6 +10,7 @@ index_kallisto='';
 l = 200
 s = 100
 output ='.'
+update = 'false'
 lib ='unstrand'
 read ='P'
 length = 100
@@ -40,6 +41,8 @@ for opt, arg in options:
                 s = int(arg)
 	elif opt in ('-o','--output'):
 		output = arg
+	elif opt in ('--update'):
+                update  = arg 
 	elif opt in ('--lib'):
 		lib = arg
 	elif opt in ('--read'):
@@ -67,7 +70,7 @@ if(not align):
 	if(not fastq or not index_star):
 		print "Please provide either alignment file or fastq and star index to do the alignment"
 		run ="false"
-if(not RPKM):
+if(not RPKM and not align):
 	if( not fastq or not index_kallisto):
 		print "please provide either RPKM file or fastq and kallisto index to generate RPKM file"
 		run = "false"
@@ -87,6 +90,7 @@ if (run =="false"):
 	print "Usage :", sys.argv[0], " --l: Estimated average fragment length. The parameter to run kallisto with default value of 200;"
 	print "Usage :", sys.argv[0], " --s: Estimated standard deviation of fragment length. The parameter to run kallisto with default value of 100;"
 	print "Usage :", sys.argv[0], " -o/--output: The output directory. The default is current directory;"
+	print "Usage :", sys.argv[0], " --update: Whether to update the attributes of introns using spliced reads. The default is false;"
 	print "Usage :", sys.argv[0], " --lib: The library type with choices of unstrand/first/second. The details are explained in the parameter of library-type in tophat2. The default is unstrand;"
 	print "Usage :", sys.argv[0], " --read: The sequencing strategy of producing reads with choices of (paired end) or S (single end). The default is P;"
 	print "Usage :", sys.argv[0], " --length: The read length of sequencing reads. The default length is 100;"
@@ -328,7 +332,41 @@ if(Cal=="All" or Cal=="count"):
         		os.system("mkdir %s" % RPKM_path)
 		if(resume =="false" or not os.path.exists(RPKM)):
 			if(fastq == '' or index_kallisto ==''):
-				print "please provide fastq file and index for kallisto to generate RPKM file or provide RPKM file"
+                                l_type = "fr-unstranded"
+                                if(lib =="first"):
+                                        l_type = "fr-firststrand"
+                                if(lib =="second"):
+                                        l_type = "fr-secondstrand"
+                                start = -1
+                                for ss in range(0, num):
+                                        cufflinks_file = "%s/cufflinks_%s" % (RPKM_path,ss)
+                                        if( os.path.exists(cufflinks_file)):
+                                                start +=1
+                                        else:
+                                                break
+
+                                if(start ==-1 or resume == "false"):
+                                        start = 0
+                                for ss in range(start, num):
+                                        cmd = "cufflinks --GTF %s/%s -p 1 --library-type %s --multi-read-correct -o %s/cufflinks_%s %s" %(gtf_path, gtf, l_type, RPKM_path, ss, ALIGN[ss])
+                                        logging.debug(cmd)
+                                        os.system(cmd)
+                                for ss in range(0, num):
+                                        fr = open("%s/cufflinks_%s/isoforms.fpkm_tracking" % (RPKM_path, ss))
+                                        info = fr.readline()
+                                        for info in fr:
+                                                a = info.strip().split("\t")
+                                                if(trans_RPKM.has_key(a[0])):
+                                                        trans_RPKM[a[0]][ss]=a[9]
+                                                else:
+                                                        trans_RPKM[a[0]] =[0] * num
+                                                        trans_RPKM[a[0]][ss]=a[9]
+                                        fr.close()
+
+                                fw = open(RPKM, "w")
+                                for rp in trans_RPKM:
+                                        fw.write("%s\t%s\n" % (rp, "\t".join(str(x) for x in trans_RPKM[rp])))
+                                fw.close()
 			else:
                                 start = -1
                                 for ss in range(0, num):
@@ -451,20 +489,15 @@ if(Cal=="All" or Cal=="count"):
 	fw.write("Intron_id\tGene_id\tStrand\tChr\tStart\tEnd\tAnnotated\tAttributes\tInclusion_counts\tSkipping_counts\tInclusion_length\tSkipping_length\tPI_Junction\tObserved_counts\tExpected_counts\tPI_Density\n")
 	info1 = fr1.readline()
 	info2 = fr2.readline()
+
 	while(info2):
 		a1 = info1.strip().split("\t")
-		attri = a1[3].split(",")
-		if(attri[0]=="false"):
-			intron_clean[a1[0]][0]= "false"
-		if(attri[1]=="false"):
-                        intron_clean[a1[0]][1]= "false"
-		ATTRI = "U"
-		if(intron_clean[a1[0]][0] =="false" and intron_clean[a1[0]][1] =="false"):
-			ATTRI = "EI"
-		if(intron_clean[a1[0]][0] =="false" and intron_clean[a1[0]][1] =="true"):
-                        ATTRI = "E"
-		if(intron_clean[a1[0]][0] =="true" and intron_clean[a1[0]][1] =="false"):
-                        ATTRI = "I"
+		if(update !="false"):
+			attri = a1[3].split(",")
+			if(attri[0]=="false"):
+				intron_clean[a1[0]][0]= "false"
+			if(attri[1]=="false"):
+				intron_clean[a1[0]][1]= "false"
 		skp = [0] * num
 		inc = [0] * num
 		PI_J=[0] *num
@@ -473,8 +506,9 @@ if(Cal=="All" or Cal=="count"):
 		for i in range(0,num):
 			inc[i] = str(int(a1[i*6+7]) + int(a1[i*6+9]))
 			skp[i] = a1[i*6+11]
-			if(a1[i*6 +8]!= a1[i*6+11] or a1[i*6 +10]!= a1[i*6+11]):
-                                intron_clean[a1[0]][1]="false"
+			if(update !="false"):
+				if(a1[i*6 +8]!= a1[i*6+11] or a1[i*6 +10]!= a1[i*6+11]):
+                                	intron_clean[a1[0]][1]="false"
 			if((inc[i] + skp[i]) > 0) & ((float(inc[i])/in_l + float(skp[i])/sk_l) > 0):	
 				PI_J[i]= str((float(inc[i])/in_l)/(float(inc[i])/in_l + float(skp[i])/sk_l))
 			else:
@@ -495,7 +529,13 @@ if(Cal=="All" or Cal=="count"):
 				PI_D[i] ='NA'
 		info1 = fr1.readline()
 		info2 = fr2.readline()
-		
+		ATTRI = "U"
+                if(intron_clean[a1[0]][0] =="false" and intron_clean[a1[0]][1] =="false"):
+                        ATTRI = "EI"
+                if(intron_clean[a1[0]][0] =="false" and intron_clean[a1[0]][1] =="true"):
+                        ATTRI = "E"
+                if(intron_clean[a1[0]][0] =="true" and intron_clean[a1[0]][1] =="false"):
+                        ATTRI = "I"	
 			
 		fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" % (a1[0],a1[1],a1[2],a1[4], a1[5],a1[6],intron_anno[a1[0]],ATTRI, ",".join(inc), ",".join(skp), in_l,sk_l,",".join(PI_J), ",".join(obs),",".join(exp),",".join(PI_D)))
 	fw.close()
