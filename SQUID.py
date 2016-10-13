@@ -166,7 +166,7 @@ if(Cal=="All" or Cal=="count"):
 		os.system(cmd)
 		##use the awk command to generate Exon.gtf file
 		logging.debug("################ Generating  the intron gtf files #######################\n");
-		cmd = "less %s/%s | awk '{if($3==\"exon\"){print $_}}'> %s/Exon_%s" %(gtf_path, gtf, gtf_path, gtf)
+		cmd = "less %s/%s | awk '{if($3==\"exon\"){print $0}}'> %s/Exon_%s" %(gtf_path, gtf, gtf_path, gtf)
 		os.system(cmd)
 		logging.debug("gtf_files\Exon_" + gtf);
 
