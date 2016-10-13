@@ -10,7 +10,7 @@ http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARmm10
 4. Install kallisto 0.43.0 for the run without RPKM files provided. The kallisto index of human and mouse can be downloaded throught the following link
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble74 
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/mm10_Ensemble78
-5. Install cufflinks 2.2.1 for the fun without RPKM and fastq files provided.  
+5. Install [cufflinks 2.2.1](http://cole-trapnell-lab.github.io/cufflinks/install/) for the fun without RPKM and fastq files provided.  
 6. Install DEXseq 1.16.10 to run differential spliced intron analysis
 
 Installation
