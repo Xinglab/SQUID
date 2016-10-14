@@ -792,6 +792,9 @@ for info in fr:
                 skp2 = ['0'] * len(ss2)
 		PI1=["NA"] * len(ss1)
 		PI2= ["NA"] * len(ss1)
+		a4 = info4.strip().split("\t")
+		len1 = a4[5]
+		len2 = a4[6]	
 		if(len(a) > 3 and a[3] =="pool"):
 			inc1 = ['0']
 			skp1 = ['0']
@@ -799,13 +802,14 @@ for info in fr:
                         skp2 = ['0']
 			PI1 =['NA']
 			PI2 =['NA']
+	
 		while(info3):
 			a1 = info1.strip().split("\t")
 			a2 = info2.strip().split("\t")
 			a3 = info3.strip().split("\t")
 			a4 = info4.strip().split("\t")
 			if(a3[0]!= a4[0]):
-				fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\tNA\tNA\t%s\t%s\tNA\t%s\t%s\t%s\n" %("\t".join(a3[0:8]), ",".join(inc1),",".join(skp1),",".join(inc2),",".join(skp2),a4[5],a4[6], ",".join(PI1),",".join(PI2),"\t".join(a2[1:5]), "\t".join(a1[6:8]),"\t".join(a2[7:10])))
+				fw.write("%s\t%s\t%s\t%s\t%s\t%s\t%s\tNA\tNA\t%s\t%s\tNA\t%s\t%s\t%s\n" %("\t".join(a3[0:8]), ",".join(inc1),",".join(skp1),",".join(inc2),",".join(skp2),len1,len2, ",".join(PI1),",".join(PI2),"\t".join(a2[1:5]), "\t".join(a1[6:8]),"\t".join(a2[7:10])))
 				info1 = fr1.readline()
                                 info2 = fr2.readline()
                                 info3 = fr3.readline()
