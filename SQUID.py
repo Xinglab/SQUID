@@ -249,7 +249,7 @@ if(Cal=="All" or Cal=="count"):
 	if(resume =="false" or not os.path.exists(COUNT_file)):
 		start = 0
 		for ss in range(0, num):
-			exon = "%s/count_exon_%s.txt" % (count_path, ss)
+			exon = "%s/count_%s_exon.txt" % (count_path, ss)
 			if(os.path.exists(exon)):
 				start +=1
 			else:
