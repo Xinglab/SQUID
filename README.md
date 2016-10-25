@@ -263,4 +263,8 @@ Q: Can SQUID resume previous run?
 
 A: Yes, SQUID will resume previous run by setting parameter resume as true. Please delete the intermediate files that you’d like to regenerate. 
 
- 
+Q: Do the reads in the fastq files have to be the same length?
+
+A: No. If the reads in the fastq files do not have equal length, please set parameter check_len to true to generate new fastq files with equal length.
+
+
