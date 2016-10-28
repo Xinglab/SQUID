@@ -1,6 +1,6 @@
 #!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
-options, args = getopt.getopt(sys.argv[1:], 'o:',['align=','GTF=','fastq=','check_len=','index_star=','index_kallisto=','l=','s=','output=','update=','lib=','read=','length=','anchor=','Cal=','RPKM=','Comparison=','analysis=','c1=','p=','resume='])
+options, args = getopt.getopt(sys.argv[1:], 'o:',['align=','GTF=','fastq=','check_len=','index_star=','index_kallisto=','l=','s=','output=','update=','lib=','read=','length=','anchor=','Cal=','FPKM=','Comparison=','analysis=','c1=','p=','resume='])
 align ='';
 GTF ='';
 fastq='';
@@ -16,7 +16,7 @@ read ='P'
 length = 100
 anchor = 8
 Cal ='All'
-RPKM=''
+FPKM=''
 Comparison = ''
 analysis = 'U'
 c1 = 0.0001
@@ -53,8 +53,8 @@ for opt, arg in options:
                 anchor = int(arg)
 	elif opt in ('--Cal'):
                 Cal = arg
-	elif opt in ('--RPKM'):
-                RPKM = arg
+	elif opt in ('--FPKM'):
+                FPKM = arg
 	elif opt in ('--Comparison'):
                	Comparison = arg
         elif opt in ('--analysis'):
@@ -70,9 +70,9 @@ if(not align):
 	if(not fastq or not index_star):
 		print "Please provide either alignment file or fastq and star index to do the alignment"
 		run ="false"
-if(not RPKM and not align):
+if(not FPKM and not align):
 	if( not fastq or not index_kallisto):
-		print "please provide either RPKM file or fastq and kallisto index to generate RPKM file"
+		print "please provide either FPKM file or fastq and kallisto index to generate FPKM file"
 		run = "false"
 if( not GTF):
 	print "please provide gtf annotation file"
@@ -83,7 +83,7 @@ if (run =="false"):
 	print "          A python program to calculate the retained intron level and differential retained introns.\n"
 	print "Usage :", sys.argv[0], " --align: s1.bam/s1.sam[,s2.bam/s2.sam,...]. Mapping results for all of samples in bam/sam format. Different samples are sepreated by commas;"
 	print "Usage :", sys.argv[0], " --GTF: The gtf file;"
-	print "Usage :", sys.argv[0], " --fastq: s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate RPKM values;"
+	print "Usage :", sys.argv[0], " --fastq: s1_1.fq[:s1_2.fq][,s1_1.fq[:s2_2.fq],...]. The raw sequencing reads in fasta or fastq format that is required to call kallisto to calculate FPKM values;"
 	print "Usage :", sys.argv[0], " --check_len: Whether to generate new fastq files to with equal read length. The default value is false;"
 	print "Usage :", sys.argv[0], " --index_star: The path to the star index that is required to do the alignment using STAR;"
 	print "Usage :", sys.argv[0], " --index_kallisto: The path to the kallisto index that is required to run kallisto from raw reads;"
@@ -96,7 +96,7 @@ if (run =="false"):
 	print "Usage :", sys.argv[0], " --length: The read length of sequencing reads. The default length is 100;"
 	print "Usage :", sys.argv[0], " --anchor: The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8;"
 	print "Usage :", sys.argv[0], " --Cal: Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All;"
-	print "Usage :", sys.argv[0], " --RPKM: A file providing the RPKM value for each sample, the first column is transcript ID with the following column being the RPKM value for each sample. If it is not provided, kallisto will be called to calculate RPKM value;"
+	print "Usage :", sys.argv[0], " --FPKM: A file providing the FPKM value for each sample, the first column is transcript ID with the following column being the FPKM value for each sample. If it is not provided, kallisto will be called to calculate FPKM value;"
 	print "Usage :", sys.argv[0], " --Comparison: A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the align files replicates seperated by commas), column 3 (sample 2 order in the align files replicates seperated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped;"
 	print "uasge: ", sys.argv[0], " --analysis: Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U;"
 	print "Usage :", sys.argv[0], " --c1: The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001;"
@@ -324,13 +324,13 @@ if(Cal=="All" or Cal=="count"):
 	fr.close()
 	normF = map(int,info.strip().split("\t"))
 	##generate the PI_Density counts
-	if(not os.path.exists(RPKM) or RPKM ==''):
-		RPKM_path = "%s/RPKM" % output
-		trans_RPKM =dict()
-		RPKM = "%s/transcript_exp.txt" % RPKM_path
-		if (not os.path.exists(RPKM_path)):
-        		os.system("mkdir %s" % RPKM_path)
-		if(resume =="false" or not os.path.exists(RPKM)):
+	if(not os.path.exists(FPKM) or FPKM ==''):
+		FPKM_path = "%s/FPKM" % output
+		trans_FPKM =dict()
+		FPKM = "%s/transcript_exp.txt" % FPKM_path
+		if (not os.path.exists(FPKM_path)):
+        		os.system("mkdir %s" % FPKM_path)
+		if(resume =="false" or not os.path.exists(FPKM)):
 			if(fastq == '' or index_kallisto ==''):
                                 l_type = "fr-unstranded"
                                 if(lib =="first"):
@@ -339,7 +339,7 @@ if(Cal=="All" or Cal=="count"):
                                         l_type = "fr-secondstrand"
                                 start = -1
                                 for ss in range(0, num):
-                                        cufflinks_file = "%s/cufflinks_%s" % (RPKM_path,ss)
+                                        cufflinks_file = "%s/cufflinks_%s" % (FPKM_path,ss)
                                         if( os.path.exists(cufflinks_file)):
                                                 start +=1
                                         else:
@@ -348,29 +348,29 @@ if(Cal=="All" or Cal=="count"):
                                 if(start ==-1 or resume == "false"):
                                         start = 0
                                 for ss in range(start, num):
-                                        cmd = "cufflinks --GTF %s/%s -p 1 --library-type %s --multi-read-correct -o %s/cufflinks_%s %s" %(gtf_path, gtf, l_type, RPKM_path, ss, ALIGN[ss])
+                                        cmd = "cufflinks --GTF %s/%s -p 1 --library-type %s --multi-read-correct -o %s/cufflinks_%s %s" %(gtf_path, gtf, l_type, FPKM_path, ss, ALIGN[ss])
                                         logging.debug(cmd)
                                         os.system(cmd)
                                 for ss in range(0, num):
-                                        fr = open("%s/cufflinks_%s/isoforms.fpkm_tracking" % (RPKM_path, ss))
+                                        fr = open("%s/cufflinks_%s/isoforms.fpkm_tracking" % (FPKM_path, ss))
                                         info = fr.readline()
                                         for info in fr:
                                                 a = info.strip().split("\t")
-                                                if(trans_RPKM.has_key(a[0])):
-                                                        trans_RPKM[a[0]][ss]=a[9]
+                                                if(trans_FPKM.has_key(a[0])):
+                                                        trans_FPKM[a[0]][ss]=a[9]
                                                 else:
-                                                        trans_RPKM[a[0]] =[0] * num
-                                                        trans_RPKM[a[0]][ss]=a[9]
+                                                        trans_FPKM[a[0]] =[0] * num
+                                                        trans_FPKM[a[0]][ss]=a[9]
                                         fr.close()
 
-                                fw = open(RPKM, "w")
-                                for rp in trans_RPKM:
-                                        fw.write("%s\t%s\n" % (rp, "\t".join(str(x) for x in trans_RPKM[rp])))
+                                fw = open(FPKM, "w")
+                                for rp in trans_FPKM:
+                                        fw.write("%s\t%s\n" % (rp, "\t".join(str(x) for x in trans_FPKM[rp])))
                                 fw.close()
 			else:
                                 start = -1
                                 for ss in range(0, num):
-                                        kallisto_file = "%s/kallisto_%s" % (RPKM_path,ss)
+                                        kallisto_file = "%s/kallisto_%s" % (FPKM_path,ss)
                                         if( os.path.exists(kallisto_file)):
                                                 start +=1 
 					else:
@@ -380,35 +380,35 @@ if(Cal=="All" or Cal=="count"):
                                         start = 0	
 				for ss in range(start, num):
 					if(read =="P"):
-						cmd = "kallisto quant --index=%s --output-dir=%s/kallisto_%s --threads=%s --plaintext %s" % (index_kallisto, RPKM_path, ss, p,re.sub(":"," ",fq[ss]))
+						cmd = "kallisto quant --index=%s --output-dir=%s/kallisto_%s --threads=%s --plaintext %s" % (index_kallisto, FPKM_path, ss, p,re.sub(":"," ",fq[ss]))
 					else:
-						cmd = "kallisto quant --index=%s --output-dir=%s/kallisto_%s --single -l %s -s %s --threads=%s --plaintext %s" % (index_kallisto, RPKM_path, ss,l,s,p, re.sub(":"," ",fq[ss]))
+						cmd = "kallisto quant --index=%s --output-dir=%s/kallisto_%s --single -l %s -s %s --threads=%s --plaintext %s" % (index_kallisto, FPKM_path, ss,l,s,p, re.sub(":"," ",fq[ss]))
 					logging.debug(cmd)
 					os.system(cmd)
 				for ss in range(0, num):	
-					fr = open("%s/kallisto_%s/abundance.tsv" % (RPKM_path,ss))
+					fr = open("%s/kallisto_%s/abundance.tsv" % (FPKM_path,ss))
 					info = fr.readline()
 					for info in fr:
 						a = info.strip().split("\t")
-						if( a[0] in trans_RPKM):
+						if( a[0] in trans_FPKM):
 							if(read =="P"):
-								trans_RPKM[a[0]][ss] = float(a[3]) * 2/float(a[2]) * 1000 * 1000000/ normF[ss]
+								trans_FPKM[a[0]][ss] = float(a[3]) * 2/float(a[2]) * 1000 * 1000000/ normF[ss]
 							else:
-								trans_RPKM[a[0]][ss] = float(a[3]) / float(a[2]) * 1000 * 1000000/ normF[ss] 
+								trans_FPKM[a[0]][ss] = float(a[3]) / float(a[2]) * 1000 * 1000000/ normF[ss] 
 						else:
-							trans_RPKM[a[0]] = [0] * num
+							trans_FPKM[a[0]] = [0] * num
 							if(read =="P"):
-								trans_RPKM[a[0]][ss] = float(a[3]) * 2/float(a[2]) * 1000 * 1000000/ normF[ss]
+								trans_FPKM[a[0]][ss] = float(a[3]) * 2/float(a[2]) * 1000 * 1000000/ normF[ss]
 							else:
-								trans_RPKM[a[0]][ss] = float(a[3])/ float(a[2]) * 1000 * 1000000/ normF[ss]
+								trans_FPKM[a[0]][ss] = float(a[3])/ float(a[2]) * 1000 * 1000000/ normF[ss]
 					fr.close()
-				fw = open(RPKM, "w")
-				for rp in trans_RPKM:
-					fw.write("%s\t%s\n" % (rp, "\t".join(str(x) for x in trans_RPKM[rp])))
+				fw = open(FPKM, "w")
+				for rp in trans_FPKM:
+					fw.write("%s\t%s\n" % (rp, "\t".join(str(x) for x in trans_FPKM[rp])))
 				fw.close()		
-	if(os.path.exists(RPKM)):
+	if(os.path.exists(FPKM)):
 		Trans = dict()
-		fr = open(RPKM)
+		fr = open(FPKM)
 		for info in fr:
 			a = info.strip().split("\t")
 			Trans[a[0]] = a[1:]
@@ -714,13 +714,13 @@ for info in fr:
 		for s2 in ss2:
 			s2 = int(s2)-1
 			in2.append(str(int(s2+1)+2))
-		
+				
 		cmd = "cut -f 1,2 %s/count_intron.txt > %s/intron_id.txt" % (count_path, output_S)	
 		os.system(cmd)
                 logging.debug(cmd)
 		cmd = "cut -f %s,%s %s/count_all_Density.txt > %s/intron_count.txt" % (",".join(in1), ",".join(in2),count_path, output_S)
 		os.system(cmd)
-		logging.debug(cmd)      
+		logging.debug(cmd)  
 		cmd = "paste %s/intron_id.txt %s/intron_count.txt  > %s/intron_data.txt" % (output_S,output_S, output_S)
 		os.system(cmd)
                 logging.debug(cmd)
@@ -729,11 +729,11 @@ for info in fr:
 		for info1 in fr1:
 			a1 = info1.strip().split("\t")
 			DEX_Gene[a1[0]] = [0] * (len(ss1) + len(ss2))
-			for j in ss1+ss2:
-				DEX_Gene[a1[0]][int(j)-1] =int(a1[int(j)])
-	
+			for j in range(0, len(ss1)):
+				DEX_Gene[a1[0]][j] =int(a1[int(ss1[j])])
+			for j in range(0, len(ss2)):
+                                DEX_Gene[a1[0]][len(ss1) + j] =int(a1[int(ss2[j])])
 		fr1.close()
-		
 		fw = open("%s/alter_data.txt" % (output_S),"w")
 		fr1 = open("%s/intron_data.txt" % (output_S))
 		for info1 in fr1:
