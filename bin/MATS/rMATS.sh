@@ -36,13 +36,13 @@ else
 		check_code=$(python "$MATSfolder"check_input.py "$original_data")
 		if [ "$check_code" = "replicate" ];then
 	             	if [ "$TypeData" = "P" ];then
-				"$MATSfolder"rMATS_Paired.sh "$original_data" "$output_folder" "$Splicing_diff_cutoff" "$MultiProcessor" 
+				sh "$MATSfolder"rMATS_Paired.sh "$original_data" "$output_folder" "$Splicing_diff_cutoff" "$MultiProcessor" 
 			else
-				"$MATSfolder"rMATS_Unpaired.sh "$original_data" "$output_folder" "$Splicing_diff_cutoff" "$MultiProcessor" 
+				sh "$MATSfolder"rMATS_Unpaired.sh "$original_data" "$output_folder" "$Splicing_diff_cutoff" "$MultiProcessor" 
 			fi
 		else
 			if [ "$check_code" = "pooled" ];then
-				"$MATSfolder"MATS_LRT.sh "$original_data" "$output_folder" "$Splicing_diff_cutoff" "$MultiProcessor" 
+				sh "$MATSfolder"MATS_LRT.sh "$original_data" "$output_folder" "$Splicing_diff_cutoff" "$MultiProcessor" 
 			else
 				echo "$check_code";
 			fi
