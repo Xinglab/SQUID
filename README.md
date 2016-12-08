@@ -11,7 +11,7 @@ http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARmm10.tgz
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble74 
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/mm10_Ensemble78
 5. Install [cufflinks 2.2.1](http://cole-trapnell-lab.github.io/cufflinks/install/) for the fun without FPKM and fastq files provided.  
-6. Install [DEXseq 1.16.10](https://bioconductor.org/packages/devel/bioc/html/DEXSeq.html) to run differential spliced intron analysis
+6. Install [DEXSeq 1.16.10](https://bioconductor.org/packages/devel/bioc/html/DEXSeq.html) to run differential spliced intron analysis
 
 Installation
 ------------
