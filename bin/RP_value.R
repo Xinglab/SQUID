@@ -55,7 +55,7 @@ pfp[pfp>1]=1
 data = data.frame(data,pfp)
 data = merge(data,a[,c(1,19,28)],by.x = 1, by.y = 1, all.x = TRUE, all.y = FALSE)
 re = merge(a, data[,c(1,9)],by.x =1 ,by.y = 1, all = TRUE)
-colnames(re) = c(colnames(a),"combined_FDR")
+colnames(re) = c(colnames(a),"Combined_FDR")
 colnames(data) = c("Intron_id", "PValue_rMATS", "PValue_DEXSeq","rank_rMATS", "rank_DEXSeq","RP","rank_RP","c","pfp","Diff_PI_Junction","Diff_PI_Density")
 write.table(data,args[3],row.names = FALSE,quote = FALSE, sep="\t")
 write.table(re,args[4],row.names = FALSE,quote = FALSE, sep="\t")
