@@ -825,7 +825,7 @@ for info in fr:
 		fr4.close()
 		fw.close()
                 logging.debug("Output the result of differential spliced intron analysis of " + a[0] + "\n")
-                cmd = "Rscript %s/p_value.R %s/Diff_%s_intron_temp.txt 100 %s/rank_product_test_%s.txt %s/Result/Diff_%s_intron_PI.txt" %(bin_path, output_S, a[0],output_S, a[0],output,a[0])                
+                cmd = "Rscript %s/RP_value.R %s/Diff_%s_intron_temp.txt 100 %s/rank_product_test_%s.txt %s/Result/Diff_%s_intron_PI.txt" %(bin_path, output_S, a[0],output_S, a[0],output,a[0])                
 		logging.debug(cmd)
                 os.system(cmd)
                 logging.debug("Done running the DEXSeq for " + a[0]+ " using Denstiy methods")
