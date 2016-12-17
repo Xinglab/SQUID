@@ -775,7 +775,7 @@ for info in fr:
 		fr3 = open("%s/intron_PI.txt" % (output_path))
 		fr4 = open("%s/rMATS_files/rMATS_%s_Junction/rMATS_Result.txt" %(output,a[0]))
 
-		fw = open("%s/Result/Diff_%s_intron_PI.txt" %(output, a[0]),"w")
+		fw = open("%s/Diff_%s_intron_temp.txt" %(output_S, a[0]),"w")
 		fw.write("Intron_id\tGene_id\tStrand\tChr\tStart\tEnd\tAnnotated\tAttributes\tInclusion_counts_SAMPLE1\tSkipping_counts_SAMPLE1\tInclusion_counts_SAMPLE2\tSkipping_counts_SAMPLE2\tInclusion_length\tSkipping_length\tPValue_rMATS\tFDR_rMATS\tPI_Junction_SAMPLE1\tPI_Junction_SAMPLE2\tDiff_PI_Junction\tObserved_counts_SAMPLE1\tExpected_counts_SAMPLE1\tObserved_counts_SAMPLE2\tExpected_counts_SAMPLE2\tPValue_DEXSeq\tFDR_DEXSeq\tPI_Density_SAMPLE1\tPI_Density_SAMPLE2\tDiff_PI_Density\n")		
 		info1 = fr1.readline()
 		info2 = fr2.readline()
@@ -825,7 +825,10 @@ for info in fr:
 		fr4.close()
 		fw.close()
                 logging.debug("Output the result of differential spliced intron analysis of " + a[0] + "\n")
-
+                cmd = "Rscript %s/p_value.R %s/Diff_%s_intron_temp.txt 100 %s/rank_product_test_%s.txt %s/Result/Diff_%s_intron_PI.txt" %(bin_path, output_S, a[0],output_S, a[0],output,a[0])                
+		logging.debug(cmd)
+                os.system(cmd)
+                logging.debug("Done running the DEXSeq for " + a[0]+ " using Denstiy methods")
 fr.close()
 
 currentTime = time.time();
