@@ -128,6 +128,7 @@ Extra columns in Diff_$comparison_intron_PI.txt
 		FDR_rMATS:         FDR from rMATS
 		PValue_DEXSeq:     p-value from DEXSeq
 		FDR_DEXSeq:        FDR from DEXSeq
+		Combined_FDR:	   FDR of rank product test of rMATS and DEXSeq
 
 ###test###
 A folder contains test files to run the program
