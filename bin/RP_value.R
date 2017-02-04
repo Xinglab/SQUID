@@ -1,13 +1,41 @@
 args <- commandArgs(trailingOnly = TRUE)
 #args[1] use this as the input Diff_compare1_intron_PI.txt
 #args[2], the time of permutation perform
-#args[3], the output files
-#args[4], the output files
+#args[3], the minimum intron length,default is 100
+#args[4], the file with the FPKM value of  intron overlapping transcripts
+#args[5], the minimum mean FPKM value of intron overlapping transcripts in sample1 and sample2,default is 5
+#args[6], the order of sample1 in the comparison file
+#args[7], the order of sample2 in the comparison file
+#args[8], the minimum mean counts of  inclusion and skipping counts in sample1 and sample2, default is 20
+#args[9], the output files of rank product test
+#args[10], the final output file in the result folder
 #args = c("/u/nobackup/yxing/NOBACKUP/shaofang/shRNA/K562/new/squid_0.1/SQUID_U2AF2_K562_ENCSR904CJQ/Result/Diff_IR_1_intron_PI.txt","100")
 times = as.numeric(args[2])
+
 a = read.table(args[1],header = TRUE)
-data = a[complete.cases(a),]
-data = data[,c(1,15,24)]
+a= a[complete.cases(a),]
+##filter based on intron length
+a = a[a[,6]-a[,5] + 1 >= as.numeric(args[3]),]
+
+##filter based on FPKM value
+G = read.table(args[4],header = TRUE)
+ss1 =  as.numeric(unlist(strsplit(args[6],",")))+1
+ss2 =  as.numeric(unlist(strsplit(args[7],",")))+1
+G =  G[rowSums(G[,ss1]) > length(ss1)*as.numeric(args[8]) & rowSums(G[,ss2]) > length(ss2)*as.numeric(args[8]),]
+
+a = a[a[,1] %in%G[,1],]
+a= a[complete.cases(a),]
+##filter based on sum of inclusion and excluion counts
+
+I_s1 = unlist(lapply(a[,9], function(x) mean(as.numeric(unlist(strsplit(as.character(x),","))))))
+S_s1 = unlist(lapply(a[,10], function(x) mean(as.numeric(unlist(strsplit(as.character(x),","))))))
+
+I_s2 = unlist(lapply(a[,11], function(x) mean(as.numeric(unlist(strsplit(as.character(x),","))))))
+S_s2 = unlist(lapply(a[,12], function(x) mean(as.numeric(unlist(strsplit(as.character(x),","))))))
+a = data.frame(a,I_s1,S_s1,I_s2,S_s2 )
+a = a[a[,29] + a[,30] > args[8] & a[,31] + a[,32]> args[8],]
+a = a[,1:28]
+data = a[,c(1,15,24)]
 
 
 data = data[order(data[,2]),]
@@ -57,5 +85,5 @@ data = merge(data,a[,c(1,19,28)],by.x = 1, by.y = 1, all.x = TRUE, all.y = FALSE
 re = merge(a, data[,c(1,9)],by.x =1 ,by.y = 1, all = TRUE)
 colnames(re) = c(colnames(a),"Combined_FDR")
 colnames(data) = c("Intron_id", "PValue_rMATS", "PValue_DEXSeq","rank_rMATS", "rank_DEXSeq","RP","rank_RP","c","pfp","Diff_PI_Junction","Diff_PI_Density")
-write.table(data,args[3],row.names = FALSE,quote = FALSE, sep="\t")
-write.table(re,args[4],row.names = FALSE,quote = FALSE, sep="\t")
+write.table(data,args[9],row.names = FALSE,quote = FALSE, sep="\t")
+write.table(re,args[10],row.names = FALSE,quote = FALSE, sep="\t")
