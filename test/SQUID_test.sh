@@ -10,5 +10,3 @@ python ../SQUID.py --GTF ./test.gtf  --fastq ./test_R1_1.fq:./test_R1_2.fq,./tes
 ##run SQUID with provided alignment files and FPKM files
 python ../SQUID.py --GTF ./test.gtf --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --FPKM transcript_exp.txt --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam3
 
-##run SQUID with provided alignment files
-python ../SQUID.py --GTF ./test.gtf --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam4
