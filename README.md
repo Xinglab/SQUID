@@ -33,10 +33,6 @@ Run SQUID with provided alignment files and FPKM files
 
 	python ../SQUID.py --GTF ./test.gtf --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --FPKM transcript_exp.txt --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam3
 
-Run SQUID with provided alignment files
-
-	python ../SQUID.py --GTF ./test.gtf --align ./test_R1.bam,./test_R2.bam,./control_R1.bam,./control_R2.bam --anchor 8 --length 100 --lib unstrand --read P --Cal All  --c1 0.05  --p 1 --Comparison ./Comparison --analysis U -o ./bam4
-
 Required Parameters
 ------------
 	--align:
@@ -82,6 +78,12 @@ Optional Parameters
 		The cutoff of splicing difference of rMATS run using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
 	--p: 
 		The number of threads used to run rMATS. The default is 1;
+	--F_intronLength
+		The the minimum intron length to be considered in differential spliced introns that will be used in the combined FDR calculation, the default is 100;
+	--F_FPKM:
+		The minimum mean FPKM value of intron overlapping transcripts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 5;
+        --F_count: 
+		The minimus mean sum counts of inclusion and skipping counts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 20;
 	--resume:
 		Whether to resume previous run. The default is false.
 
