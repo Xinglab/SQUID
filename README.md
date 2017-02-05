@@ -84,7 +84,6 @@ Optional Parameters
 		The minimum mean FPKM value of intron overlapping transcripts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 5;
 	--F_count: 
 		The minimus mean sum counts of inclusion and skipping counts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 20;
-	
 	--F_deltaPI: 
 		The cutoff of delta to output differential spliced introns.The default is 0.05;
 	--F_FDR: 
@@ -110,8 +109,11 @@ The folder contains the final output of four types of files: intron_PI.txt, Diff
 $comparison denotes the label of comparison performed
 
 intron_PI.txt is the file containing the info of annotated introns
+
 Diff_$comparison_intron_PI.txt containing the differential spliced introns info of all annotated introns
+
 Decrease_$comparison_intron_PI.txt containing the differential spliced introns info of the introns with decreased PI in sample2 
+
 Increase_$comparison_intron_PI.txt containing the differential spliced introns info of the introns with increased PI in sample2
 
 Common columns in both files:
