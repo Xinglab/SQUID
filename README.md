@@ -108,13 +108,10 @@ The folder contains the final output of four types of files: intron_PI.txt, Diff
 
 $comparison denotes the label of comparison performed
 
-intron_PI.txt is the file containing the info of annotated introns
-
-Diff_$comparison_intron_PI.txt containing the differential spliced introns info of all annotated introns
-
-Decrease_$comparison_intron_PI.txt containing the differential spliced introns info of the introns with decreased PI in sample2 
-
-Increase_$comparison_intron_PI.txt containing the differential spliced introns info of the introns with increased PI in sample2
+		intron_PI.txt is the file containing the info of annotated introns
+		Diff_$comparison_intron_PI.txt containing the differential spliced introns info of all annotated introns
+		Decrease_$comparison_intron_PI.txt containing the differential spliced introns info of the introns with decreased PI in sample2 
+		Increase_$comparison_intron_PI.txt containing the differential spliced introns info of the introns with increased PI in sample2
 
 Common columns in all files:
 
