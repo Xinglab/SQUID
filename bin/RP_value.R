@@ -9,7 +9,10 @@ args <- commandArgs(trailingOnly = TRUE)
 #args[8], the minimum mean counts of  inclusion and skipping counts in sample1 and sample2, default is 20
 #args[9], the output files of rank product test
 #args[10], the final output file in the result folder
-#args = c("/u/nobackup/yxing/NOBACKUP/shaofang/shRNA/K562/new/squid_0.1/SQUID_U2AF2_K562_ENCSR904CJQ/Result/Diff_IR_1_intron_PI.txt","100")
+#args[11], the cutoff of delta to output differential spliced introns.The default is 0.05
+#args[12], the cutoff of combined FDR to output differential spliced introns.The default is 0.05
+#args[13], the final output file in the result folder showing the introns with increased PI in sample2
+#args[14], the final output file in the result folder showing the introns with decreased PI in sample2
 times = as.numeric(args[2])
 
 a = read.table(args[1],header = TRUE)
@@ -87,3 +90,9 @@ colnames(re) = c(colnames(a),"Combined_FDR")
 colnames(data) = c("Intron_id", "PValue_rMATS", "PValue_DEXSeq","rank_rMATS", "rank_DEXSeq","RP","rank_RP","c","pfp","Diff_PI_Junction","Diff_PI_Density")
 write.table(data,args[9],row.names = FALSE,quote = FALSE, sep="\t")
 write.table(re,args[10],row.names = FALSE,quote = FALSE, sep="\t")
+re1 = re[re[,19] < -as.numeric(args[11]) & re[,28] < -as.numeric(args[11]) & re[,29] < as.numeric(args[12]),]
+re2 = re[re[,19] > as.numeric(args[11]) & re[,28] > as.numeric(args[11]) & re[,29] < as.numeric(args[12]),]
+
+write.table(re1,args[13],row.names = FALSE,quote = FALSE, sep="\t")
+write.table(re2,args[14],row.names = FALSE,quote = FALSE, sep="\t")
+
