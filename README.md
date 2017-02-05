@@ -116,7 +116,7 @@ Decrease_$comparison_intron_PI.txt containing the differential spliced introns i
 
 Increase_$comparison_intron_PI.txt containing the differential spliced introns info of the introns with increased PI in sample2
 
-Common columns in both files:
+Common columns in all files:
 
 		Intron_id:         Intron Id representing the chromosome position, start and end
 		Gene_id:           Gene id of intron residing genes
