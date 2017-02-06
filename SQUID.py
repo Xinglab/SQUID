@@ -22,7 +22,7 @@ analysis = 'U'
 c1 = 0.0001
 p = 1
 F_deltaPI = 0.05
-F_FDR = 0.05
+F_FDR = 0.1
 resume = "false"
 for opt, arg in options:
 	if opt in ('--align'):

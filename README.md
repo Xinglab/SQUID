@@ -81,7 +81,7 @@ Optional Parameters
 	--F_deltaPI: 
 		The cutoff of delta to output differential spliced introns.The default is 0.05;
 	--F_FDR: 
-		The cutoff of combined FDR to output differential spliced introns.The default is 0.05;
+		The cutoff of combined FDR to output differential spliced introns.The default is 0.1;
 	--resume:
 		Whether to resume previous run. The default is false.
 
