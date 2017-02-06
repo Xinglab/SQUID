@@ -1,6 +1,6 @@
 #!/bin/python
 import getopt,copy,re,os,sys,logging,time,datetime;
-options, args = getopt.getopt(sys.argv[1:], 'o:',['align=','GTF=','fastq=','check_len=','index_star=','index_kallisto=','l=','s=','output=','update=','lib=','read=','length=','anchor=','Cal=','FPKM=','Comparison=','analysis=','c1=','p=','resume=','F_intronLength=','F_FPKM=','F_count=','F_deltaPI=','F_FDR='])
+options, args = getopt.getopt(sys.argv[1:], 'o:',['align=','GTF=','fastq=','check_len=','index_star=','index_kallisto=','l=','s=','output=','update=','lib=','read=','length=','anchor=','Cal=','FPKM=','Comparison=','analysis=','c1=','p=','resume=','F_deltaPI=','F_FDR='])
 align ='';
 GTF ='';
 fastq='';
@@ -21,9 +21,6 @@ Comparison = ''
 analysis = 'U'
 c1 = 0.0001
 p = 1
-F_intronLength = 100
-F_FPKM = 5
-F_count = 20
 F_deltaPI = 0.05
 F_FDR = 0.05
 resume = "false"
@@ -68,12 +65,6 @@ for opt, arg in options:
                 c1 = float(arg)
 	elif opt in ('--p'):
                 p = int(arg)
-	elif opt in ('--F_intronLength'):
-                F_intronLength = int(arg)
-	elif opt in ('--F_FPKM'):
-                F_FPKM = int(arg)
-	elif opt in ('--F_count'):
-                F_count = int(arg)
 	elif opt in ('--F_deltaPI'):
                 F_deltaPI = float(arg)
         elif opt in ('--F_FDR'):
@@ -116,9 +107,6 @@ if (run =="false"):
 	print "uasge: ", sys.argv[0], " --analysis: Type of rMATS analysis to perform. analysisType is either P or U. P is for paired analysis and U is for unpaired analysis. Default is U;"
 	print "Usage :", sys.argv[0], " --c1: The cutoff of splicing difference using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001;"
         print "Usage :", sys.argv[0], " --p: The number of threads used to run rMATS. The default is 1;"
-	print "Usage :", sys.argv[0], " --F_intronLength: The the minimum intron length to be considered in differential spliced introns that will be used in the combined FDR calculation, the default is 100;"
-	print "Usage :", sys.argv[0], " --F_FPKM: THe minimum mean FPKM value of intron overlapping transcripts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 5;"
-	print "Usage :", sys.argv[0], " --F_count: The minimus mean sum counts of inclusion and skipping counts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 20;"
 	print "Usage :", sys.argv[0], " --F_deltaPI: The cutoff of delta to output differential spliced introns.The default is 0.05;"
 	print "Usage :", sys.argv[0], " --F_FDR: The cutoff of combined FDR to output differential spliced introns.The default is 0.05;"
 	print "Usage :", sys.argv[0], " --resume: Whether to resume previous run. The default is false;"
@@ -848,7 +836,7 @@ for info in fr:
 		cmd = "python %s/Transcript.py --FPKM  %s --intron %s/Intron_transcript.txt --output %s/FPKM_intron_transcript.txt" %(bin_path,FPKM,gtf_path,output_S)
 		logging.debug(cmd)
                 os.system(cmd)
-		cmd = "Rscript %s/RP_value.R %s/Diff_%s_intron_temp.txt 100 %s %s/FPKM_intron_transcript.txt %s %s %s %s  %s/rank_product_test_%s.txt %s/Result/Diff_%s_intron_PI.txt %s %s %s/Result/Increase_%s_intron_PI.txt %s/Result/Decrease_%s_intron_PI.txt" %(bin_path, output_S, a[0], F_intronLength, output_S, F_FPKM, a[1],a[2],F_count,output_S, a[0],output,a[0],F_deltaPI, F_FDR, output,a[0],output,a[0])                
+		cmd = "Rscript %s/RP_value.R %s/Diff_%s_intron_temp.txt 100 %s/rank_product_test_%s.txt %s/Result/Diff_%s_intron_PI.txt %s %s %s/Result/Increase_%s_intron_PI.txt %s/Result/Decrease_%s_intron_PI.txt" %(bin_path, output_S, a[0], output_S, a[0],output,a[0],F_deltaPI, F_FDR, output,a[0],output,a[0])                
 		logging.debug(cmd)
                 os.system(cmd)
 		logging.debug("Output the result of differential spliced intron analysis of " + a[0] + "\n")

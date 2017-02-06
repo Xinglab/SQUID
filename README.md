@@ -78,12 +78,6 @@ Optional Parameters
 		The cutoff of splicing difference of rMATS run using Junction method. The cutoff used in the null hypothesis test for differential splicing. The default is 0.0001
 	--p: 
 		The number of threads used to run rMATS. The default is 1;
-	--F_intronLength
-		The the minimum intron length to be considered in differential spliced introns that will be used in the combined FDR calculation, the default is 100;
-	--F_FPKM:
-		The minimum mean FPKM value of intron overlapping transcripts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 5;
-	--F_count: 
-		The minimus mean sum counts of inclusion and skipping counts in two samples to be considered in differential spliced introns that will be used in the combined FDR calculation. The default is 20;
 	--F_deltaPI: 
 		The cutoff of delta to output differential spliced introns.The default is 0.05;
 	--F_FDR: 
