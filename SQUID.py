@@ -267,7 +267,7 @@ if(Cal=="All" or Cal=="count"):
 			if(re.search("bam",ALIGN[ss])):
 				cmd = "python %s/Count_allBam.py --gtf %s/Intron_%s,%s/%s --length %s --anchor %s --bam %s -o %s/count_%s --lib %s --read %s --Total %s/Total_%s.txt" %(bin_path,gtf_path, gtf,gtf_path, gtf, length, anchor, ALIGN[ss], count_path, ss,lib, read, count_path,ss)
 			else:
-				cmd = "python %s/Count_allSam.py --gtf %s/Intron_%s,%s/%s --length %s --anchor %s --bam %s -o %s/count_%s --lib %s --read %s --Total %s/Total_%s.txt" %(bin_path,gtf_path, gtf,gtf_path, gtf, length, anchor, ALIGN[ss], count_path, ss,lib, read, count_path,ss)	
+				cmd = "python %s/Count_allSam.py --gtf %s/Intron_%s,%s/%s --length %s --anchor %s --sam %s -o %s/count_%s --lib %s --read %s --Total %s/Total_%s.txt" %(bin_path,gtf_path, gtf,gtf_path, gtf, length, anchor, ALIGN[ss], count_path, ss,lib, read, count_path,ss)	
 			logging.debug(cmd)
 			os.system(cmd)
 		logging.debug("Generate the count file")
@@ -687,7 +687,7 @@ for info in fr:
                 inc2 = ['0'] * len(ss2)
                 skp2 = ['0'] * len(ss2)
                 PI1=["NA"] * len(ss1)
-                PI2= ["NA"] * len(ss1)
+                PI2= ["NA"] * len(ss2)
                 if(len(a) > 3 and a[3] =="pool"):
                         inc1 = ['0']
                         skp1 = ['0']
