@@ -251,7 +251,7 @@ if(Cal=="All" or Cal=="count"):
 			logging.debug(cmd)
 			os.system(cmd)
 			ALIGN.append("%s/S%sAligned.sortedByCoord.out.bam"%(align_path,ss))
-			print ALIGN
+			#print ALIGN
 	##generate the counts files
 	COUNT_file = "%s/Total.txt" % count_path
 	if(resume =="false" or not os.path.exists(COUNT_file)):
@@ -263,7 +263,7 @@ if(Cal=="All" or Cal=="count"):
 			else:
 				break
 		for ss in range(start, num):
-			print ss, ALIGN
+			#print ss, ALIGN
 			if(re.search("bam",ALIGN[ss])):
 				cmd = "python %s/Count_allBam.py --gtf %s/Intron_%s,%s/%s --length %s --anchor %s --bam %s -o %s/count_%s --lib %s --read %s --Total %s/Total_%s.txt" %(bin_path,gtf_path, gtf,gtf_path, gtf, length, anchor, ALIGN[ss], count_path, ss,lib, read, count_path,ss)
 			else:
