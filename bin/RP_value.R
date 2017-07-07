@@ -37,7 +37,7 @@ for (i in 1:len)
 {
 
 	temp = per[index1:index2]
-	while(length(temp[temp< data[i,6]])==times)
+	while(length(temp[temp< data[i,6]])==times & index1 < length(per))
 	{
 		index1 = index1 + times
 		index2 = index2 + times
