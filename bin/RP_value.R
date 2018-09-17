@@ -1,3 +1,4 @@
+set.seed(1337)
 args <- commandArgs(trailingOnly = TRUE)
 #args[1] use this as the input Diff_compare1_intron_PI.txt
 #args[2], the time of permutation perform
@@ -8,7 +9,6 @@ args <- commandArgs(trailingOnly = TRUE)
 #args[7], the final output file in the result folder showing the introns with increased PI in sample2
 #args[8], the final output file in the result folder showing the introns with decreased PI in sample2
 times = as.numeric(args[2])
-
 a = read.table(args[1],header = TRUE)
 a= a[complete.cases(a),]
 
@@ -37,7 +37,7 @@ for (i in 1:len)
 {
 
 	temp = per[index1:index2]
-	while(length(temp[temp< data[i,6]])==times & index1 < length(per))
+	while(length(temp[temp< data[i,6]])==times)
 	{
 		index1 = index1 + times
 		index2 = index2 + times

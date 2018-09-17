@@ -9,7 +9,7 @@ http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARhg19.tgz
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARmm10.tgz
 4. Install [kallisto 0.43.0](https://pachterlab.github.io/kallisto/download) for the run without FPKM files provided. The kallisto index of human and mouse can be downloaded throught the following link
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble74 
-http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/mm10_Ensemble78
+http://www.mimg.ucla.edu/faculty/xing/custom_track/zcpan/mm10_Ensemble88.idx
 5. Install [cufflinks 2.2.1](http://cole-trapnell-lab.github.io/cufflinks/install/) for the fun without FPKM and fastq files provided.  
 6. Install [DEXSeq 1.16.10](https://bioconductor.org/packages/devel/bioc/html/DEXSeq.html) to run differential spliced intron analysis
 
@@ -219,6 +219,9 @@ yxing@ucla.edu
 Shaofang Li
 sfli001@gmail.com
 
+Zhicheng Pan
+zcpan1016@gmail.com
+
 If you found a bug or mistake in this project, we would like to know about it.
 Before you send us the bug report though, please check the following:
 
@@ -272,5 +275,9 @@ A: Yes, SQUID will resume previous run by setting parameter resume as true. Plea
 Q: Do the reads in the fastq files have to be the same length?
 
 A: No. If the reads in the fastq files do not have equal length, please set parameter check_len to true to generate new fastq files with equal length.
+
+Q: Can I run SQUID to output intron retention values without doing differential analysis? 
+
+A: Yes. You can run SQUID by ignoring --Comparison parameters. 
 
 
