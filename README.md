@@ -5,9 +5,7 @@ Requirements
 1. Install [Python 2.7.x](https://www.python.org/downloads), [NumPy 1.8.0](http://www.scipy.org/scipylib/download.html) and [SciPy 0.15.1](http://www.scipy.org/scipylib/download.html)
 2. Install [pysam 0.8.4](https://pypi.python.org/pypi/pysam/0.8.4)
 3. Install [STAR_2.5.2b](https://github.com/alexdobin/STAR) for the run without alignment files provided. The star index of human and mouse can be downloaded through the following link
-http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARhg19.tgz
-http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARmm10.tgz
-4. Install [kallisto 0.43.0](https://pachterlab.github.io/kallisto/download) for the run without FPKM files provided. The kallisto index of human and mouse can be downloaded throught the following link
+http://labshare.cshl.edu/shares/gingeraslab/www-data/dobin/STAR/STARgenomes/. Install [kallisto 0.43.0](https://pachterlab.github.io/kallisto/download) for the run without FPKM files provided. The kallisto index of human and mouse can be downloaded throught the following link
 http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble74 
 http://www.mimg.ucla.edu/faculty/xing/custom_track/zcpan/mm10_Ensemble88.idx
 5. Install [cufflinks 2.2.1](http://cole-trapnell-lab.github.io/cufflinks/install/) for the fun without FPKM and fastq files provided.  
