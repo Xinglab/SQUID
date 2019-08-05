@@ -210,7 +210,7 @@ An intermediate folder contains all of the DEXSeq input and output files
 Contacts and bug reports
 ------------------------
 Yi Xing
-yi.xing@pennmedicine.upenn.edu
+xingyi@email.chop.edu
 
 Zhicheng Pan
 zcpan1016@gmail.com
