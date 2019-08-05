@@ -2,10 +2,10 @@
 
 Requirements
 ------------
-1. Install [Python 2.7.x](https://www.python.org/downloads), [NumPy 1.8.0](http://www.scipy.org/scipylib/download.html) and [SciPy 0.15.1](http://www.scipy.org/scipylib/download.html)
-2. Install [pysam 0.8.4](https://pypi.python.org/pypi/pysam/0.8.4)
+1. Install [Python 2.7.x](https://www.python.org/downloads)
+2. Install [pysam](https://pypi.python.org/pypi/pysam/0.8.4)
 3. Install [STAR_2.5.2b](https://github.com/alexdobin/STAR) for the run without alignment files provided. The star index of human and mouse can be downloaded through the following link
-http://labshare.cshl.edu/shares/gingeraslab/www-data/dobin/STAR/STARgenomes/. Install [kallisto 0.43.0](https://pachterlab.github.io/kallisto/download) for the run without FPKM files provided.
+http://labshare.cshl.edu/shares/gingeraslab/www-data/dobin/STAR/STARgenomes/. Install [kallisto](https://pachterlab.github.io/kallisto/download) for the run without FPKM files provided.
 5. Install [cufflinks 2.2.1](http://cole-trapnell-lab.github.io/cufflinks/install/) for the fun without FPKM and fastq files provided.  
 6. Install [DEXSeq 1.16.10](https://bioconductor.org/packages/devel/bioc/html/DEXSeq.html) to run differential spliced intron analysis
 
