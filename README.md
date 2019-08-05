@@ -210,10 +210,7 @@ An intermediate folder contains all of the DEXSeq input and output files
 Contacts and bug reports
 ------------------------
 Yi Xing
-yxing@ucla.edu
-
-Shaofang Li
-sfli001@gmail.com
+yi.xing@pennmedicine.upenn.edu
 
 Zhicheng Pan
 zcpan1016@gmail.com
@@ -233,9 +230,9 @@ Before you send us the bug report though, please check the following:
 Copyright and License Information
 ---------------------------------
 Copyright (C) 2015 University of California, Los Angeles (UCLA)
-Shaofang Li, Yi Xing
+Zhicheng Pan, Yi Xing
 
-Authors: Shaofang Li, Yi Xing
+Authors: Zhicheng Pan, Yi Xing
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
