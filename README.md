@@ -22,8 +22,8 @@ SQUID is a general tool for quantifying the percent of intron inclusions in RNA-
         
    	I:  
 		Introns that are overlapped with other introns but not overlapped with exons.
-    
-    	EI: 
+		
+	EI: 
     		Introns that are both overlapped with exons and other introns.
 
 Requirements
