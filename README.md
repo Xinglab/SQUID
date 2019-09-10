@@ -1,17 +1,39 @@
 ## SQUID: Stringent Quantitation of Unspliced Intron by Deep-sequencing
 
+Introduction
+----------
+SQUID is a general tool for quantifying the percent of intron inclusions in RNA-seq data. 
+<p><figure class="figure1" data-title="HOMER motif"><img alt="" src="docs/intron_type.png" /><figcaption></figcaption></figure></p>
+
+#### Types of PI (Percent of Introns) Calculation
+
+	PI_Junction: 
+		Inclusion counts divided by the sum of inclusion and skipping junction counts
+	PI_Density:
+		The observed counts divided by the expected counts of the intron
+        
+#### Types of intron retention
+
+	U: 
+		Introns that are not partly overlapped with exons or overlapped with other introns.
+        
+	E:
+        	Introns that are partly overlapped with exons but not overlapped with other introns.
+        
+   	I:  
+		Introns that are overlapped with other introns but not overlapped with exons.
+		
+	EI: 
+		Introns that are both overlapped with exons and other introns.
+
 Requirements
 ------------
-1. Install [Python 2.7.x](https://www.python.org/downloads), [NumPy 1.8.0](http://www.scipy.org/scipylib/download.html) and [SciPy 0.15.1](http://www.scipy.org/scipylib/download.html)
-2. Install [pysam 0.8.4](https://pypi.python.org/pypi/pysam/0.8.4)
-3. Install [STAR_2.5.2b](https://github.com/alexdobin/STAR) for the run without alignment files provided. The star index of human and mouse can be downloaded through the following link
-http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARhg19.tgz
-http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/STARmm10.tgz
-4. Install [kallisto 0.43.0](https://pachterlab.github.io/kallisto/download) for the run without FPKM files provided. The kallisto index of human and mouse can be downloaded throught the following link
-http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/hg19_Ensemble74 
-http://www.mimg.ucla.edu/faculty/xing/custom_track/shaofang/SQUID/mm10_Ensemble78
-5. Install [cufflinks 2.2.1](http://cole-trapnell-lab.github.io/cufflinks/install/) for the fun without FPKM and fastq files provided.  
-6. Install [DEXSeq 1.16.10](https://bioconductor.org/packages/devel/bioc/html/DEXSeq.html) to run differential spliced intron analysis
+1. Install [Python 2.7.x](https://www.python.org/downloads)
+2. Install [pysam](https://pypi.python.org/pypi/pysam/0.8.4)
+3. Install [STAR](https://github.com/alexdobin/STAR) for the run without alignment files provided. The star index of human and mouse can be downloaded through the following link
+http://labshare.cshl.edu/shares/gingeraslab/www-data/dobin/STAR/STARgenomes/. Install [kallisto](https://pachterlab.github.io/kallisto/download) for the run without FPKM files provided.
+5. Install [cufflinks](http://cole-trapnell-lab.github.io/cufflinks/install/) for the fun without FPKM and fastq files provided.  
+6. Install [DEXSeq](https://bioconductor.org/packages/devel/bioc/html/DEXSeq.html) to run differential spliced intron analysis
 
 Installation
 ------------
@@ -69,7 +91,7 @@ Optional Parameters
 	--anchor: 
 		The anchor length in nucleotide. The program will only count reads spanning junctions with at least this anchor length on each side. The default is 8
 	--Cal: 
-		Which  part of the program user choose to run, the choices are All/count/DSI. All means run the whole program, count means only run the PI value calculation part, DSI means only run the differential analysis of spliced introns. The default is All
+		Which  part of the program user choose to run, the choices are All/count. All means run the whole program including count and differential analysis of spliced introns, count means only run the PI value calculation part. The default is All.
 	--Comparison: 
 		A file providing the sample pairs to calculate the differential RI level.The format should be column 1(name of comparions), column 2 (sample 1 order in the align files,replicates separated by commas), column 3 (sample 2 order in the align files,replicates separated by commas), column 4 (optional, if present as 'pool', the replicates are combined together in rMATS calculation). If absent, the step of calculation of differential spliced introns  will be skipped
 	--analysis: 
@@ -85,21 +107,19 @@ Optional Parameters
 	--resume:
 		Whether to resume previous run. The default is false.
 
-Types of PI (Percent of Introns) Calculation
-------------	
-	PI_Junction: 
-		Inclusion counts divided by the sum of inclusion and  skipping junction counts
-	PI_Density:
-		The observed counts divided by the expected counts of the intron
-
 Output list
 ------------
 
 Notes: $n denotes the number of samples provided in SQUID run
 
-###Result###
-The folder contains the final output of four types of files: intron_PI.txt, Diff_$comparison_intron_PI.txt, Decrease_$comparison_intron_PI.txt,Increase_$comparison_intron_PI.txt.
-
+#### Result
+The folder contains the final output of four types of files: 
+		<code>
+		intron_PI.txt,
+    	Diff_$comparison_intron_PI.txt,
+    	Decrease_$comparison_intron_PI.txt,
+    	Increase_$comparison_intron_PI.txt.
+		</code>
 $comparison denotes the label of comparison performed
 
 		intron_PI.txt is the file containing the info of annotated introns
@@ -135,13 +155,10 @@ Extra columns in Diff_$comparison_intron_PI.txt, Decrease_$comparison_intron_PI.
 		FDR_DEXSeq:        FDR from DEXSeq
 		Combined_FDR:	   FDR of rank product test of rMATS and DEXSeq
 
-###test###
+#### test
 A folder contains test files to run the program
 
-###log.SQUID###
- Log file for running SQUID pipeline
-
-###gtf_files###
+#### gtf_files
 An intermediate folder contains different types of gtf files to run the program. Use mouse genome as examples.
 
 	Mus_musculus.Ensembl.GRCm38.78.gtf: the ensemble gtf files. This file should be provided by user. 
@@ -150,13 +167,13 @@ An intermediate folder contains different types of gtf files to run the program.
 	Intron_Annotated_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was annotated as retained introns in the original gtf files
 	Intron_attri_Mus_musculus.Ensembl.GRCm38.78.gtf: the gtf file contains the attributes whether the intron was overlapped with Exon and whether the intron is overlapped with other intron. 
 
-###fq###
+#### fq
 An intermediate folder contains all of the fastq with equal read length files
 
-###align###
+#### align
 An intermediate folder contains all of the alignment files
 
-###counts###
+#### counts
 An intermediate folder contains all of the count files
 
 count_intron.txt: a file contains the counts for all of the introns		
@@ -194,7 +211,7 @@ Total.txt: a file contains total number of unique reads in each sample
 
 		column 1~n:        Total number of unique reads in samples 1~n
 
-###FPKM		
+#### FPKM		
 An intermediate optional folder contains the result of FPKM result and gene expression files for the squid run without gene expression file provided. 
 
 	kallisto_$n
@@ -204,10 +221,10 @@ An intermediate optional folder contains the result of FPKM result and gene expr
 		column 1:        Gene ID
 		column 2~n+1:    FPKM value for samples 
 		
-###rMATS_files###
+#### rMATS_files
 An intermediate folder contains all of the rMATS input and output files
 
-###DEXSeq_files###
+#### DEXSeq_files
 An intermediate folder contains all of the DEXSeq input and output files
 
 
@@ -215,6 +232,9 @@ Contacts and bug reports
 ------------------------
 Yi Xing
 xingyi@email.chop.edu
+
+Zhicheng Pan
+zcpan1016@gmail.com
 
 If you found a bug or mistake in this project, we would like to know about it.
 Before you send us the bug report though, please check the following:
@@ -231,9 +251,9 @@ Before you send us the bug report though, please check the following:
 Copyright and License Information
 ---------------------------------
 Copyright (C) 2015 University of California, Los Angeles (UCLA)
-Shaofang Li, Yi Xing
+Zhicheng Pan, Yi Xing
 
-Authors: Shaofang Li, Yi Xing
+Authors: Zhicheng Pan, Yi Xing
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -269,3 +289,7 @@ A: Yes, SQUID will resume previous run by setting parameter resume as true. Plea
 Q: Do the reads in the fastq files have to be the same length?
 
 A: No. If the reads in the fastq files do not have equal length, please set parameter check_len to true to generate new fastq files with equal length.
+
+Q: Can I run SQUID to output intron retention values without doing differential analysis? 
+
+A: Yes. You can run SQUID by ignoring --Comparison parameters. 

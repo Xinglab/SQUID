@@ -19,8 +19,6 @@ if (not gtf or not path):
         print "Usage :", sys.argv[0], " --path: The directory to the input and output gtf file;"
         print "Usage :", sys.argv[0], " --strand: The library type."
 	print datetime.datetime.now()
-        print "Author  : Shaofang Li"
-        print "Contact : sfli001@gmail.com"
         sys.exit()
 
 fr1 = open ("%s/Intron_%s" % (path,gtf))

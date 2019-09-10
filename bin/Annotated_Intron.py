@@ -16,8 +16,6 @@ if (not gtf or not path):
         print "Usage :", sys.argv[0], " --gtf: The gtf file, intron and exon gtf file will be located according to the name;"
         print "Usage :", sys.argv[0], " --path: The directory for the input and output gtf file."
         print datetime.datetime.now()
-        print "Author  : Shaofang Li"
-        print "Contact : sfli001@gmail.com"
         sys.exit()
 
 fr = open ("%s/Intron_%s" % (path,gtf))
