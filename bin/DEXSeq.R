@@ -1,12 +1,9 @@
 args <- commandArgs(trailingOnly = TRUE)
 ### using intron and exon data as input
 library(DEXSeq)
-library(BiocParallel)
-BPPARAM = MulticoreParam(as.integer(args[length(args)]))
 ##agrs[1] = intron_data
 ##args[2] = sampleData
 ##args[3] = alternativeCountData
-##args[4] = threads
 
 intron = read.table(args[1],row.names = 1)
 rownames(intron) = paste(intron[,1], rownames(intron),sep=":")
@@ -24,9 +21,9 @@ alternativeCountData  = as.matrix(alternativeCountData )
 dxd = DEXSeqDataSet(countData, sampleData, design= ~ sample + exon + condition:exon , featureID, groupID, featureRanges=NULL, transcripts=NULL, alternativeCountData)
 
 dxd = estimateSizeFactors( dxd )
-dxd = estimateDispersions( dxd, BPPARAM = BPPARAM)
+dxd = estimateDispersions( dxd )
 
-dxd = testForDEU( dxd , BPPARAM = BPPARAM)
-dxd = estimateExonFoldChanges( dxd, fitExpToVar="condition", BPPARAM = BPPARAM)
+dxd = testForDEU( dxd )
+dxd = estimateExonFoldChanges( dxd, fitExpToVar="condition")
 dxr1 = DEXSeqResults( dxd )
-write.table(dxr1,args[length(args) -1],quote = FALSE, sep="\t")
+write.table(dxr1,args[length(args)],quote = FALSE, sep="\t")
