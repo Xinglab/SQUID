@@ -233,9 +233,6 @@ Contacts and bug reports
 Yi Xing
 xingyi@email.chop.edu
 
-Zhicheng Pan
-zcpan1016@gmail.com
-
 If you found a bug or mistake in this project, we would like to know about it.
 Before you send us the bug report though, please check the following:
 
@@ -251,9 +248,9 @@ Before you send us the bug report though, please check the following:
 Copyright and License Information
 ---------------------------------
 Copyright (C) 2015 University of California, Los Angeles (UCLA)
-Zhicheng Pan, Yi Xing
+Yi Xing
 
-Authors: Zhicheng Pan, Yi Xing
+Authors: Zhicheng Pan, Shaofang Li, Yi Xing
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
