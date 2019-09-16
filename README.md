@@ -214,7 +214,10 @@ An intermediate folder contains all of the DEXSeq input and output files
 Contacts and bug reports
 ------------------------
 Yi Xing
-xingyi@email.chop.edu
+yxing@ucla.edu
+
+Shaofang Li
+sfli001@gmail.com
 
 If you found a bug or mistake in this project, we would like to know about it.
 Before you send us the bug report though, please check the following:
@@ -269,3 +272,5 @@ A: Yes, SQUID will resume previous run by setting parameter resume as true. Plea
 Q: Do the reads in the fastq files have to be the same length?
 
 A: No. If the reads in the fastq files do not have equal length, please set parameter check_len to true to generate new fastq files with equal length.
+
+
