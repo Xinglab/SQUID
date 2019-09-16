@@ -215,6 +215,8 @@ Contacts and bug reports
 ------------------------
 Yi Xing
 xingyi@email.chop.edu
+Shaofang Li
+shaofangli@cau.edu.cn
 
 If you found a bug or mistake in this project, we would like to know about it.
 Before you send us the bug report though, please check the following:
