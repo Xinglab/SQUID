@@ -233,7 +233,7 @@ Before you send us the bug report though, please check the following:
 
 Copyright and License Information
 ---------------------------------
-Copyright (C) 2015-2016 University of California, Los Angeles (UCLA)
+Copyright (C) 2016 University of California, Los Angeles (UCLA)
 Shaofang Li, Yi Xing
 
 Authors: Shaofang Li, Yi Xing
