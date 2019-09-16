@@ -214,7 +214,7 @@ An intermediate folder contains all of the DEXSeq input and output files
 Contacts and bug reports
 ------------------------
 Yi Xing
-yxing@ucla.edu
+xingyi@email.chop.edu
 
 Shaofang Li
 shaofangli@cau.edu.cn
