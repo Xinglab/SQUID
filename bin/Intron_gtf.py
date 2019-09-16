@@ -16,7 +16,7 @@ if (not gtf or not path):
         print "usage :", sys.argv[0], " --path: the directory to the input and output gtf file"
         print datetime.datetime.now()
         print "Author  : Shaofang Li"
-        print "Contact : sfli001@gmail.com"
+        print "Contact : shaofangli@cau.edu.cn"
         sys.exit()
 fr = open ("%s/%s" % (path,gtf))
 exon_s=dict()

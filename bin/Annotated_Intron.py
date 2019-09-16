@@ -17,7 +17,7 @@ if (not gtf or not path):
         print "Usage :", sys.argv[0], " --path: The directory for the input and output gtf file."
         print datetime.datetime.now()
         print "Author  : Shaofang Li"
-        print "Contact : sfli001@gmail.com"
+        print "Contact : shaofangli@cau.edu.cn"
         sys.exit()
 
 fr = open ("%s/Intron_%s" % (path,gtf))

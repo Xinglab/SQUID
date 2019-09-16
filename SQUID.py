@@ -112,7 +112,7 @@ if (run =="false"):
 	print "Usage :", sys.argv[0], " --resume: Whether to resume previous run. The default is false;"
 	print datetime.datetime.now()
 	print "Author  : Shaofang Li"
-	print "Contact : sfli001@gmail.com"
+	print "Contact : shaofangli@cau.edu.cn"
 	sys.exit()
 
 def listToString(ss):

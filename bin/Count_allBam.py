@@ -41,7 +41,7 @@ if (not gtf or not read or not bam or not output or not length or not anchor or 
 	print "Usage :", sys.argv[0], " --Total: the file store the total uniquely mapped reads."
 	print datetime.datetime.now()
 	print "Author  : Shaofang Li"
-	print "Contact : sfli001@gmail.com"
+	print "Contact : shaofangli@cau.edu.cn"
 	sys.exit()
 
 GTF = gtf.split(",")
