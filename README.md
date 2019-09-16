@@ -217,7 +217,7 @@ Yi Xing
 yxing@ucla.edu
 
 Shaofang Li
-sfli001@gmail.com
+shaofangli@cau.edu.cn
 
 If you found a bug or mistake in this project, we would like to know about it.
 Before you send us the bug report though, please check the following:
@@ -233,7 +233,7 @@ Before you send us the bug report though, please check the following:
 
 Copyright and License Information
 ---------------------------------
-Copyright (C) 2015 University of California, Los Angeles (UCLA)
+Copyright (C) 2015-2016 University of California, Los Angeles (UCLA)
 Shaofang Li, Yi Xing
 
 Authors: Shaofang Li, Yi Xing
